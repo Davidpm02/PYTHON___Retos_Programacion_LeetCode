@@ -57,3 +57,8 @@ class Solution:
         return -1
           
         
+if __name__ == "__main__":
+  
+  solution = Solution()
+  index = solution.strStr("hello", "ll")
+  print("El índice es:", index)
