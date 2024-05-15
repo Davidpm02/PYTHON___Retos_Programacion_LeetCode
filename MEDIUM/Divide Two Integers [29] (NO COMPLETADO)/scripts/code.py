@@ -40,6 +40,15 @@ class Solution:
     def divide(self, dividend: int, divisor: int) -> int:
         
         """
+        Método de la clase Solution encargado de procesar dos parámetros, 'dividend' y 'divisor', y llevar a cabo una división
+        entera, sin hacer uso de operadores básicos de Python que permitan ejecutar esta operación.
+        
+        Args:
+            dividend (int) -- Parámetro que actúa como dividendo dentro de la división que se lleva a cabo en el método de la clase.
+            divisor (int) -- Parámetro que actúa como divisor dentro de la división que se lleva a cabo en el método de la clase.
+        
+        Returns:
+            int -- Resultado de la operación. Este resultado representa el cociente truncado de la división.
         """
         
         if dividend == divisor:
@@ -56,9 +65,9 @@ class Solution:
             new_dividend = dividend
 
         if divisor < 0:
-            new_divisor = -divisor
-        else:
             new_divisor = divisor
+        else:
+            new_divisor = -divisor
         
         if new_divisor == 1 or new_divisor == -1:
             times_divisor = new_dividend
@@ -67,9 +76,15 @@ class Solution:
                 pass
             elif (new_dividend < 0) or (new_divisor < 0):
                 times_divisor = -times_divisor 
+
+            if (times_divisor < (-2**31)):
+              times_divisor = -2**31
+            elif (times_divisor > (2**31) - 1):
+              times_divisor = (2**31) - 1
             return times_divisor
 
         while new_dividend >= new_divisor:
+          print(new_dividend)
           
           new_dividend -= new_divisor
           times_divisor += 1
@@ -79,17 +94,17 @@ class Solution:
         elif (dividend < 0) or (divisor < 0):
           times_divisor = -times_divisor
         
-        if (times_divisor < -2**31):
-          times_divisor = (-2**31)
-        elif (times_divisor > (2**31 - 1)):
-          times_divisor = (2**31 - 1)
+        if (times_divisor < (-2**31)):
+          times_divisor = -2**31
+        elif (times_divisor > (2**31) - 1):
+          times_divisor = (2**31) - 1
         return times_divisor
       
       
 if __name__ == "__main__":
   
   dividend = -2147483648
-  divisor = -1
+  divisor = 1
   solution = Solution()
   sol = solution.divide(dividend= dividend,
                         divisor= divisor)
