@@ -43,4 +43,25 @@ Follow up:
 from typing import List
 class Solution:
     def countBits(self, n: int) -> List[int]:
-        pass
+        
+        """
+        Summary:
+            Método de la clase Solution encargado de generar un array
+            cuyos elementos corresponden cada uno a la cantidad de 1s
+            que contiene la representación binaria de i.
+
+            i corresponde a un índice cualquiera de una lista creada
+            en el ámbito de la función a partir del parámetro de 
+            entrada 'n'.
+        Args:
+            n (int) -- Entero a partir del cual se desea obtener la
+            lista final.
+        Returns:
+            List[int]
+        """
+
+        n_array = [format(_, 'b') for _ in range(0, n + 1)]
+        result_array = []
+        for binary_representation in n_array:
+            result_array.append(len(binary_representation.replace('0', '')))
+        return result_array
