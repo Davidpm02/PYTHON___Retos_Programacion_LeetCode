@@ -29,6 +29,14 @@ from typing import List
 class Solution:
     def reverseString(self, s: List[str]) -> None:
         """
-        Do not return anything, modify s in-place instead.
+        Summary:
+            Método de la clase Solution encargado de invertir un array
+            de string in-place.
+        Args:
+            s (List[str]) -- Array a invertir
+
+        Returns:
         """
+        
+        s[:] = s[::-1]
         
