@@ -30,4 +30,45 @@ Constraints:
 
 class Solution:
     def reverseVowels(self, s: str) -> str:
-        pass
+        
+        """
+        Summary:
+            Método de la clase Solution encargado de procesar
+            una cadena de texto, y retornar una nueva cadena 
+            con todas las vocales invertidas.
+        Args:
+            s (str) -- Cadena de texto a procesar por el
+            método.
+        Returns:
+            str -- Nueva cadena de texto con las vocales 
+            invertidas.
+        """
+
+        # Arrays de referencia
+        vowels = ['a', 'e', 'i', 'o', 'u']
+        upper_vowels = [vowel.upper() for vowel in vowels]
+
+        vowels_in_s = []
+        for char in s:
+            if (char in vowels) or (char in upper_vowels):
+                vowels_in_s.append(char)
+        reversed_vowels_in_s = vowels_in_s[::-1]
+
+        # Diccionario de mapeo de vocales en s
+        vowels_dict = dict()
+        vowels_parsed = 0
+        for idx, char in enumerate(s):
+            if (char in vowels) or (char in upper_vowels):
+                vowels_dict[str(idx)] = (vowels_in_s[vowels_parsed],
+                                         reversed_vowels_in_s[vowels_parsed])
+                vowels_parsed += 1
+            else:
+                continue
+        
+        new_s_array = []  # Array con la nueva palabra
+        for idx, value in enumerate(s):
+            if (value not in vowels_in_s):
+                new_s_array.append(value)
+            else:
+                new_s_array.append(vowels_dict[str(idx)][-1])
+        return "".join(new_s_array)
