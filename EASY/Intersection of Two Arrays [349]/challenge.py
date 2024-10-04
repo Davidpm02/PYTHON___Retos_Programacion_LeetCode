@@ -29,4 +29,18 @@ Constraints:
 from typing import List
 class Solution:
     def intersection(self, nums1: List[int], nums2: List[int]) -> List[int]:
-        pass
+        
+        """
+        Summary:
+            Método de la clase Solution encargado de hallar la
+            intersección de dos arrays.
+            Una vez se haya esta intersección, el método la 
+            retorna en forma de lista.
+        Args:
+            nums1 (List[int]) -- Primer array.
+            nums2 (List[int]) -- Segundo array.
+        Returns:
+            List[int]
+        """
+
+        return set(num for num in nums1 if num in nums2)
