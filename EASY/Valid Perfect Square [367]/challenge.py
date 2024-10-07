@@ -29,6 +29,26 @@ Constraints:
 
 """
 
+from math import sqrt
+
 class Solution:
     def isPerfectSquare(self, num: int) -> bool:
-        pass
+    
+        """
+        Summary:
+            Método de la clase Solution encargado de comprobar si
+            un entero dado es un cuadrado perfecto.
+            Se define como cuadrado perfecto a aquel entero que es
+            cuadrado de otro entero.
+        Args:
+            num -- Entero a evaluar como cuadrado perfecto.
+        Returns:
+            bool
+        """
+
+        try:
+            primitive_num = sqrt(num)
+            assert str(primitive_num)[-1] == "0"
+            return True
+        except:
+            return False
