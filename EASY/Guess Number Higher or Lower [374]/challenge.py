@@ -47,7 +47,31 @@ Constraints:
 #          1 if num is lower than the picked number
 #          otherwise return 0
 # def guess(num: int) -> int:
-
+import random
 class Solution:
     def guessNumber(self, n: int) -> int:
-        pass
+
+        """
+        """
+
+        # Array de posibles números
+        # Selecciono un número intermedio
+        possible_nums = [num for num in range(1, n + 1)]
+        selected_num = possible_nums[(len(possible_nums) // 2)]
+
+        # Búsqueda binaria para adivinar el número seleccionado
+        while True:
+            if (guess(selected_num) == 0):
+                return selected_num
+            elif (guess(selected_num) == 1):
+                index_selected_num = possible_nums.index(selected_num)
+                possible_nums[:] = possible_nums[index_selected_num:]
+                selected_num = possible_nums[(len(possible_nums) // 2)]
+                continue
+            elif (guess(selected_num) == -1):
+                index_selected_num = possible_nums.index(selected_num)
+                possible_nums[:] = possible_nums[:index_selected_num]
+                selected_num = possible_nums[(len(possible_nums) // 2)]
+                continue
+
+        ## DEMASIADO LENTO PARA DARSE POR SOLUCIÓN VÁLIDA
