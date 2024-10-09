@@ -31,6 +31,32 @@ Constraints:
 
 """
 
+from collections import Counter
 class Solution:
     def canConstruct(self, ransomNote: str, magazine: str) -> bool:
-        pass
+        
+        """
+        Summary:
+            Método de la clase Solution encargado de verificar que una
+            cadena puede ser formada con los caracteres contenidos en
+            una segunda cadena.
+            Para ofrecer un resultado, la función toma dos parámetros,
+            'ransomNote' (cadena a validar) y 'magazine' (cadena que 
+            debe tener los caracteres necesarios para formar 
+            'ransomNote').
+        Args:
+            ransomNote (str) --
+            magazine (str) -- 
+        Returns:
+            bool
+        """
+
+        ransomNote_counter = Counter(ransomNote)
+        magazine_counter = Counter(magazine)
+
+        try:
+            for key, value in ransomNote_counter.items():
+                assert value <= magazine_counter[key]
+        except AssertionError:
+            return False
+        return True
