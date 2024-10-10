@@ -33,7 +33,6 @@ Constraints:
 """
 
 from collections import Counter
-
 class Solution:
     def firstUniqChar(self, s: str) -> int:
         
@@ -50,16 +49,9 @@ class Solution:
         """
 
         s_counter = Counter(s)
-        unique_chars_array = []
+        unique_chars_array = [key for key, value in s_counter.items() if value == 1]
 
-        for key, value in s_counter.items():
-            if value == 1:
-                unique_chars_array.append(key)
-            
         if len(unique_chars_array) == 0:
             return -1
         else:
-            indexes_chars_on_s = []
-            for unique_char in unique_chars_array:
-                indexes_chars_on_s.append(s.index(unique_char))
-            return min(indexes_chars_on_s)
+            return min([s.index(unique_char) for unique_char in unique_chars_array])
