@@ -32,6 +32,34 @@ Constraints:
 
 """
 
+from collections import Counter
+
 class Solution:
     def firstUniqChar(self, s: str) -> int:
-        pass
+        
+        """
+        Summary:
+            Método de la clase Solution encargado de obtener
+            el índice que ocupa el primer carácter único dentro
+            del parámetro 's'.
+        Args:
+            s (str) -- Cadena de texto a evaluar por el método.
+        Returns:
+            int -- Índice que ocupa el primer carácter único en
+            's'.
+        """
+
+        s_counter = Counter(s)
+        unique_chars_array = []
+
+        for key, value in s_counter.items():
+            if value == 1:
+                unique_chars_array.append(key)
+            
+        if len(unique_chars_array) == 0:
+            return -1
+        else:
+            indexes_chars_on_s = []
+            for unique_char in unique_chars_array:
+                indexes_chars_on_s.append(s.index(unique_char))
+            return min(indexes_chars_on_s)
