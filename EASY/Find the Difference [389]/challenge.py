@@ -29,6 +29,24 @@ Constraints:
 
 """
 
+from collections import Counter
 class Solution:
     def findTheDifference(self, s: str, t: str) -> str:
-        pass
+        
+        """
+        Summary:
+            Método de la clase Solution encargado de retornar el
+            carácter adicional diferencial de dos cadenas de texto.
+        Args:
+            s (str) -- Cadena de texto de base.
+            t (str) -- Cadena de texto con un carácter adicional.
+        Returns:
+            str -- Carácter diferencial entre ambas cadenas de texto.
+        """
+
+        chars_counter = Counter(s)
+        chars_counter.update(t)
+
+        for key, value in chars_counter.items():
+            if (value % 2) != 0:
+                return key
