@@ -32,4 +32,27 @@ from typing import List
 
 class Solution:
     def readBinaryWatch(self, turnedOn: int) -> List[str]:
-        pass
+        
+        """
+        Summary:
+            Método de la clase Solution encargado de comprobar el
+            conjunto de estados (horas) posibles reflejadas en un
+            reloj binario, dado el entero 'turnedOn'.
+        Args:
+            turnedOn (int) -- Entero que refleja el número de LEDs
+            encendidos en un reloj binario para un momento dado.
+        Returns:
+            List[str] -- Conjunto de estados (horas) posibles que
+            puede marcar el reloj binario.
+        """
+
+        possible_hours = [8, 4, 2, 1]
+        possible_minutes = [32, 16, 8, 4, 2, 1]
+
+        if turnedOn > 8:
+            return []
+        
+        possible_states = []
+        for _ in range(turnedOn):
+            pass
+        
