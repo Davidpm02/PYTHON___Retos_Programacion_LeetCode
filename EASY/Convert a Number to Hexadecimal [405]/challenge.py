@@ -51,6 +51,7 @@ class Solution:
                         '14', '15', '16', '17', '18', '19', '1A', '1B', '1C',
                         '1D', '1E', '28', '32', '3C', '46', '50', '5A', '64',
                         'C8', '3E8', '7D0']
+        inversed_hex_values = ['F', 'E', 'D', 'C', 'B', 'A', '9', '8', '7', '6', '5', '4', '3', '2', '1', '0']
 
         # Último cociente
         last_quotient = None
@@ -58,12 +59,22 @@ class Solution:
         # Restos
         remainders = []
 
+        if (num < 0):
+            try:
+                return 'fffffff' + inversed_hex_values[int(str(num)[1:]) - 1].lower()
+            except ValueError:
+                return 'fffffff' + inversed_hex_values[int(str(num)[1:]) - 1]
+            except IndexError:
+                try:
+                    return 'fffffff' + inversed_hex_values[int(str(num)[-1]) - 1].lower()
+                except ValueError:
+                    return 'fffffff' + inversed_hex_values[int(str(num)[-1]) - 1]
+
         while True:
             if last_quotient == 0:
                 break
             last_quotient = num // 16
             remainders.append((num % 16))
-
             num = last_quotient
         
         # Construyendo la representación hexadecimal de 'num'
