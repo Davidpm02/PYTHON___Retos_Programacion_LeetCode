@@ -28,6 +28,43 @@ Constraints:
 
 """
 
+from collections import Counter
 class Solution:
     def longestPalindrome(self, s: str) -> int:
-        pass
+        
+        """
+        Summary:
+            Método de la clase Solution encargado de obtener la
+            máxima longitud del palíndromo que pueda ser formado
+            con los caracteres que componen el parámetro 's'.
+        Args:
+            s -- Cadena con los caracteres a utilizar para la
+            formación de palíndromos.
+        Returns:
+            int -- Longitud del palíndromo más grande a formar
+            con los caracteres de 's'.
+        """
+
+        chars_counter = Counter(s)
+        max_length_palindrome = 0
+
+        print(chars_counter)
+
+        if len(chars_counter.keys()) > 1:
+            for key, value in chars_counter.items():
+                if (value % 2) == 0:
+                    max_length_palindrome += value
+                elif (value % 3) == 0:
+                    max_length_palindrome += (value - 1)
+        
+        else:
+            for key, value in chars_counter.items():
+                if (value % 2) == 0:
+                    max_length_palindrome += value
+                elif (value % 3) == 0:
+                    max_length_palindrome += value
+
+        if 1 in chars_counter.values():
+            max_length_palindrome += 1
+
+        return max_length_palindrome
