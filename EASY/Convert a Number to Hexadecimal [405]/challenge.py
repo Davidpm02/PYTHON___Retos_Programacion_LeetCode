@@ -60,15 +60,7 @@ class Solution:
         remainders = []
 
         if (num < 0):
-            try:
-                return 'fffffff' + inversed_hex_values[int(str(num)[1:]) - 1].lower()
-            except ValueError:
-                return 'fffffff' + inversed_hex_values[int(str(num)[1:]) - 1]
-            except IndexError:
-                try:
-                    return 'fffffff' + inversed_hex_values[int(str(num)[-1]) - 1].lower()
-                except ValueError:
-                    return 'fffffff' + inversed_hex_values[int(str(num)[-1]) - 1]
+            num = 2**32+num
 
         while True:
             if last_quotient == 0:
