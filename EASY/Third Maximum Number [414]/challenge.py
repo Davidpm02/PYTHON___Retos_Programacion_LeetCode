@@ -45,4 +45,33 @@ from typing import List
 
 class Solution:
     def thirdMax(self, nums: List[int]) -> int:
-        pass
+        
+        """
+        Summary:
+            Método de la clase Solution encargado de hallar el tercer
+            valor máximo de un array recibido como parámetro.
+
+            En caso de que no exista un tercer valor máximo, el método
+            retornará simplemente el máximo valor del array.
+        Args:
+            nums (List[int]) -- Array de enteros a evaluar.
+        Returns:
+            int -- Máximo encontrado por el método.
+        """
+
+        try:
+            nums = set(nums)
+            assert len(nums) >= 3
+
+            # Buscamos el tercer máximo de la lista
+            max_numbers_on_nums = []
+            while len(max_numbers_on_nums) < 3:
+                max_on_nums = max(nums)
+                max_numbers_on_nums.append(max_on_nums)
+                nums.remove(max_on_nums)
+            
+            # Retornamos el tercer máximo de la lista
+            return max_numbers_on_nums[-1]
+
+        except AssertionError:
+            return max(nums)
