@@ -32,6 +32,23 @@ Constraints:
 
 """
 
+import sys
+sys.set_int_max_str_digits(0)
+
 class Solution:
     def addStrings(self, num1: str, num2: str) -> str:
-        pass
+        
+
+        """
+        Summary:
+            Método de la clase Solution encargado de procesar una suma
+            aritmética de los parámetros 'num1' y 'num2' convertidos a 
+            enteros, y retornar el resultado como string.
+        Args:
+            num1 (str) -- Operando n1 de la suma.
+            num2 (str) -- Operando n2 de la suma.
+        Returns:
+            str -- Resultado de la suma.
+        """
+           
+        return str(int(num1) + int(num2))
