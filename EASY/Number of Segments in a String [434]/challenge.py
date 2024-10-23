@@ -28,6 +28,31 @@ Constraints:
 
 """
 
+from collections import Counter
+
 class Solution:
     def countSegments(self, s: str) -> int:
-        pass
+        
+        """
+        Summary:
+            Método de la clase Solution encargado de retornar
+            el número de 'segmentos' contenidos en una cadena de
+            texto.
+            Los segmentos se delimitan por espacios (' ') dentro
+            de la cadena de texto.
+        Args:
+            s (str) -- Cadena de texto a evaluar.
+        Returns:
+            int -- Número de segmentos contenidos en 's'.
+        """
+        
+        chars_counter = Counter(s.split())
+
+        if (len(chars_counter.keys()) == 1) and (" " in chars_counter.keys()): 
+            return 0
+        else:
+            segments_in_s = 0
+            for key, value in chars_counter.items():
+                if key != ' ':
+                    segments_in_s += value
+            return segments_in_s
