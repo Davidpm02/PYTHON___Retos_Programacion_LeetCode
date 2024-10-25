@@ -26,7 +26,21 @@ Constraints:
 """
 
 from typing import List
+from collections import Counter
 
 class Solution:
     def findDisappearedNumbers(self, nums: List[int]) -> List[int]:
-        pass
+
+        """
+        Summary:
+            Método de la clase Solution encargado de hallar todos los
+            números faltantes en 'nums', cuyo valor se encuentra dentro
+            del rango [1, n].
+        Args:
+            nums (List[int]) -- Array de enteros a evaluar.
+        Returns:
+            List[int] -- Array de todos los números ausentes en 'nums'.
+        """
+        
+        nums_counter = Counter(nums)
+        return [num for num in range(1, len(nums) + 1) if num not in nums_counter.keys()]
