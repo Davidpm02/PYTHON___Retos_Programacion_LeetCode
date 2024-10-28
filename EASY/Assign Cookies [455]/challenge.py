@@ -36,4 +36,35 @@ Constraints:
 from typing import List
 class Solution:
     def findContentChildren(self, g: List[int], s: List[int]) -> int:
-        pass
+        
+        """
+        Summary:
+            Método de la clase Solution encargado de hallar el número
+            de 'hijos contentos' tras procesar un array de galletas y
+            un array de enteros (cada entero en corresponde a un hijo,
+            y representa el tamaño mínimo de la galleta con la que 
+            estará satisfecho).
+        Args:
+            g (List[int]) -- Array correspondiente a los hijos del padre.
+            s (List[int]) -- Array correspondiente a los tamaños de las
+            galletas disponibles.
+        Returns:
+            int -- Número de hijos satisfechos.
+
+        """
+
+        sorted_children = sorted(g)
+        sorted_cookies = sorted(s)
+        result = 0
+        for cookie in sorted_cookies:
+            if cookie in sorted_children:
+                result += 1
+                child_index = sorted_children.index(cookie)
+                sorted_children.pop(child_index)
+            else:
+                for child in sorted_children:
+                    if child < cookie:
+                        result += 1
+                        sorted_children.remove(child)
+                        break
+        return result
