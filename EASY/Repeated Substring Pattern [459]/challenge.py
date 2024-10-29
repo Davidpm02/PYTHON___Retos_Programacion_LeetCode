@@ -34,4 +34,34 @@ Constraints:
 
 class Solution:
     def repeatedSubstringPattern(self, s: str) -> bool:
-        pass
+        
+        """
+        Summary:
+            Método de la clase Solution encargado de verificar
+            si una cadena dada puede ser formada a partir de 
+            la repetición de una subcadena presente en ella.
+        Args:
+            s (str) -- Cadena de texto a evaluar.
+        Returns:
+            bool
+        """
+
+        if len(s) == 1:
+            return False
+
+        substring_array = []
+
+        for char in s:
+            if char not in substring_array:
+                substring_array.append(char)
+            else:
+                break
+        
+        # Formamos la subcadena
+        substring = ''.join(substring_array)
+        times_substring = len(s) // len(substring)
+
+        if (substring * times_substring) == s:
+            return True
+        else:
+            return False
