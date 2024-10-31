@@ -31,4 +31,23 @@ Constraints:
 
 class Solution:
     def findComplement(self, num: int) -> int:
-        pass
+        
+        """
+        Summary:
+            Método de la clase Solution encargado de hallar
+            el complemento del entero recibido como parámetro.
+
+            Se define como 'complemento de un entero' al entero
+            obtenido de invertir cada uno de los dígitos de la
+            representación binario de un entero dado.
+        Args:
+            num (int) -- Entero del que se desea obtener su 
+            complemento.
+        Returns:
+            int -- Complemento del entero recibido.
+
+        """
+
+        binary_representation_num = format(num, 'b')
+        complement_of_num = ['1' if num == '0' else '0' for num in binary_representation_num]
+        return int("".join(complement_of_num), 2)
