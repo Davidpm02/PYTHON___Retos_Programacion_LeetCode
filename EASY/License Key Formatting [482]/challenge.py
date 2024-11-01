@@ -32,3 +32,46 @@ Constraints:
 
 
 """
+
+class Solution:
+    def licenseKeyFormatting(self, s: str, k: int) -> str:
+        
+        """
+        Summary:
+            Método de la clase Solution encargado de formatear una
+            cadena de texto que representa la clave de una licencia.
+
+            El formateo de la cadena 's' se lleva a cabo teniendo en 
+            cuenta el parámetro 'k'.
+        Args:
+            s (str) -- Clave de licencia que se desea formatear.
+            k (int) -- Valor máximo de valores por grupo.
+        Returns:
+            str
+        """
+
+        # Lista de grupos por defecto en 's'.
+        groups_in_s_array = s.split('-')
+
+        # Lista con los caracteres de todos los grupos menos el inicial.
+        last_chars_in_s_array = []
+        for group in groups_in_s_array[1:]:
+            for char in group:
+                last_chars_in_s_array.append(char)
+
+        # Lista de grupos que conforman la clave formateada.
+        formated_license_key_array = [groups_in_s_array[0]]
+        while True:
+            if len(last_chars_in_s_array) == 0:
+                break
+            try:    
+                group = last_chars_in_s_array[:k]
+                formated_license_key_array.append("".join(group))
+                del last_chars_in_s_array[:k]
+            except IndexError:
+                formated_license_key_array.append("".join(last_chars_in_s_array))
+                break
+
+        formated_license = "-".join(formated_license_key_array).upper()
+        return formated_license
+        
