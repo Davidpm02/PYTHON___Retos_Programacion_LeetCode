@@ -28,4 +28,36 @@ Constraints:
 from typing import List
 class Solution:
     def findMaxConsecutiveOnes(self, nums: List[int]) -> int:
-        pass
+        
+        """
+        Summary:
+            Método de la clase Solution encargado de hallar la 
+            cantidad máximas de unos en un array dado.
+        Args:
+            nums (List[int])
+        Returns:
+            int -- Cantidad máxima de unos consecutivos dentro
+            del array 'nums'.
+        """
+
+        # Defino una lista que funcione como contador de los elementos consecutivos
+        rep_consecutive_elements_array = []
+
+        if 1 not in nums:
+            return 0
+        
+        consecutives_ones = 0
+        for num in nums:
+            if num == 0:
+                if consecutives_ones > 0:
+                    rep_consecutive_elements_array.append(consecutives_ones)
+                    consecutives_ones = 0
+                continue
+            else:
+                consecutives_ones += 1
+                continue
+        if consecutives_ones > 0:
+            rep_consecutive_elements_array.append(consecutives_ones)
+            consecutives_ones = 0
+        
+        return max(rep_consecutive_elements_array)
