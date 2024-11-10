@@ -37,6 +37,27 @@ Constraints:
 """
 
 from typing import List
+from math import sqrt
 class Solution:
     def constructRectangle(self, area: int) -> List[int]:
-        pass
+        
+        """
+        Summary:
+            Método de la clase Solution encargado de hallar
+            las dimensiones de un rectángulo dada su área.
+        Args:
+            area (int) -- Área del rectángulo cuyas dimensiones
+            se desean conocer.
+        Returns:
+            List[int] -- Array [alto, ancho].
+        """
+
+
+        for i in range(1, int(sqrt(area) + 1)):
+            if (i == 1):
+                continue
+            if (str(area / i).split('.')[-1] == '0'):
+                width = int(str(area / i).split('.')[0])
+                length = int(area / width)
+                return [length, width]
+        return [area, 1]
