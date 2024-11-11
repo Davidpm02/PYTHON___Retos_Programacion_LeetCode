@@ -42,4 +42,35 @@ Constraints:
 from typing import List
 class Solution:
     def nextGreaterElement(self, nums1: List[int], nums2: List[int]) -> List[int]:
-        pass
+        
+        """
+        Summary:
+            Método de la clase Solution encargado de generar un array donde cada 
+            elemento corresponde al elemento mayor más cercano del elemento con
+            el mismo índice en 'nums1'.
+
+            En caso de no existir un elemento mayor para un entero dado,
+            el array resultado contiene el valor -1.
+        Args:
+            nums1 (List[int])
+            nums2 (List[int])
+        Returns:
+            result_array (List[int])
+        """
+
+        result_array = []
+        for num in nums1:
+            index_num_in_nums2 = nums2.index(num)
+            try:
+                limited_nums2 = nums2[index_num_in_nums2 + 1:]
+                print('nums2 ==>', limited_nums2)
+                for num2 in limited_nums2:
+                    if (num2 > num):
+                        result_array.append(num2)
+                        break
+                if (len(result_array) == len(nums1)):
+                    return result_array
+                result_array.append(-1)
+            except:
+                result_array.append(-1)
+        return result_array
