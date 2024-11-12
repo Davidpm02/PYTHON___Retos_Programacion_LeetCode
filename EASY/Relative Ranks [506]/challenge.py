@@ -40,4 +40,33 @@ Constraints:
 from typing import List
 class Solution:
     def findRelativeRanks(self, score: List[int]) -> List[str]:
-        pass
+        
+        """
+        Summary:
+            Método de la clase Solution encargado de retornar
+            una lista con la clasificación correspondiente a 
+            las puntuaciones almacenadas en el parámetro 'score'.
+        Args:
+            score (List[int]) -- Array con las puntuaciones obtenidas
+            en una competición dada.
+        Returns:
+            List[int] -- Array con la clasificación final.
+        """
+
+        # Defino un diccionario para los 3 primeros rangos
+        first_ranks = {
+            0: "Gold Medal",
+            1: "Silver Medal",
+            2: "Bronze Medal"
+        }
+
+        # Ordeno la lista de resultados
+        ordered_score_array = sorted(score)[::-1]
+        for idx, s in enumerate(ordered_score_array):
+            if idx in first_ranks.keys():
+                score_ = first_ranks[idx]
+            else:
+                score_ = idx + 1
+            idx_score = score.index(s)
+            score[idx_score] = str(score_)
+        return score
