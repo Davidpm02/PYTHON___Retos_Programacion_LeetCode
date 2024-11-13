@@ -26,6 +26,28 @@ Constraints:
 
 """
 
+from math import sqrt
 class Solution:
     def checkPerfectNumber(self, num: int) -> bool:
-        pass
+        
+        """
+        Summary:
+            Método de la clase Solution encargado de comprobar
+            si un entero dado se considera como un 'número perfecto'.
+
+            Un número se considera 'perfecto' si este es igual a la suma
+            de todos sus divisores (excepto él mismo).
+        Args:
+            num (int) -- Entero a validar como 'número perfecto'.
+        Returns:
+            bool
+        """
+
+        # Lista con todos los divisores de 'num'
+        if (num > 10e3):
+            possible_num_divisors = [_ for _ in range(1, int(sqrt(num))) if ((num % _) == 0)]
+            num_divisors = [num//_ for _ in possible_num_divisors if (_ != 1)]
+            num_divisors.extend(possible_num_divisors)
+        else:
+            num_divisors = [_ for _ in range(1, num//2 + 1) if ((num % _) == 0)]
+        return True if (sum(num_divisors) == num) else False
