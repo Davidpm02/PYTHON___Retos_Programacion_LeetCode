@@ -33,4 +33,27 @@ Constraints:
 
 class Solution:
     def detectCapitalUse(self, word: str) -> bool:
-        pass
+        
+        """
+        Summary:
+            Método de la clase Solution encargado de validar si una
+            cadena cada respeta las normas ortográficas del uso de 
+            mayúsculas.
+            El parámetro 'word' representa una cadena de una sola
+            palabra.
+
+            Una cadena respeta las normas ortográficas del uso de
+            mayúsculas cuando:
+                - Todas las letras son mayúsculas (siglas).
+                - Todas las letras son minúsculas.
+                - La primera letra es mayúscula, mientras que el resto
+                son minúsculas.
+        Args:
+            word (str)
+        Returns:
+            bool
+        """
+
+        if ((word == word.upper()) or (word == word.lower()) or (word == word.title())):
+            return True
+        return False
