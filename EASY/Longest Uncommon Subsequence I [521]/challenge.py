@@ -39,4 +39,19 @@ Constraints:
 
 class Solution:
     def findLUSlength(self, a: str, b: str) -> int:
-        pass
+    
+        """
+        Encuentra la cadena más larga del parámetro 'a' que no
+        se encuentra dentro de 'a'.
+        La función retorna la longitud (int) de la cadena de mayor
+        longitud encontrada.
+        
+        params:
+            a (str)
+            b (str)
+        
+        returns:
+            int
+        """
+
+        return -1 if (a==b) else len(max([a, b], key=len))
