@@ -37,6 +37,34 @@ Constraints:
 
 """
 
+from collections import Counter
 class Solution:
     def checkRecord(self, s: str) -> bool:
-        pass
+        
+        """
+        Comprueba si un alumno dado es merecedor de obtener un precio
+        por de asistencia, dado el histórico de asintencia del mismo.
+
+        params:
+            - s (str) -- Cadena que representa el histórico de asistencia
+            del alumno.
+        returns:
+            bool
+        """
+
+        chars_counter = Counter(s)
+        if (chars_counter['A'] >= 2):
+            return False
+        
+        consecutive_lates = 0
+        for idx, _ in enumerate(s):
+            if (_ == 'L'):
+                consecutive_lates += 1
+            else:
+                consecutive_lates = 0
+            if (consecutive_lates == 3):
+                return False
+        if (consecutive_lates == 3):
+                return False
+        return True
+
