@@ -29,4 +29,16 @@ Constraints:
 
 class Solution:
     def reverseWords(self, s: str) -> str:
-        pass
+        
+        """
+        Invierte todas las palabras de la cadena 's'.
+
+        params:
+            - s (str) -- Cadena a invertir.
+        returns:
+            str -- Cadena con todas las palabras invertidas.
+        """
+
+        words_in_s_array = s.split()
+        reversed_words_in_s_array = [word[::-1] for word in words_in_s_array]
+        return " ".join(reversed_words_in_s_array)
