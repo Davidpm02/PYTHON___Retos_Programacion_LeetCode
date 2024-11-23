@@ -51,3 +51,23 @@ Explanation:
 
 
 """
+
+import pandas as pd
+
+def find_classes(courses: pd.DataFrame) -> pd.DataFrame:
+
+    """
+    Se encarga de filtrar aquellas clases cuyo número de asistentes
+    es de, al menos, 5 alumnos.
+
+    params:
+        - courses (pd.DataFrame)
+    
+    returns:
+        pd.DataFrame
+    """
+
+    classes_with_more_assistants_dict = courses['class'].value_counts().to_dict()
+    classes_with_more_assistants_array = [key for key, value in classes_with_more_assistants_dict.items() if (value >=5)]
+    return pd.DataFrame(data = classes_with_more_assistants_array,
+                        columns = ['class'])
