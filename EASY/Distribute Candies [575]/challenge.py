@@ -37,3 +37,22 @@ Constraints:
     -105 <= candyType[i] <= 105
 
 """
+
+from typing import List
+class Solution:
+    def distributeCandies(self, candyType: List[int]) -> int:
+        
+        """
+        Proporciona el número óptimo de caramelos que Alice debería
+        comer para evitar visitar de nuevo al doctor.
+        El método .distributeCandies() también tiene en cuenta el
+        número de clases de caramelos entre los que Alice puede escoger.
+
+        params:
+            candyType (List[int])
+        
+        returns:
+            int -- Número máximo de caramelos que Alice puede comerse.
+        """
+        
+        return len(set(candyType)) if (len(set(candyType)) < (len(candyType) // 2)) else (len(candyType) // 2)
