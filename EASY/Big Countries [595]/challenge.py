@@ -52,5 +52,25 @@ Output:
 | Algeria     | 37100000   | 2381741 |
 +-------------+------------+---------+
 
-
 """
+
+import pandas as pd
+
+def big_countries(world: pd.DataFrame) -> pd.DataFrame:
+    
+    """
+    Encuentra los paises considerados grandes dentro de un DataFrame,
+    y el mismo DataFrame con la información de estos paises.
+
+    El dataframe devuelto tiene las columnas ["name", "population", "area"].
+
+    params:
+        - world (pd.DataFrame)
+    
+    returns:
+        pd.DataFrame -- DataFrame con los resultados.
+    """
+
+
+    bigger_countries = world.loc[(world['area'] >= 3000000) | (world['population'] >= 25000000)]
+    return bigger_countries[["name", "population", "area"]]
