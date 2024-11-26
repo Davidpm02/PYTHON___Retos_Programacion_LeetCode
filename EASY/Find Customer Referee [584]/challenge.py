@@ -48,3 +48,22 @@ Output:
 +------+
 
 """
+
+import pandas as pd
+
+def find_customer_referee(customer: pd.DataFrame) -> pd.DataFrame:
+    
+    """
+    Encuentra los nombres de aquellos clientes que no han sido referidos 
+    por el cliente con ID = 2.
+    
+    params:
+        - customer (pd.DataFrame)
+        
+    returns
+        - pd.DataFrame
+    """
+
+    valid_customers = customer.loc[~customer['referee_id'].isin([2])]
+    return pd.DataFrame(data=valid_customers['name'],
+                        columns=['name'])
