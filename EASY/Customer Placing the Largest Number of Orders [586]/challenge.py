@@ -47,3 +47,28 @@ The customer with number 3 has two orders, which is greater than either customer
 So the result is customer_number 3.
 
 """
+
+import pandas as pd
+
+def largest_orders(orders: pd.DataFrame) -> pd.DataFrame:
+    
+    """
+    Encuentra el cliente con el mayor número de órdenes y retorna
+    el identificador del cliente en un nuevo DataFrame.
+
+    params:
+        - orders (pd.DataFrame)
+    
+    returns:
+        - pd.DataFrame
+    """
+
+    if (len(orders.index) == 0):
+        return pd.DataFrame(data=[],
+                            columns=['customer_number'])
+                            
+    orders_per_customer = orders['customer_number'].value_counts()
+    customer_with_more_orders = orders_per_customer.index[0]
+
+    return pd.DataFrame(data=[customer_with_more_orders],
+                        columns=['customer_number'])
