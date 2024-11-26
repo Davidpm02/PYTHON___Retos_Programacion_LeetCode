@@ -45,3 +45,26 @@ Constraints:
     There is at least a common string between list1 and list2.
 
 """
+
+class Solution:
+    def findRestaurant(self, list1: List[str], list2: List[str]) -> List[str]:
+        
+        """
+        Halla las cadenas cuya suma de índices es la menor de entre las dos listas
+        recibidas como parámetro.
+
+        params:
+            list1 (List[str])
+            list2 (List[str])
+        returns:
+            List[str] -- Lista con las palabras comunes con menor suma de índices de 
+            las listas recibidas como parámetros.
+        """
+
+        words_appearing_dict = {word: (list1.index(word) + list2.index(word)) for word in list1 if word in list2}
+        sorted_words_appearing_dict = {key: value for key, value in sorted(words_appearing_dict.items(), 
+                                                                           key=lambda item: item[1])}
+        if (len(sorted_words_appearing_dict) == 1):
+            return list(sorted_words_appearing_dict.keys())
+        first_word_in_dict = list(sorted_words_appearing_dict.keys())[0]
+        return list(key for key, value in sorted_words_appearing_dict.items() if (value == sorted_words_appearing_dict[first_word_in_dict]))
