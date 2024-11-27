@@ -105,3 +105,38 @@ Explanation:
 
 
 """
+
+import pandas as pd
+
+def sales_person(sales_person: pd.DataFrame, company: pd.DataFrame, orders: pd.DataFrame) -> pd.DataFrame:
+    
+
+    """
+    Obtiene los nombres de todas las personas de las que se tiene pedidos registrados,
+    ajenas a la compañía 'RED', y retorna el resultado en un nuevo DataFrame.
+
+    params:
+        sales_person (pd.DataFrame)
+        company (pd.DataFrame)
+        orders (pd.DataFrame)
+    
+    returns:
+        pd.DataFrame
+    """
+
+    # Obtenemos el identificador "com_id" de la compañía 'RED'
+    red_com_ids = list(company.loc[company['name'] == 'RED', 'com_id'].values)
+
+    if (len(red_com_ids) > 0):
+        red_com_id = red_com_ids[0]
+
+        # Obtengo los identificadores "sales_id" de todos los pedidos a la compañía 'RED'
+        red_sales_id = list(orders.loc[orders['com_id'] == red_com_id, 'sales_id'].values)
+
+        # Obtengo los nombres de todos los 'SalesPerson' ajenos a la compañía 'RED'
+        not_red_sales_person_names = list(sales_person.loc[~sales_person['sales_id'].isin(red_sales_id), 'name'].values)
+        return pd.DataFrame(data=not_red_sales_person_names,
+                            columns=['name'])
+    else:
+        return pd.DataFrame(data=sales_person['name'],
+                            columns=['name'])
