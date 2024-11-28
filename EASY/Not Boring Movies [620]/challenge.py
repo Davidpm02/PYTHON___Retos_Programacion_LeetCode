@@ -50,3 +50,22 @@ We have three movies with odd-numbered IDs: 1, 3, and 5. The movie with ID = 3 i
 
 """
 
+import pandas as pd
+
+def not_boring_movies(cinema: pd.DataFrame) -> pd.DataFrame:
+    
+    """
+    Encuentra el conjunto de películas cuyo identificador de registro es
+    impar y cuya descripción sea diferente a 'boring'.
+
+    La función retorna el listado de películas encontradas en un nuevo
+    DataFrame.
+
+    params:
+        cinema (pd.DataFrame)
+    returns:
+        pd.DataFrame
+    """
+
+    return cinema.loc[((cinema['id']%2) != 0) & (cinema['description'] != 'boring')].sort_values('rating',
+                                                                                                 ascending=False)
