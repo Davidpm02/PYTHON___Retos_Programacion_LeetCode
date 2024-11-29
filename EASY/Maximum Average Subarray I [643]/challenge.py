@@ -27,3 +27,35 @@ Constraints:
     -104 <= nums[i] <= 104
 
 """
+
+from functools import reduce
+from typing import List
+class Solution:
+    def findMaxAverage(self, nums: List[int], k: int) -> float:
+        
+        """
+        Halla el conjunto de números del parámetro 'nums' con longitud
+        'k' cuya media es la máxima de todos los posibles conjuntos de
+        'k' elementos de 'nums'.
+
+        params:
+            nums (List[int])
+            k (int)
+        
+        returns:
+            float
+        """
+
+        # Defino una lista que contendrá todas las medias calculadas
+        averages_array = []
+
+        # Recorro la lista 'nums' y tomo los primeros 'k' elementos consecuentes
+        for idx, num in enumerate(nums):
+            try:
+                idx_num = nums.index(num)
+                subsequence_nums = nums[idx_num: idx_num + k]
+                assert (len(subsequence_nums) == k)
+                averages_array.append(float((reduce((lambda x, y: x + y), subsequence_nums) / k)))
+            except AssertionError:
+                break
+        return max(averages_array)
