@@ -31,3 +31,40 @@ Constraints:
     moves only contains the characters 'U', 'D', 'L' and 'R'.
 
 """
+
+class Solution:
+    def judgeCircle(self, moves: str) -> bool:
+        
+        """
+        Analiza los movimientos realizados por un robot y verifica
+        si el robot a vuelto a su posición de origen al finalizar.
+
+        La función retorna True si el robot ha vuelto a su posición
+        de origen, y False en caso constrario.
+
+        params:
+            moves (str)
+        
+        returns:
+            bool
+        """
+
+        # Defino una variable que almacene las coordenadas de posición
+        coords = [0, 0]
+
+        # Convierto 'moves' en una array
+        moves_array = [move for move in moves]
+
+        # Actualizado la posición del robot tras cada movimiento
+        for move in moves_array:
+            if (move == 'U'):
+                coords[1] +=1
+            elif (move == 'D'):
+                coords[1] -=1
+            elif (move == 'L'):
+                coords[0] -=1
+            elif (move == 'R'):
+                coords[0] +=1
+        
+        # Reviso el estado final de la posición del robot
+        return True if ((coords[0] == 0) and (coords[1] == 0)) else False
