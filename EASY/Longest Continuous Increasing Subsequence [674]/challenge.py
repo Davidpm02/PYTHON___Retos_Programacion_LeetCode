@@ -30,3 +30,38 @@ Constraints:
     -109 <= nums[i] <= 109
 
 """
+
+from typing import List
+class Solution:
+    def findLengthOfLCIS(self, nums: List[int]) -> int:
+        
+        """
+        Halla la longitud del subconjunto mayor de enteros ascendentes
+        contecutivos dentro de la lista 'nums'.
+        
+        params:
+            nums (List[int])
+        
+        returns:
+            int -- Longitud del subconjunto mayor de enteros ascendentes
+            en 'nums'.
+        """
+
+        longest_ascendent_subsequences = []
+        while True:
+            length_subsequence = 0
+            for idx, num in enumerate(nums):
+                print('Número actual en iteración -->', num)
+                if (idx == 0):
+                    length_subsequence += 1
+                    continue
+                
+                if (num > nums[idx - 1]):
+                    length_subsequence += 1
+                else:
+                    longest_ascendent_subsequences.append(length_subsequence)
+                    length_subsequence = 1  # Reinicio de la longitud
+            
+            longest_ascendent_subsequences.append(length_subsequence)
+            break
+        return max(longest_ascendent_subsequences)
