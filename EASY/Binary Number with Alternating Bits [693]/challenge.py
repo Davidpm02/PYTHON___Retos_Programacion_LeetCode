@@ -29,3 +29,26 @@ Constraints:
     1 <= n <= 231 - 1
 
 """
+
+class Solution:
+    def hasAlternatingBits(self, n: int) -> bool:
+        
+        """
+        Comprueba si la representación en binario para un
+        entero dado está compuesta, en su totalidad, por bits
+        alternantes.
+
+        params:
+            n (int)
+        
+        returns:
+            bool
+        """
+
+        for idx, bit in enumerate(str(bin(n))):
+            try:
+                if (idx != 0):
+                    assert (bit != str(bin(n))[idx - 1])
+            except AssertionError:
+                return False
+        return True
