@@ -67,3 +67,33 @@ Constraints:
 
 
 """
+from typing import List
+
+class Solution:
+    def calPoints(self, operations: List[str]) -> int:
+        
+        """
+        Procesa los movimientos llevados a cabo en un partido de 
+        baseball, y calcula el total de puntos obtenidos.
+
+        params:
+            operations (List[str])
+        
+        returns:
+            int -- Total de puntos obtenidos en la partida.
+        """
+
+        record_array = []
+        for op in operations:
+            try:
+                int_op = int(op)
+                record_array.append(int_op)
+            except:
+                if (op == "D"):
+                    record_array.append((record_array[-1] * 2))
+                elif (op == "C"):
+                    if (len(record_array) > 0):
+                        record_array.pop(-1)
+                elif (op == "+"):
+                    record_array.append((record_array[-1] + record_array[-2]))
+        return sum(record_array)
