@@ -28,3 +28,18 @@ Constraints:
     s consists of printable ASCII characters.
 
 """
+
+class Solution:
+    def toLowerCase(self, s: str) -> str:
+        
+        """
+        Transforma a minúsculas la cadena recibida como argumento.
+
+        params:
+            s (str)
+        
+        returns:
+            str
+        """
+
+        return s.lower()
