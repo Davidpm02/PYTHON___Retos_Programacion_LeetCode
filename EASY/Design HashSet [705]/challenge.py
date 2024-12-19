@@ -39,3 +39,17 @@ Constraints:
 
 
 """
+
+class MyHashSet:
+
+    def __init__(self):
+        self.list = list()
+
+    def add(self, key: int) -> None:
+        self.list.append(key)
+
+    def remove(self, key: int) -> None:
+        self.list = [item for item in self.list if (item != key)]
+
+    def contains(self, key: int) -> bool:
+        return True if (key in self.list) else False
