@@ -39,3 +39,17 @@ Constraints:
     At most 104 calls will be made to put, get, and remove.
 
 """
+
+class MyHashMap:
+
+    def __init__(self):
+        self.dict_ = dict()
+
+    def put(self, key: int, value: int) -> None:
+        self.dict_[key] = value
+
+    def get(self, key: int) -> int:
+        return self.dict_[key] if (key in self.dict_.keys()) else -1
+
+    def remove(self, key: int) -> None:
+        self.dict_ = {key_:value for key_, value in self.dict_.items() if (key_ != key)}
