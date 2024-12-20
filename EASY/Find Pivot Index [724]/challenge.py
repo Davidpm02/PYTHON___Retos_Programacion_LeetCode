@@ -45,3 +45,23 @@ Constraints:
 
 """
 
+class Solution:
+    def pivotIndex(self, nums: List[int]) -> int:
+
+        """
+        Halla el índice de la lista 'nums' que actúa como pivote
+        para los resultados de las sumas entre los elementos de 
+        ambos extremos de la lista.
+
+        params:
+            nums (List[int])
+        returns:
+            int
+        """
+
+        # Recorro los números del array 'nums' y evaluo las sumas de ambos extremos del índice
+        for idx, num in enumerate(nums):
+            if (sum(nums[:idx]) == sum(nums[idx+1:])):
+                return idx
+        else:
+            return -1
