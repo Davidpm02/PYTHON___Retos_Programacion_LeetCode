@@ -40,3 +40,40 @@ Constraints:
 
 """
 
+from collections import Counter
+from typing	import List
+
+class Solution:
+    def shortestCompletingWord(self, licensePlate: str, words: List[str]) -> str:
+        
+        """
+        Encuentra la palabra completa más corta en una lista de palabras basada en un conjunto 
+        de restricciones definidas por una cadena de caracteres (licensePlate).
+
+        Una palabra completa contiene todas las letras del `licensePlate` (ignorando números, 
+        espacios y mayúsculas/minúsculas), y cada letra debe aparecer al menos tantas veces 
+        como se encuentra en `licensePlate`.
+
+        Si existen múltiples palabras completas con la misma longitud, devuelve la primera 
+        palabra completa que aparece en la lista de entrada.
+
+        params:
+        - licensePlate (str): Una cadena que contiene letras, números y/o espacios. 
+        Los números y espacios se ignoran al determinar las letras requeridas.
+        - words (list[str]): Una lista de palabras (cadenas) entre las que se buscará 
+        la palabra completa más corta.
+
+        returns:
+        - str: La palabra completa más corta que satisface las condiciones del 
+        `licensePlate`.
+        """
+
+        # Defino una lista con los caracteres válidos de 'licensePlate'
+        valid_chars = [char.lower() for char in licensePlate if (char.isalpha() and (char != " "))]
+        valid_chars_counter = Counter(valid_chars)
+
+        # Lista con las palabras de words que contienen todas las letras de 'licensePlate'
+        licensePlate_words = sorted([word for word in words if all(char in word for char in valid_chars)], key=len)
+        licensePlate_words_updates = [word for word in licensePlate_words if all(word.count(key) >= value for key, value in valid_chars_counter.items())]
+
+        return licensePlate_words_updates[0]
