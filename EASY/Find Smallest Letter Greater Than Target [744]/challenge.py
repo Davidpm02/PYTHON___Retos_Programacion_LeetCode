@@ -37,3 +37,24 @@ Constraints:
 
 """
 
+from typing import List
+
+class Solution:
+    def nextGreatestLetter(self, letters: List[str], target: str) -> str:
+        
+        """
+        Halla la primera letra más grande, lexicograficamente hablando, dentro
+        del parámetro 'letters' con respecto al parámetro 'target'.
+
+        params:
+            letters (List[str])
+            target (str)
+        returns: 
+            str
+        """
+
+        # Convierto los parámetros a valores unicode que poder comparar.
+        try:
+            return [letter for letter in letters if (ord(letter) > ord(target))][0] 
+        except IndexError:
+            return letters[0]
