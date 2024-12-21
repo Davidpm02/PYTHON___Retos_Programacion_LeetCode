@@ -30,3 +30,36 @@ Constraints:
     The largest element in nums is unique.
 
 """
+
+from typing import List
+
+class Solution:
+    def dominantIndex(self, nums: List[int]) -> int:
+        
+        """
+        Halla el mayor elemento dentro de una lista de enteros, y retorna el
+        índice de dicho elemento en la lista si este es, al menos, el doble de
+        cualquier otro número dentro de la lista.
+
+        params:
+            nums (List[int])
+        
+        returns:
+            int
+        """
+
+        # Referencia a la lista original
+        original_nums = nums.copy()
+
+        # Obtengo el mayor número de la lista
+        biggest_num = max(nums)
+
+        # Elimino el mayor número de la lista, y verifico si este es, al menos,
+        # el doble del resto de números
+        nums.remove(biggest_num)
+        are_numbers_twice = all(biggest_num / num >= 2 for num in nums if (num != 0))
+        if are_numbers_twice:
+            return original_nums.index(biggest_num)
+        return -1
+
+        # return original_nums.index(biggest_num) if all(biggest_num / num >= 2 for num in nums if (num != 0)) else -1
