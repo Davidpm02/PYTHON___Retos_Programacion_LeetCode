@@ -29,3 +29,31 @@ Constraints:
 
 """
 
+class Solution:
+    def selfDividingNumbers(self, left: int, right: int) -> List[int]:
+        
+        """
+        Halla todos los números consideros divisibles entre sí dentro de un
+        rango cerrado de números, contenidos dentro de los límites marcados por 
+        los parámetros de entrada.
+
+        params:
+            left (int)
+            right (int)
+
+        returns:
+            List[int]
+        """
+
+        # Lista de referencia para 'self-dividing numbers'
+        self_dividing_array = []
+        for number in range(left, right + 1):
+            digits_in_number = [int(digit) for digit in str(number)]
+            if (0 in digits_in_number):
+                continue
+
+            valid_dividing_numbers = all(number % digit == 0 for digit in digits_in_number)
+            if valid_dividing_numbers:
+                self_dividing_array.append(number)
+        
+        return self_dividing_array
