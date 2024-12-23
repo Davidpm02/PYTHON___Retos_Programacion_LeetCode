@@ -42,3 +42,37 @@ Constraints:
     0 <= right - left <= 104
 
 """
+
+class Solution:
+    def countPrimeSetBits(self, left: int, right: int) -> int:
+        
+        """
+        Retorna el total de números comprendidos en el rango [left, right]
+        tienen un número primo de bits '1' en su representación binaria.
+
+        params:
+            left (int)
+            right (int)
+        
+        returns:
+            int
+        """
+
+        # Obtenemos las representaciones binarias de los números en el rango [left, right]
+        binary_integers_in_range = [bin(integer) for integer in range(left, right + 1)]
+
+        # Lista del conteo de bits '1' de cada representacion binaria
+        bits_in_binary_repr = [binary_repr.count('1') for binary_repr in binary_integers_in_range]
+
+        primes_counter = 0
+        for bit in bits_in_binary_repr:
+            if bit > 1:
+                try:
+                    assert (all((bit % _ != 0) for _ in range(1, bit + 1) if _ not in [1, bit]) == True)
+                    assert (all((bit % _ == 0) for _ in [1, bit]) == True)
+                    primes_counter += 1
+                except AssertionError:
+                    continue
+            else:
+                continue
+        return primes_counter
