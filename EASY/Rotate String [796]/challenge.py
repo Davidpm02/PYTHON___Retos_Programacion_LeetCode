@@ -27,3 +27,36 @@ Constraints:
     s and goal consist of lowercase English letters.
 
 """
+
+class Solution:
+    def rotateString(self, s: str, goal: str) -> bool:
+        
+        """
+        Verifica si la cadena 's' puede llegar a convertirse en la
+        cadena 'goal' tras aplicar un cierto numero de rotaciones.
+
+        Cada rotación consiste en desplazar el caracter situado más
+        a la derecha de la cadena, a su última posición.
+
+        params:
+            s (str) -- Cadena a evaluar.
+            goal (str) -- Cadena objetivo.
+        
+        returns:
+            bool
+        """
+
+        orig_s = s[:]
+       
+        while (s != goal):
+            chars_in_s = [char for char in s]
+            chars_in_s_after_shift = [char for char in chars_in_s[1:]]
+
+            # Aplicamos el shift de los caracteres iniciales y finales
+            chars_in_s_after_shift.append(chars_in_s[0])
+
+            s = "".join(chars_in_s_after_shift)
+            if (s == orig_s):
+                return False
+            continue
+        return True
