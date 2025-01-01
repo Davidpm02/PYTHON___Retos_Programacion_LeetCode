@@ -28,3 +28,75 @@ Constraints:
     -109 <= matrix[i][j] <= 109
 
 """
+
+from typing import List
+
+class Solution:
+    def transpose(self, matrix: List[List[int]]) -> List[List[int]]:
+        
+        """
+        Retorna la traspuesta de una matriz recibida como parámetro.
+
+        params:
+            matrix (List[List[int]])
+        
+        returns:
+            List[List[int]]
+        """
+
+        transposed_matrix = []
+        rows_in_transposed_matrix = 0
+
+        if (len(matrix) == 3):
+            if (len(matrix[0]) == 1):
+                row_transposed_matrix = [matrix[idx][0] for idx, item in enumerate(matrix)]
+                transposed_matrix.append(row_transposed_matrix)
+            elif (len(matrix[0]) == 2):
+                for row in range(0, len(matrix[0])):
+                    row_transposed_matrix = [matrix[idx][rows_in_transposed_matrix] for idx, item in enumerate(matrix)]
+                    rows_in_transposed_matrix += 1
+                    transposed_matrix.append(row_transposed_matrix)
+            elif (len(matrix[0]) == 3):
+                for row in range(0, len(matrix)):
+                    row_transposed_matrix = [matrix[idx][rows_in_transposed_matrix] for idx, item in enumerate(matrix)]
+                    rows_in_transposed_matrix += 1
+                    transposed_matrix.append(row_transposed_matrix)
+            else:
+                for row in range(0, len(matrix[0])):
+                    row_transposed_matrix = [matrix[idx][rows_in_transposed_matrix] for idx, item in enumerate(matrix)]
+                    rows_in_transposed_matrix += 1
+                    transposed_matrix.append(row_transposed_matrix)
+        elif (len(matrix) == 1):
+            for col in matrix[0]:
+                row_transposed_matrix = [col]
+                rows_in_transposed_matrix += 1
+                transposed_matrix.append(row_transposed_matrix)
+        elif (len(matrix) == 2):
+            if (len(matrix[0]) == 1):
+                row_transposed_matrix = [matrix[idx][0] for idx, item in enumerate(matrix)]
+                transposed_matrix.append(row_transposed_matrix)
+            elif (len(matrix[0]) == 2):
+                for row in range(0, len(matrix)):
+                    row_transposed_matrix = [matrix[idx][rows_in_transposed_matrix] for idx, item in enumerate(matrix)]
+                    rows_in_transposed_matrix += 1
+                    transposed_matrix.append(row_transposed_matrix)
+            else:
+                for row in range(0, len(matrix[0])):
+                    row_transposed_matrix = [matrix[idx][rows_in_transposed_matrix] for idx, item in enumerate(matrix)]
+                    rows_in_transposed_matrix += 1
+                    transposed_matrix.append(row_transposed_matrix)
+        else:
+            if (len(matrix[0]) == 1):
+                row_transposed_matrix = [matrix[idx][0] for idx, item in enumerate(matrix)]
+                transposed_matrix.append(row_transposed_matrix)
+            elif (len(matrix[0]) == 2):
+                for row in range(0, 2):
+                    row_transposed_matrix = [matrix[idx][rows_in_transposed_matrix] for idx, item in enumerate(matrix)]
+                    rows_in_transposed_matrix += 1
+                    transposed_matrix.append(row_transposed_matrix)
+            else:
+                for row in range(0, len(matrix[0])):
+                    row_transposed_matrix = [matrix[idx][rows_in_transposed_matrix] for idx, item in enumerate(matrix)]
+                    rows_in_transposed_matrix += 1
+                    transposed_matrix.append(row_transposed_matrix)
+        return transposed_matrix
