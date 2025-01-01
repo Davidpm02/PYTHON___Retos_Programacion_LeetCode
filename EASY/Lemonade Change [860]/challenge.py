@@ -37,3 +37,49 @@ Constraints:
     bills[i] is either 5, 10, or 20.
 
 """
+
+from typing import List
+
+class Solution:
+    def lemonadeChange(self, bills: List[int]) -> bool:
+        
+        """
+        Se encarga de verificar si es posible devolver el cambio
+        correcto a cada cliente que visita un puesto de limonadas.
+
+        La función recibe una lista que contiene, únicamente, enteros
+        [5, 10, 20]. La función tiene en cuenta curso de las ventas
+        desde el inicio del día para verificar si es posible
+        otorgar el cambio correcto a cada cliente.
+
+        params:
+            bills (List[int])
+
+        returns:
+            bool
+        """
+
+        # Diccionario para mapear el registro de billetes que pasan por
+        # caja.
+        bills_cash_dict = {bill:0 for bill in [5, 10, 20]}
+        
+        # Recorro el registro de billetes que pasan por caja en el día
+        for bill in bills:
+            try:
+                if (bill == 5):
+                    bills_cash_dict[bill] += 1
+                elif (bill == 10):
+                    assert (bills_cash_dict[5] >= 1)
+                    bills_cash_dict[bill] += 1
+                    bills_cash_dict[5] -= 1
+                else:
+                    assert ((bills_cash_dict[5] >= 3) or ((bills_cash_dict[10] >= 1) and (bills_cash_dict[5] >= 1)))
+                    bills_cash_dict[20] += 1
+                    if ((bills_cash_dict[10] >= 1) and (bills_cash_dict[5] >= 1)):
+                        bills_cash_dict[10] -= 1
+                        bills_cash_dict[5] -= 1
+                    elif (bills_cash_dict[5] >= 3):
+                        bills_cash_dict[5] -= 3  
+            except AssertionError:
+                return False
+        return True
