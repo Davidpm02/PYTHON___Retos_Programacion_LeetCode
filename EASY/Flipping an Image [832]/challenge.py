@@ -37,3 +37,28 @@ Constraints:
     images[i][j] is either 0 or 1.
 
 """
+
+from typing import List
+
+class Solution:
+    def flipAndInvertImage(self, image: List[List[int]]) -> List[List[int]]:
+        
+        """
+        Se encarga de voltear e invertir una imagen recibida como parámetro.
+        
+        La imagen consiste en un array de enteros, el cual es volteado (cada
+        componente del mismo se invierte) e invertido (cada bit cambia su
+        valor por el contrario). Finalmente, la función retorna la nueva
+        imagen procesada.
+
+        params:
+            image (List[List[int]])
+        
+        returns:
+            List[List[int]]
+        """
+
+        return [
+            [int(not bool(num)) for num in row[::-1]]
+            for row in image
+        ]
