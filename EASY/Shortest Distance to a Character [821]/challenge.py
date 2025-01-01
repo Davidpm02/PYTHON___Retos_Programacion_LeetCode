@@ -32,3 +32,36 @@ Constraints:
 
 """
 
+from typing import List
+
+class Solution:
+    def shortestToChar(self, s: str, c: str) -> List[int]:
+        
+        """
+        Se encarga de hallar la distancia más cercana a un caracter
+        dado ('c'), para cada uno de los caracteres que componen 's'.
+        
+        La función retorna una lista de enteros, cuya longitud es igual
+        a la longitud de la cadena 's', y dónde cada entero representa
+        la distancia entre el carácter y 'c'.
+        
+        params:
+            s (str)
+            c (str)
+
+        returns:
+            List[int]
+        """
+
+        # Lista vacía para almacenar las distancias entre caracteres.
+        distances_to_c = []
+
+        # Lista de índices donde se encuentra 'c' en 's'
+        idxs_of_c_in_s = [idx for idx, char in enumerate(s) if (char == c)]        
+   
+        # Recorro la cadena 's' y actualizo la lista de distancias.
+        for idx, char in enumerate(s):
+            idx_closest_c = sorted([abs(num - idx) for num in idxs_of_c_in_s])[0]
+            distances_to_c.append(idx_closest_c)
+       
+        return distances_to_c
