@@ -41,3 +41,53 @@ Constraints:
     s contains only lowercase English letters.
 
 """
+
+from typing import List
+
+class Solution:
+    def numberOfLines(self, widths: List[int], s: str) -> List[int]:
+        
+        """
+        Se encarga de devolver el total de líneas que ocuparía escribir
+        la cadena 's', dado el ancho en píxeles de cada carácter del
+        alfabeto Inglés dentro de 'widths'.
+
+        El resultado se compone de una lista de dos elementos, donde
+        result[0] representa el total de líneas escritas, y result[1]
+        el ancho en píxeles de la última línea escrita.
+
+        params:
+            widths (List[int])
+            s (str)
+        
+        returns:
+            List[int]
+        """
+
+        english_abc_array = [chr(_) for _ in range(97, 97 + 26)]
+        width_per_letter_dict = dict(zip(english_abc_array, widths))
+
+        # Inicializo la lista resultado
+        result = [1, 0]
+        while True:
+            line_width = 0
+            for idx, char in enumerate(s):
+                if ((line_width + width_per_letter_dict[char]) < 100):
+                    line_width += width_per_letter_dict[char]
+                    continue
+                elif ((line_width + width_per_letter_dict[char]) == 100):
+                    line_width += width_per_letter_dict[char]
+                    s = s[idx + 1:]
+                    if (len(s) > 0):
+                        result[0] += 1
+                        break
+                    else:
+                        result[1] = line_width if (line_width != 0) else 100
+                        return result
+                else:
+                    result[0] += 1
+                    s = s[idx:]
+                    break
+            else:
+                result[1] = line_width if (line_width != 0) else 100
+                return result
