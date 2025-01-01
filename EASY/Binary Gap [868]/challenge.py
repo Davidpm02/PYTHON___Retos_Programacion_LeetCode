@@ -37,3 +37,46 @@ Constraints:
     1 <= n <= 109
 
 """
+
+class Solution:
+    def binaryGap(self, n: int) -> int:
+        
+        """
+        Halla la máxima distancia entre bits 1 adyacentes en la 
+        representación binaria del número recibido como parámetro.
+
+        params:
+            n (int)
+
+        returns:
+            int
+        """
+
+        # Comprobación inicial del número de bits 1 en la 
+        # representación binaria de 'n'.
+        binary_repr_of_n = bin(n)[2:]
+        if (binary_repr_of_n.count('1') <= 1):
+            return 0
+        
+        # Lista de bits en la representación binario.
+        bits_on_binary_repr = [int(bit) for bit in binary_repr_of_n]
+
+        # Contador de distancia máxima entre 1.
+        maximum_distance_gap = 0
+        distance_between_ones = 0
+        try:
+            index_first_bit = bits_on_binary_repr.index(1)
+            for bit in bits_on_binary_repr[index_first_bit + 1:]:
+                if (bit == 0):
+                    distance_between_ones += 1
+                    continue
+                elif (bit == 1):
+                    distance_between_ones += 1
+                    if (distance_between_ones > maximum_distance_gap):
+                        maximum_distance_gap = distance_between_ones
+                    # Reinicio del contador de distancia
+                    distance_between_ones = 0
+                    continue
+            return maximum_distance_gap
+        except:
+            return 0
