@@ -44,3 +44,36 @@ Constraints:
     words[i] consists of lowercase English letters.
 
 """
+
+from typing import List
+
+class Solution:
+    def uniqueMorseRepresentations(self, words: List[str]) -> int:
+        
+        """
+        Retorna el total de transformaciones de cada palabra
+        dentro de la lista 'words', obtenidas al traducir cada
+        una de estas a código morse.
+
+        params:
+            words (List[str])
+        
+        returns:
+            int
+        """
+
+        english_abc_array = [chr(_) for _ in range(97, 97 + 26)]
+        morse_code_array = [".-","-...","-.-.","-..",".","..-.","--.",
+                            "....","..",".---","-.-",".-..","--","-.",
+                            "---",".--.","--.-",".-.","...","-","..-",
+                            "...-",".--","-..-","-.--","--.."]
+
+        # Diccionario que mapee cada letra con su representación
+        # en código morse.
+        abc_to_morse_dict = dict(zip(english_abc_array, morse_code_array))
+
+        # Conjunto vacío para contener todas las transformaciones formadas
+        morse_transformations_set = set()
+        for word in words:
+            morse_transformations_set.add("".join([abc_to_morse_dict[char] for char in word]))
+        return len(morse_transformations_set)
