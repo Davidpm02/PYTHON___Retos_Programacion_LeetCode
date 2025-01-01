@@ -37,3 +37,37 @@ Constraints:
 
 """
 
+class Solution:
+    def toGoatLatin(self, sentence: str) -> str:
+        
+        """
+        Traduce una cadena recibida como parámetro al lenguaje
+        Goat Latin.
+
+        Para la transformación a este lenguaje, se siguen todas
+        normas y requerimientos del mismo.
+
+        params:
+            sentence (str)
+        
+        returns:
+            str
+        """
+
+        # Lista de palabras contenidas en la cadena "sentence".
+        words_in_sentence = sentence.split()
+
+        # Recorro la lista y actualizo cada palabra según las normas
+        # del lenguaje Goat Latin.
+        for idx, word in enumerate(words_in_sentence):
+            if word.lower().startswith(("a", "e", "i", "o", "u")):
+                word = word + "ma" + "a"*(idx + 1)
+            else:
+                first_letter_on_word = word[0]
+                word_without_beginning = word[1:]
+                word = word_without_beginning + first_letter_on_word + "ma" + "a"*(idx + 1)
+            
+            # Actualizo la palabra en iteración al lenguaje 'Goat Latin'
+            words_in_sentence[idx] = word
+
+        return " ".join(words_in_sentence)
