@@ -35,3 +35,27 @@ Constraints:
 
 """
 
+from typing import List
+
+class Solution:
+    def isRectangleOverlap(self, rec1: List[int], rec2: List[int]) -> bool:
+        
+        """
+        Comprueba si, dadas las coordenadas de las esquinas inferior
+        izquierda y superior derecha de dos rectángulos representados
+        en un eje cartesiano, estos se solapan entre sí.
+
+        params:
+            rec1 (List[int])
+            rec2 (List[int])
+
+        returns:
+            bool
+        """
+
+        try:
+            assert ((rec1[2] > rec2[0]) and (rec1[3] > rec2[1]))
+            assert ((rec2[2] > rec1[0]) and (rec2[3] > rec1[1]))
+            return True
+        except AssertionError:
+            return False
