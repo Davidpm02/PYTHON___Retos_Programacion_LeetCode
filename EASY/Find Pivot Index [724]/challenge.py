@@ -44,6 +44,7 @@ Constraints:
     -1000 <= nums[i] <= 1000
 
 """
+from typing import List
 
 class Solution:
     def pivotIndex(self, nums: List[int]) -> int:
