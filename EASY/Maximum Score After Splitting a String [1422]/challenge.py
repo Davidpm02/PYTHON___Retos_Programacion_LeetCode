@@ -39,3 +39,34 @@ Constraints:
 
 
 """
+
+class Solution:
+    def maxScore(self, s: str) -> int:
+        
+        """
+        Retorna la máxima puntuación obtenible tras dividir la 
+        cadena de entrada en dos subcadenas.
+
+        La puntuación final se obtiene de la suma de bits 0 en la
+        subcadena de la izquierda, más el número de bits 1 en la 
+        subcadena de la derecha.
+
+        params:
+            s (str)
+
+        returns:
+            int
+        """
+
+        # Lista con las puntuaciones obtenidas
+        scores_obtained_after_split = []
+
+        for idx in range(1, len(s)):
+            # Definición de las subcadenas y cálculo de la puntuación.
+            left_substring_score = s[:idx].count("0")
+            right_substring_score = s[idx:].count("1")
+            score = left_substring_score + right_substring_score
+            scores_obtained_after_split.append(score)
+        return max(scores_obtained_after_split)
+            
+            
