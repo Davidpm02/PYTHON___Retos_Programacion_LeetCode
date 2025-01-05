@@ -36,3 +36,49 @@ Constraints:
 
 """
 
+from typing import List
+
+class Solution:
+    def shiftingLetters(self, s: str, shifts: List[List[int]]) -> str:
+        
+        """
+        Se encarga de aplicar desplazamientos a los caracteres de una
+        cadena recibida como parámetro y retorna el resultado obtenido.
+
+        Los desplazamientos que se aplican en la cadena se toman del
+        parámetro 'shifts', el cual puede contener desde 1 hasta 5 * 10 a 
+        la cuarta de procesos de desplazamientos de caracteres en la
+        cadena.
+
+        params:
+            s (str)
+            shifts (List[List[int]])
+
+        returns:
+            str
+        """
+
+        # Longitud de la cadena.
+        n = len(s)
+        
+        # Inicializamos delta para almacenar todos los cambios en 's'.
+        delta = [0] * (n + 1)
+        
+        # Registramos los cambios de cada desplazamiento.
+        for start, end, direction in shifts:
+            delta[start] += 1 if (direction == 1) else -1
+            if end + 1 < len(delta):
+                delta[end + 1] -= 1 if (direction == 1) else -1
+        
+        # Aplicamos suma acumulativa en delta.
+        for i in range(1, n):
+            delta[i] += delta[i - 1]
+        
+        # Construcción de la nueva cadena aplicando
+        # los desplazamientos en 's'.
+        shifted_s = []
+        for i, char in enumerate(s):
+            new_char = chr((ord(char) - ord('a') + delta[i]) % 26 + ord('a'))
+            shifted_s.append(new_char)
+        
+        return "".join(shifted_s)
