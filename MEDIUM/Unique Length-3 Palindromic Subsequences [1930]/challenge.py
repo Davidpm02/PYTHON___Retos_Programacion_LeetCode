@@ -47,3 +47,51 @@ Constraints:
 
 """
 
+from collections import Counter
+
+class Solution:
+    def countPalindromicSubsequence(self, s: str) -> int:
+        
+        """
+        Procesa el número de subcadenas de longitud = 3 que pueden
+        considerarse palíndromos dentro de la cadena recibida como
+        parámetro.
+
+        params:
+            s (str)
+        
+        returns:
+            int
+        """
+
+        # Diccionario de mapeo de apariciones de cada caracter
+        chars_counter = Counter(s)
+  
+        # Contador de palíndromos inicializado a 0.
+        palindromes_counter = 0
+        
+        # Conjunto de caracteres que ya hemos evaluado.
+        parsed_chars = set()
+
+        for char, reps in chars_counter.items():
+            # Conjunto de caracteres intermedios que ya hemos evaluado.
+            parsed_letters_in_mid = set()
+            try:
+                assert (char not in parsed_chars)
+                if (reps >= 3):
+                    # Primer caso de palíndromo; 3 caracteres iguales.
+                    palindromes_counter += 1
+                
+                if (reps >= 2):
+                    # Segundo caso de palíndromo; incrementamos el valor
+                    # por cada caracter diferente intermedio.
+                    indexes_of_char_in_s = [idx for idx, c in enumerate(s) if (c == char)]
+                    chars_in_substring = set(s[indexes_of_char_in_s[0] + 1: indexes_of_char_in_s[-1]])
+                    if (char in chars_in_substring):
+                        palindromes_counter += (len(chars_in_substring) - 1)
+                    else:
+                        palindromes_counter += len(chars_in_substring)
+                parsed_chars.add(char)
+            except AssertionError:
+                continue
+        return palindromes_counter
