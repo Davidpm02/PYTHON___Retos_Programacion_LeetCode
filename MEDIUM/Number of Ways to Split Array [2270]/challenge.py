@@ -41,3 +41,40 @@ Constraints:
 
 """
 
+from typing import List
+
+class Solution:
+    def waysToSplitArray(self, nums: List[int]) -> int:
+        
+        """
+        Se encarga de obtener el número total de splits aplicables a
+        una lista de enteros recibida como parámetro.
+
+        Para que un split sea considerado válido:
+         - La suma de los primeros i + 1 elementos de la lista debe
+         ser mayor o igual a la suma de los últimos n - i - 1 elementos.
+         - Debe haber, al menos, un elemento de la derecha de i.
+         Esto es, 0 <= i < n - 1.
+        
+        params:
+            nums (List[int])
+        
+        returns:
+            int
+        """
+
+        # Calculo la suma total de nums
+        total_sum = sum(nums)
+        left_sum = 0
+        valid_split_count = 0
+
+        # Itero por los índices posibles para dividir
+        for i in range(len(nums) - 1):  # Último índice no es válido
+            left_sum += nums[i]
+            right_sum = total_sum - left_sum
+            
+            # Compruebo si la condición se cumple
+            if left_sum >= right_sum:
+                valid_split_count += 1
+
+        return valid_split_count
