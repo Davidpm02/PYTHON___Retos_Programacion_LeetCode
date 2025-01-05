@@ -40,3 +40,36 @@ Constraints:
 
 
 """
+
+from typing import List
+class Solution:
+    def vowelStrings(self, words: List[str], queries: List[List[int]]) -> List[int]:
+        
+        """
+        Se encarga de hallar el número de cadenas que comienzan y
+        terminan en vocal dentro del parámetro 'words' para cada lista
+        de índices en el parámetro 'queries'.
+
+        params:
+            words (List[str])
+            queries (List[List[int]])
+
+        returns:
+            List[int]
+        """
+
+        # Lista de vocales.
+        vocals = {'a', 'e', 'i', 'o', 'u'}
+
+        # Lista de enteros para puntuar a las cadenas dentro de
+        # words
+        words_check = [1 if ((word[0] in vocals) and (word[-1] in vocals)) else 0 for word in words]
+        prefix_sum = [0] * (len(words_check) + 1)
+        for i in range(len(words_check)):
+            prefix_sum[i + 1] = prefix_sum[i] + words_check[i]
+        
+        # Lista de cadenas que comienzan y finalizan con vocales.
+        starting_ending_vocals_list = [
+            prefix_sum[query[1] + 1] - prefix_sum[query[0]] for query in queries
+        ]
+        return starting_ending_vocals_list
