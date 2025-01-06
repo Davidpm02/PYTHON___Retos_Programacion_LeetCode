@@ -35,3 +35,37 @@ Constraints:
 
 """
 
+from typing import List
+
+class Solution:
+    def minOperations(self, boxes: str) -> List[int]:
+        
+        """
+        Se encarga de hallar el número minimo de operaciones que se
+        requieren para mover cada una de las bolas en las cajas del
+        parámetro 'boxes' a caja una de las cajas que este contenga.
+
+        params:
+            boxes (str)
+
+        returns:
+            List[int]
+        """
+
+        # Longitud de 'boxes'.
+        n = len(boxes)
+        boxes_moves = []
+
+        # Contados de cajas evaluadas en boxes.
+        parsed_boxes = 0
+        
+        # Actualizo el número de cajas evaluadas, a la vez que calculo
+        # el número de movimientos necesarios para llenar cada caja.
+        while (parsed_boxes != n):
+            moves_needed = 0
+            for idx, box in enumerate(boxes):
+                if (box == '1'):
+                    moves_needed += abs(idx - parsed_boxes)
+            parsed_boxes += 1
+            boxes_moves.append(moves_needed)
+        return boxes_moves
