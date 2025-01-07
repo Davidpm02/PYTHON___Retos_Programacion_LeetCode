@@ -36,3 +36,37 @@ Constraints:
     All the strings of words are unique.
 
 """
+
+from typing import List
+
+class Solution:
+    def stringMatching(self, words: List[str]) -> List[str]:
+        
+        """
+        Se encarga de hallar todas aquellas cadenas contenidas en una
+        lista que pueden encontrarse como subcadenas de otras palabras
+        en la misma lista.
+        La función retorna una nueva lista con todas las cadenas
+        consideradas también subcadenas de otras.
+
+        params:
+            words (List[str])
+        
+        returns:
+            List[str]
+        """
+
+        # Conjunto con palabras que son subcadenas de otras.
+        substrings_set = set()
+
+        # Recorro la lista 'words' y busco las posibles
+        # subcadenas.
+        n = len(words)
+        for i in range(n):
+            for idx, word in enumerate(words):
+                if (words[i] == word):
+                    continue
+                else:
+                    if (word in words[i]):
+                        substrings_set.add(word)
+        return list(substrings_set)
