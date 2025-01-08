@@ -54,3 +54,59 @@ Constraints:
 
 """
 
+from typing import List
+
+class Solution:
+    def countPrefixSuffixPairs(self, words: List[str]) -> int:
+        
+        """
+        Lleva el conteo de cadenas dentro de la lista recibida como 
+        parámetro que son prefijos y sufijos de las siguientes cadenas
+        que aparezcan dentro de la lista.
+
+        params:
+            words (List[str])
+        
+        returns:
+            int
+        """
+
+        def isPrefixAndSuffix(str1: str, str2: str) -> bool:
+
+            """
+            Evalua dos cadenas para detectar si la primera recibida como
+            parámetro es prefijo y sufijo de la segunda.
+
+            params:
+                str1 (str)
+                str2 (str)
+            
+            returns:
+                bool
+            """
+
+            try:
+                assert (str2.startswith(str1))
+                assert (str2.endswith(str1))
+                return True
+            except AssertionError:
+                return False
+
+        # Longitud de la lista 'words'
+        n = len(words)
+
+        # Contador de cadenas válidas
+        prefix_and_suffix_counter = 0
+
+        # Contador de palabras evaluadas
+        parsed_words = 0
+        while (parsed_words != n):
+            for idx, word in enumerate(words):
+                if (idx == parsed_words):
+                    continue
+                else:
+                    if (parsed_words < idx):
+                        if isPrefixAndSuffix(words[parsed_words], word):
+                            prefix_and_suffix_counter += 1
+            parsed_words += 1
+        return prefix_and_suffix_counter 
