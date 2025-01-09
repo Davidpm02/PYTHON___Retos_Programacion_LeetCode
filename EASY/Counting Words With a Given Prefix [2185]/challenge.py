@@ -30,3 +30,42 @@ Constraints:
     words[i] and pref consist of lowercase English letters.
 
 """
+
+from typing import List
+
+class Solution:
+    def prefixCount(self, words: List[str], pref: str) -> int:
+        
+        """
+        Verifica el número de palabras en una lista recibida como 
+        parámetro que tienen como prefijo a la cadena 'pref', también
+        recibida como parámetro.
+
+        params:
+            words (List[str])
+            pref (str)
+        
+        returns.
+            int
+        """
+
+        def isPrefix(word: str) -> bool:
+
+            """
+            Se encarga de verificar si la cadena global 'pref' es
+            prefijo de la cadena recibida como parámetro.
+
+            params:
+                word (str)
+
+            returns:
+                bool
+            """
+
+            try:
+                assert (word.startswith(pref))
+                return True
+            except AssertionError:
+                return False
+        
+        return sum(map(isPrefix, words))
