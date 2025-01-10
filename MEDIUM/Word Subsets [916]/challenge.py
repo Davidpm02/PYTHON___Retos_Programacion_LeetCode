@@ -33,3 +33,61 @@ Constraints:
     All the strings of words1 are unique.
 
 """
+
+from typing import List
+
+from collections import Counter
+
+class Solution:
+    def wordSubsets(self, words1: List[str], words2: List[str]) -> List[str]:
+        
+        """
+        Se encarga de analizar el total de cadenas que pueden formarse
+        a partir de las subcadenas del parámetro 'words2'.
+
+        La función retorna una lista con el total de palabras que cumplen
+        esta condición.
+
+        params:
+            words1 (List[str])
+            words2 (List[str])
+
+        returns:
+            List[str]
+        """
+
+        def isSubset(word:str) -> bool:
+
+            """
+            Se encarga de verificar si una cadena es subcadena de otra
+            dada, teniendo en cuenta el número de repeticiones de cada
+            uno de los caracteres que la componen.
+
+            params:
+                word (str)
+            
+            returns:
+                bool
+            """
+
+            chars_in_word_counter = Counter(word)
+
+            try:
+                for char, reps in chars_in_universal_string.items():
+                    assert (chars_in_word_counter[char] >= reps)
+                return True
+            except AssertionError:
+                return False
+        
+        # Defino un contador que mapee el número de apariciones de cada
+        # caracter en una cadena universal
+        for idx, string in enumerate(words2):
+            if (idx == 0):
+                chars_in_universal_string = Counter(string)
+            else:
+                chars_in_new_substring = Counter(string)
+                chars_in_universal_string = chars_in_universal_string | chars_in_new_substring
+        
+        # Valido las cadenas universales de la lista 'words1'
+        results = list(map(isSubset, words1))
+        return [words1[idx] for idx, result in enumerate(results) if (result == True)]
