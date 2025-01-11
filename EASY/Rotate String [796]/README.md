@@ -2,7 +2,7 @@
 
 ## Descripción
 
-El ejercicio "Rotate String" tiene como objetivo determinar si una cadena `s` puede transformarse en otra cadena `goal` mediante un número finito de rotaciones. Una rotación consiste en mover el carácter más a la izquierda de la cadena `s` a su posición más a la derecha. 
+El ejercicio "Rotate String" tiene como objetivo determinar si una cadena `s` puede transformarse en otra cadena `goal` mediante un número finito de rotaciones. Una rotación consiste en mover el carácter más a la izquierda de la cadena `s` a su posición más a la derecha.
 
 Este problema explora conceptos de manipulación de cadenas y algoritmos de rotación, útiles para resolver problemas relacionados con patrones y estructuras cíclicas.
 
