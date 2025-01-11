@@ -30,3 +30,38 @@ s consists of lowercase English letters.
 1 <= k <= 105
 
 """
+
+from collections import Counter
+
+class Solution:
+    def canConstruct(self, s: str, k: int) -> bool:
+        
+        """
+        Se encarga de verificar si es posible construir un número
+        'k' de subcadenas palíndromas que utilicen todos los 
+        caracteres de la cadena 's'.
+
+        params:
+            s (str)
+            k (int)
+        
+        returns:
+            bool
+        """
+
+        # Comprobación inicial de la posibilidad de crear palíndromos.
+        if (len(s) == k):
+            return True
+        elif (len(s) < k):
+            return False
+        else:
+            chars_in_s_counter = Counter(s)
+            try:
+                odds_chars = 0
+                for char, reps in chars_in_s_counter.items():
+                    if ((reps % 2) != 0):
+                        odds_chars += 1
+                assert (odds_chars <= k)
+                return True
+            except AssertionError:
+                return False
