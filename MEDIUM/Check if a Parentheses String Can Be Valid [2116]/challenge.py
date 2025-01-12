@@ -45,5 +45,52 @@ Constraints:
     s[i] is either '(' or ')'.
     locked[i] is either '0' or '1'.
 
-
 """
+
+class Solution:
+    def canBeValid(self, s: str, locked: str) -> bool:
+        
+        """
+        Se encarga de verificar si una cadena puede actualizarse para
+        formar una estructura de paréntesis válida, en función de los
+        bloqueos de caracteres que se indiquen en el parámetro 'locked'.
+
+        params:
+            s (str)
+            locked (str)
+        
+        returns:
+            bool
+        """
+
+        n = len(s)
+        
+        # Si la longitud es impar, no puede ser válida
+        if n % 2 != 0:
+            return False
+        
+        # Primera pasada: de izquierda a derecha
+        open_count = 0
+        for i in range(n):
+            if s[i] == '(' or (locked[i] == '0' and open_count < n // 2):
+                open_count += 1
+            elif s[i] == ')':
+                open_count -= 1
+            
+            # Si el número de paréntesis abiertos es negativo en cualquier momento, no es válido
+            if open_count < 0:
+                return False
+
+        # Segunda pasada: de derecha a izquierda
+        close_count = 0
+        for i in range(n-1, -1, -1):
+            if s[i] == ')' or (locked[i] == '0' and close_count < n // 2):
+                close_count += 1
+            elif s[i] == '(':
+                close_count -= 1
+            
+            # Si el número de paréntesis cerrados es negativo en cualquier momento, no es válido
+            if close_count < 0:
+                return False
+        
+        return True
