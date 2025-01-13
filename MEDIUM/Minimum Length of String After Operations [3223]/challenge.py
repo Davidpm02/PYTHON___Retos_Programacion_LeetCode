@@ -42,3 +42,27 @@ Constraints:
     s consists only of lowercase English letters.
 
 """
+
+from collections import Counter
+
+class Solution:
+    def minimumLength(self, s: str) -> int:
+        
+        """
+        Retorna la longitud de la cadena más corta obtenible
+        tras eliminar los caracteres más próximos entre sí, con al
+        menos 3 apariciones en la cadena recibida como parámetro.
+
+        Este proceso se lleva a cabo repetidas veces, hasta que no
+        existan caracteres con 3 repeticiones dentro de la cadena.
+
+        params:
+            s (str)
+        
+        returns:
+            int
+        """
+
+        # Contador con las apariciones de cada caracter en 's'
+        chars_in_s_counter = Counter(s)
+        return len("".join([(char * 2) if ((reps % 2) == 0) else (char * 1) for char, reps in chars_in_s_counter.items()]))
