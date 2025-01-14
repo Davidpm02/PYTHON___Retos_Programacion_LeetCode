@@ -38,3 +38,34 @@ Constraints:
 
 """
 
+from typing import List
+
+class Solution:
+    def findThePrefixCommonArray(self, A: List[int], B: List[int]) -> List[int]:
+        
+        """
+        Se encarga de generar una lista de longitud n == len(A) == len(B)
+        cuyos elementos representen el conjunto de enteros comunes en
+        'A' y 'B' en función del índice del entero dentro de la lista
+        resultado.
+
+        params:
+            A (List[int])
+            B (List[int])
+        
+        returns:
+            List[int]
+        """
+
+        # Longitud de las listas de enteros.
+        n = len(A)
+
+        # Lista con el número de elementos por índice comunes en
+        # 'A' y 'B'.
+        common_integers_prefix = []
+
+        # Actualizo la lista con la suma de elementos de la intersección de los
+        # conjuntos "A[:i + 1]" y "B[:i + 1]".
+        for i in range(n):
+            common_integers_prefix.append(len(set(A[:i + 1]) & set(B[:i + 1])))
+        return common_integers_prefix
