@@ -33,3 +33,37 @@ Constraints:
     0 <= nums1[i], nums2[j] <= 109
 
 """
+
+from typing import List
+
+class Solution:
+    def xorAllNums(self, nums1: List[int], nums2: List[int]) -> int:
+        
+        """
+        Se encarga de obtener el resultado de aplicar XOR a los resultados 
+        de aplicar XOR en todas las parejas de enteros entre nums1 y nums2.
+
+        params:
+            nums1 (List[int])
+            nums2 (List[int])
+        
+        returns:
+            int
+        """
+
+        # Número máximo de bits en un entero
+        max_bits = 32
+        result = 0
+        
+        # Para cada bit
+        for bit in range(max_bits):
+            # Números en nums1 y nums2 que tienen bits fijados
+            count1 = sum((num >> bit) & 1 for num in nums1)
+            count2 = sum((num >> bit) & 1 for num in nums2)
+            
+            # Si hay un número de nums1 con este bit en 1 y un número de nums2 con este bit en 0,
+            # o viceversa, el bit en el resultado debe ser 1.
+            if (count1 * len(nums2) + count2 * len(nums1)) % 2 != 0:
+                result |= (1 << bit)
+        
+        return result
