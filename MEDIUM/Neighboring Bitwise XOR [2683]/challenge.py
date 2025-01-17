@@ -49,3 +49,21 @@ Constraints:
 
 """
 
+from typing import List
+
+class Solution:
+    def doesValidArrayExist(self, derived: List[int]) -> bool:
+        
+        """
+        Se encarga de verificar si existe algún array binario (lista)
+        que pueda ser primitivo del parámetro 'derived', aplicando la
+        función XOR a cada uno de sus elementos.
+
+        params:
+            derived (List[int])
+        
+        returns:
+            bool
+        """
+
+        return True if (derived.count(1) % 2 == 0) else False
