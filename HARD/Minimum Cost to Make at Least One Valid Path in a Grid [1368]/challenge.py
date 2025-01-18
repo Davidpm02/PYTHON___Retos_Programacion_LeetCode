@@ -48,3 +48,57 @@ Constraints:
 
 """
 
+from collections import deque
+from typing import List
+
+class Solution:
+    def minCost(self, grid: List[List[int]]) -> int:
+        
+        """
+        Se encarga de calcular el número de cambios mínimos necesarios
+        para construir, al menos, un camino válido a partir de la
+        cuadrícula recibida como parámetro.
+
+        params:
+            grid (List[List[int]])
+        
+        returns:
+            int
+        """
+
+        m, n = len(grid), len(grid[0])
+        
+        # Direcciones posibles (derecha, izquierda, abajo, arriba)
+        directions = [(0, 1), (0, -1), (1, 0), (-1, 0)]
+        
+        # Costo para llegar a cada celda, inicializado a infinito
+        cost = [[float('inf')] * n for _ in range(m)]
+        cost[0][0] = 0
+        
+        # Usamos un deque para BFS con doble cola
+        dq = deque([(0, 0)])
+        
+        while dq:
+            x, y = dq.popleft()
+            
+            # Revisamos las 4 direcciones
+            for i, (dx, dy) in enumerate(directions):
+                nx, ny = x + dx, y + dy
+                
+                # Verificamos si la nueva celda está dentro de los límites
+                if 0 <= nx < m and 0 <= ny < n:
+                    # El costo de moverse es 0 si el signo apunta hacia la celda vecina
+                    new_cost = cost[x][y] + (0 if grid[x][y] == i + 1 else 1)
+                    
+                    # Si encontramos un costo menor, actualizamos y agregamos a la cola
+                    if new_cost < cost[nx][ny]:
+                        cost[nx][ny] = new_cost
+                        
+                        # Si el costo es 0, agregamos al frente del deque
+                        if grid[x][y] == i + 1:
+                            dq.appendleft((nx, ny))
+                        else:
+                            dq.append((nx, ny))
+        
+        # Devolvemos el costo para llegar a la celda (m-1, n-1)
+        return cost[m-1][n-1]
