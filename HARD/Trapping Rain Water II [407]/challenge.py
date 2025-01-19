@@ -29,3 +29,56 @@ Constraints:
 
 """
 
+import heapq
+from typing import List
+
+class Solution:
+    def trapRainWater(self, heightMap: List[List[int]]) -> int:
+
+        """
+        Se encarga de calcular el total de bloques ocupados por el
+        agua tras una lluvia.
+
+        El parámetro 'heightMap' representa los bloques de tierra 
+        del mapa sobre el que llueve.
+
+        params:
+            heightMap List[List[int]])
+        returns:
+            int
+        """
+        
+        # Verifico las dimensiones de la matriz
+        if not heightMap or len(heightMap) < 3 or len(heightMap[0]) < 3:
+            return 0
+        
+        m, n = len(heightMap), len(heightMap[0])
+        visited = [[False] * n for _ in range(m)]
+        heap = []  # Cola de prioridad
+        
+        # Agrego los bordes a la cola de prioridad
+        for i in range(m):
+            for j in [0, n - 1]:
+                heapq.heappush(heap, (heightMap[i][j], i, j))
+                visited[i][j] = True
+        for j in range(1, n - 1):
+            for i in [0, m - 1]:
+                heapq.heappush(heap, (heightMap[i][j], i, j))
+                visited[i][j] = True
+        
+        # Proceso la cola de prioridad para calcular el agua atrapada
+        trapped_water = 0
+        directions = [(0, 1), (1, 0), (0, -1), (-1, 0)]  # Vecinos (derecha, abajo, izquierda, arriba)
+
+        while heap:
+            height, x, y = heapq.heappop(heap)
+            for dx, dy in directions:
+                nx, ny = x + dx, y + dy
+                if 0 <= nx < m and 0 <= ny < n and not visited[nx][ny]:
+                    visited[nx][ny] = True
+                    # Calculamos el agua atrapada si la celda es más baja
+                    trapped_water += max(0, height - heightMap[nx][ny])
+                    # Agregamos el vecino a la cola con el nuevo límite de altura
+                    heapq.heappush(heap, (max(height, heightMap[nx][ny]), nx, ny))
+        
+        return trapped_water
