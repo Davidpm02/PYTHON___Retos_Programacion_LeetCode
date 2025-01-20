@@ -35,3 +35,48 @@ All the integers of arr are unique.
 All the integers of mat are unique.
 
 """
+
+from typing import List
+
+class Solution:
+    def firstCompleteIndex(self, arr: List[int], mat: List[List[int]]) -> int:
+        
+        """
+        Se encarga de hallar el primer índice del parámetro 'arr'
+        cuyo elemento en 'mat' es el primero el último en ser pintado,
+        dentro de una fila o columna de la misma matriz.
+
+        params:
+            arr (List[int])
+            mat (List[List[int]])
+        returns:
+            int
+        """
+
+        # Variables de referencia.
+        m = len(mat)
+        n = len(mat[0])
+
+        # Defino un diccionario que mapee las posiciones de cada elemento
+        # dentro de la matriz
+        num_positions_in_mat = {mat[i][j]: (i, j) for i in range(m) for j in range(n)}
+
+        # Defino dos listas que mapeen el número de celdas pintadas,
+        # por filas y columnas
+        painted_rows_in_mat = [0] * m
+        painted_columns_in_mat = [0] * n
+        
+        # Recorro 'arr' y actualizo la lista de pintados,
+        # verificando si se ha pintado alguna fila/columna.
+        for idx, num_to_paint in enumerate(arr):
+            # Obtengo los registros mapeados del número.
+            row, column = num_positions_in_mat[num_to_paint]
+
+            # Actualizo el índice de pintados
+            painted_rows_in_mat[row] += 1
+            painted_columns_in_mat[column] += 1
+
+            # Verifico si existe alguna línea o columna pintada
+            if (painted_rows_in_mat[row] == n) or (painted_columns_in_mat[column] == m):
+                return idx
+            
