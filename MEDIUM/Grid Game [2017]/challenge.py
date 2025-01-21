@@ -46,3 +46,45 @@ Constraints:
 
 """
 
+from typing import List
+
+class Solution:
+    def gridGame(self, grid: List[List[int]]) -> int:
+
+        """
+        Calcula los puntos recolectados por el segundo robot dado un grid 2xN.
+        Ambos robots juegan de manera óptima.
+        
+        params:
+            grid List[List[int]] - matriz de puntos de tamaño 2xN
+        
+        returns:
+            int
+        """
+        
+        n = len(grid[0])
+        
+        # Crear acumulados para cada fila (filas 0 y 1)
+        top_prefix_sum = [0] * n
+        bottom_prefix_sum = [0] * n
+        
+        # Llenar los acumulados de la fila superior (0) y la inferior (1)
+        for i in range(n):
+            top_prefix_sum[i] = top_prefix_sum[i - 1] + grid[0][i] if i > 0 else grid[0][i]
+            bottom_prefix_sum[i] = bottom_prefix_sum[i - 1] + grid[1][i] if i > 0 else grid[1][i]
+
+        # Inicializar el mínimo del máximo de puntos que el segundo robot puede tomar
+        min_points = float('inf')
+
+        for i in range(n):
+            # Puntos disponibles si el primer robot corta en la columna i
+            points_top = top_prefix_sum[n - 1] - top_prefix_sum[i]
+            points_bottom = bottom_prefix_sum[i - 1] if i > 0 else 0
+            
+            # El segundo robot tomará el máximo de los dos caminos disponibles
+            second_robot_points = max(points_top, points_bottom)
+            
+            # Actualizar el mínimo
+            min_points = min(min_points, second_robot_points)
+
+        return min_points
