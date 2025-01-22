@@ -44,3 +44,55 @@ Constraints:
 
 """
 
+from typing import List
+from collections import deque
+
+class Solution:
+    def highestPeak(self, isWater: List[List[int]]) -> List[List[int]]:
+        
+        """
+        Se encarga de procesar una matriz de de valores binarios
+        y retornar una nueva matriz procesada.
+
+        Esta nueva matriz procesada es generada de forma que la altura
+        más alta de la matriz esté maximizada.
+
+        params:
+            isWater (List[List[int]])
+        
+        returns:
+            List[List[int]]
+        """
+
+        # Dimensiones de la matriz
+        m, n = len(isWater), len(isWater[0])
+
+        # Inicializamos la matriz de alturas con -1 (sin visitar)
+        height = [[-1 for _ in range(n)] for _ in range(m)]
+
+        # Cola para la BFS, inicialmente llena de las celdas de agua (altura 0)
+        queue = deque()
+        for i in range(m):
+            for j in range(n):
+                if isWater[i][j] == 1:
+                    height[i][j] = 0
+                    queue.append((i, j))
+
+        # Direcciones posibles: norte, este, sur, oeste
+        directions = [(-1, 0), (1, 0), (0, -1), (0, 1)]
+
+        # BFS para asignar alturas
+        while queue:
+            x, y = queue.popleft()
+
+            for dx, dy in directions:
+                nx, ny = x + dx, y + dy
+
+                # Verificar que la celda vecina está dentro de los límites y no ha sido visitada
+                if 0 <= nx < m and 0 <= ny < n and height[nx][ny] == -1:
+                    # Asignar la altura incrementada
+                    height[nx][ny] = height[x][y] + 1
+                    # Añadir la celda vecina a la cola para continuar la propagación
+                    queue.append((nx, ny))
+
+        return height
