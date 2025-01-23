@@ -35,3 +35,23 @@ s1 and s2 do not have leading or trailing spaces.
 All the words in s1 and s2 are separated by a single space.
 
 """
+
+from typing import List
+
+class Solution:
+    def uncommonFromSentences(self, s1: str, s2: str) -> List[str]:
+        
+        """
+        Se encarga de hallar aquellas palabras que solo
+        aparezcan una vez, teniendo en cuenta las cadenas 
+        recibidas como parámetro.
+
+        params:
+            s1 (str)
+            s2 (str)
+        
+        returns:
+            List[str]
+        """
+
+        return [word for word in f"{s1} {s2}".split(" ") if (f"{s1} {s2}".split(" ").count(word) == 1)]
