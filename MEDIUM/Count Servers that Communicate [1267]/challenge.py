@@ -39,3 +39,36 @@ n == grid[i].length
 grid[i][j] == 0 or 1
 
 """
+
+from typing import List
+
+class Solution:
+    def countServers(self, grid: List[List[int]]) -> int:
+        
+        """
+        Se encarga de contabilizar todos los servidores que se encuentran
+        comunicados dentro de una matriz binaria.
+
+        Un 1 en una posición de la matriz indica la presencia de un servidor,
+        mientras que un 0 representa la ausencia del mismo.
+
+        params:
+            grid (List[List[int]])
+        
+        returns:
+            int
+        """
+
+        # Filas y columnas dentro de la matriz
+        n, m = len(grid), len(grid[0])
+
+        # Mapeo el número de servidores por fila y columna
+        servers_in_rows = [sum(row) for row in grid]
+        servers_in_columns = [sum([grid[r][i] for r in range(n)]) for i in range(m)]    
+
+        communicated_servers = 0
+        for r in range(n):
+            for c in range(m):
+                if ((grid[r][c] == 1) and ((servers_in_rows[r] > 1) or (servers_in_columns[c] > 1))):
+                    communicated_servers += 1
+        return communicated_servers
