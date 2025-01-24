@@ -39,3 +39,45 @@ Constraints:
 
 """
 
+from typing import List
+from collections import defaultdict, deque
+
+class Solution:
+    def eventualSafeNodes(self, graph: List[List[int]]) -> List[int]:
+
+        """
+        Se encarga de verificar todos los nodos seguros de un grafo
+        recibido como parámetro, y retornar una lista ordenada con
+        estos nodos.
+
+        params:
+            graph (List[List[int]])
+        returns:
+            List[int]
+        """
+        
+        n = len(graph)
+        
+        # Paso 1: Construir el grafo invertido
+        reverse_graph = defaultdict(list)
+        out_degree = [0] * n  # Conteo de grados de salida de cada nodo
+        
+        for src, neighbors in enumerate(graph):
+            out_degree[src] = len(neighbors)
+            for dest in neighbors:
+                reverse_graph[dest].append(src)
+        
+        # Paso 2: Cola con nodos terminales (sin conexiones de salida)
+        queue = deque([i for i in range(n) if out_degree[i] == 0])
+        safe = [False] * n  # Marcar nodos seguros
+        
+        while queue:
+            current = queue.popleft()
+            safe[current] = True  # Marcar el nodo actual como seguro
+            # Reducir el grado de salida de sus padres en el grafo invertido
+            for parent in reverse_graph[current]:
+                out_degree[parent] -= 1
+                if out_degree[parent] == 0:
+                    queue.append(parent)
+        
+        return sorted([i for i in range(n) if safe[i]])
