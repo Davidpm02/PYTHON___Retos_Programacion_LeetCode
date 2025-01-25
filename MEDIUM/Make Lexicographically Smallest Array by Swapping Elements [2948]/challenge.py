@@ -47,3 +47,53 @@ Constraints:
 
 """
 
+from typing import List
+from collections import defaultdict
+import itertools
+
+class Solution:
+    def lexicographicallySmallestArray(self, nums: List[int], limit: int) -> List[int]:
+        
+        n = len(nums)
+        parent = list(range(n))
+        rank = [1] * n
+
+        # Encuentra el representante de un nodo con compresión de caminos.
+        def find(x):
+            if parent[x] != x:
+                parent[x] = find(parent[x])
+            return parent[x]
+
+        # Une dos conjuntos por rango para optimización.
+        def union(x, y):
+            root_x = find(x)
+            root_y = find(y)
+            if root_x != root_y:
+                if rank[root_x] > rank[root_y]:
+                    parent[root_y] = root_x
+                elif rank[root_x] < rank[root_y]:
+                    parent[root_x] = root_y
+                else:
+                    parent[root_y] = root_x
+                    rank[root_x] += 1
+
+        # Preprocesamiento para encontrar conexiones.
+        sorted_indices = sorted(range(n), key=lambda i: nums[i])
+        for i, j in zip(sorted_indices, sorted_indices[1:]):
+            if abs(nums[i] - nums[j]) <= limit:
+                union(i, j)
+
+        # Agrupo índices en componentes.
+        components = defaultdict(list)
+        for i in range(n):
+            components[find(i)].append(i)
+
+        # Construyo el resultado.
+        result = nums[:]
+        for indices in components.values():
+            values = sorted(nums[i] for i in indices)  # Ordeno los valores del componente.
+            indices.sort()  # Ordeno los índices originales.
+            for idx, val in zip(indices, values):
+                result[idx] = val
+
+        return result
