@@ -52,3 +52,64 @@ Constraints:
 
 """
 
+from typing import List
+
+from collections import deque
+
+class Solution:
+    def maximumInvitations(self, favorite: List[int]) -> int:
+
+        """
+        Se encarga de calcular el número de empleados que acudirán 
+        a una reunión en una mesa redonda.
+
+        La función trata de maximizar el número de empleados que 
+        acudirán, teniendo en cuenta que un empleado solo acudirá
+        si acude su empleado favorito, y que cada empleado solo puede
+        tener a dos empleados sentados a sus lados en la mesa.
+
+        params:
+            favorite (List[int])
+
+        returns:
+            int        
+        """
+
+        n = len(favorite)
+        
+        def max_cycle(fa: List[int]) -> int:
+            vis = [False] * n
+            max_cycle_len = 0
+            for i in range(n):
+                if vis[i]:
+                    continue
+                cycle = []
+                j = i
+                while not vis[j]:
+                    cycle.append(j)
+                    vis[j] = True
+                    j = fa[j]
+                for k, v in enumerate(cycle):
+                    if v == j:
+                        max_cycle_len = max(max_cycle_len, len(cycle) - k)
+                        break
+            return max_cycle_len
+        
+        def longest_chain(fa: List[int]) -> int:
+            indegree = [0] * n
+            for v in fa:
+                indegree[v] += 1
+            
+            q = deque(i for i in range(n) if indegree[i] == 0)
+            dist = [1] * n
+            
+            while q:
+                i = q.popleft()
+                dist[fa[i]] = max(dist[fa[i]], dist[i] + 1)
+                indegree[fa[i]] -= 1
+                if indegree[fa[i]] == 0:
+                    q.append(fa[i])
+            
+            return sum(dist[i] for i in range(n) if i == fa[fa[i]])
+        
+        return max(max_cycle(favorite), longest_chain(favorite))
