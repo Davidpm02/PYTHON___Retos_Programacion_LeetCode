@@ -48,3 +48,43 @@ Constraints:
 
 """
 
+from typing import List
+
+class Solution:
+    def checkIfPrerequisite(self, numCourses: int, prerequisites: List[List[int]], queries: List[List[int]]) -> List[bool]:
+        
+        """
+        Verifica si es posible tomar un número dado de cursos,
+        teniendo en cuenta los prerrequisitos de cada uno de ellos,
+        revisando todas las consultas que componen el proceso de 
+        estudios.
+
+        params:
+            numCourses (int)
+            prerequisites (List[List[int]])
+            queries (List[List[int]])
+        
+        returns:
+            List[bool]
+        """
+
+        # Paso 1: Inicializamos una matriz de alcance transitivo
+        reachable = [[False] * numCourses for _ in range(numCourses)]
+
+        # Paso 2: Marcamos las relaciones directas como verdaderas
+        for prereq in prerequisites:
+            reachable[prereq[0]][prereq[1]] = True
+
+        # Paso 3: Aplicamos el algoritmo de Floyd-Warshall para calcular el cierre transitivo
+        for k in range(numCourses):
+            for i in range(numCourses):
+                for j in range(numCourses):
+                    if reachable[i][k] and reachable[k][j]:
+                        reachable[i][j] = True
+
+        # Paso 4: Respondemos las consultas verificando la matriz de alcance
+        result = []
+        for u, v in queries:
+            result.append(reachable[u][v])
+
+        return result
