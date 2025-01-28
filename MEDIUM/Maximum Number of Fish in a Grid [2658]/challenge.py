@@ -40,3 +40,52 @@ Constraints:
 
 """
 
+from typing import List
+
+from collections import deque
+
+class Solution:
+    def findMaxFish(self, grid: List[List[int]]) -> int:
+
+        # Obtener las dimensiones de la malla
+        n = len(grid)
+        m = len(grid[0]) if n > 0 else 0
+
+        max_fish = 0  # Almacenará el máximo número de peces encontrado
+        directions = [(-1, 0), (1, 0), (0, -1), (0, 1)]  # Vecinos posibles (arriba, abajo, izquierda, derecha)
+
+        def bfs(start_row: int, start_col: int) -> int:
+            """
+            Realiza una búsqueda en amplitud (BFS) desde la posición (start_row, start_col).
+            Devuelve el número total de peces en la región conectada.
+            """
+            nonlocal grid  # Para modificar la variable 'grid' de manera no local
+
+            queue = deque()
+            queue.append((start_row, start_col))
+            fish_count = grid[start_row][start_col]
+            grid[start_row][start_col] = 0  # Marco como visitado
+
+            while queue:
+                row, col = queue.popleft()
+
+                for dr, dc in directions:
+                    new_row = row + dr
+                    new_col = col + dc
+
+                    # Verifico si las nuevas coordenadas están dentro de los límites y contienen peces
+                    if 0 <= new_row < n and 0 <= new_col < m and grid[new_row][new_col] != 0:
+                        fish_count += grid[new_row][new_col]
+                        grid[new_row][new_col] = 0  # Marco como visitado
+                        queue.append((new_row, new_col))
+
+            return fish_count
+
+        for i in range(n):
+            for j in range(m):
+                if grid[i][j] > 0:
+                    current_fish = bfs(i, j)
+                    if current_fish > max_fish:
+                        max_fish = current_fish
+
+        return max_fish
