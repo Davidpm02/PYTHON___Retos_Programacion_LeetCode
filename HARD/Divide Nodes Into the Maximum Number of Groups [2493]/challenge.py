@@ -46,3 +46,72 @@ Constraints:
 
 """
 
+from typing import List
+from collections import deque
+
+class Solution:
+    def magnificentSets(self, n: int, edges: List[List[int]]) -> int:
+        
+        """
+        Se encarga de contabilizar el número máximo de grupos
+        en los que se pueden separar los diferentes nodos del array
+        'edges' recibido como parámetro.
+
+        params:
+            n (int)
+            edges (List[List[int]])
+
+        returns:
+            int
+        """
+
+        # Construimos la representación del grafo con listas de adyacencia
+        graph = {i: [] for i in range(1, n + 1)}
+        for u, v in edges:
+            graph[u].append(v)
+            graph[v].append(u)
+        
+        # Función para comprobar si un componente es bipartito y obtener su tamaño máximo de grupos
+        def bfs(start):
+            queue = deque([(start, 1)])  # (nodo, nivel del grupo)
+            levels = {start: 1}
+            max_depth = 1
+            while queue:
+                node, level = queue.popleft()
+                for neighbor in graph[node]:
+                    if neighbor not in levels:
+                        levels[neighbor] = level + 1
+                        max_depth = max(max_depth, level + 1)
+                        queue.append((neighbor, level + 1))
+                    elif abs(levels[neighbor] - levels[node]) != 1:
+                        return -1  # No es bipartito
+            return max_depth
+        
+        # Detectar componentes conexos
+        visited = set()
+        components = []
+        
+        for node in range(1, n + 1):
+            if node not in visited:
+                component = []
+                queue = deque([node])
+                while queue:
+                    v = queue.popleft()
+                    if v not in visited:
+                        visited.add(v)
+                        component.append(v)
+                        queue.extend(graph[v])
+                components.append(component)
+        
+        # Para cada componente, verificar si es bipartito y calcular la máxima profundidad
+        total_groups = 0
+        for component in components:
+            max_groups = 0
+            for node in component:
+                depth = bfs(node)
+                if depth == -1:
+                    return -1
+                max_groups = max(max_groups, depth)
+            total_groups += max_groups
+        
+        return total_groups
