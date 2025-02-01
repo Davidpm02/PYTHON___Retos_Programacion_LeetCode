@@ -46,3 +46,27 @@ Constraints:
 
 """
 
+from typing import List
+
+class Solution:
+    def isArraySpecial(self, nums: List[int]) -> bool:
+        
+        """
+        Se encarga de verificar que cada par de enteros en 'nums'
+        mantienen una paridad diferente entre sí.
+
+        params:
+            nums (List[int])
+        returns:
+            bool
+        """
+
+        n = len(nums)
+
+        for i in range(n - 1):
+            try:
+                assert (((nums[i] % 2 == 0) and (nums[i + 1] % 2 != 0)) or
+                        ((nums[i] % 2 != 0) and (nums[i + 1] % 2 == 0)))
+            except AssertionError:
+                return False
+        return True
