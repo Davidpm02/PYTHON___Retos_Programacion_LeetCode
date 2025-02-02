@@ -38,3 +38,34 @@ Constraints:
 
 """
 
+from typing import List
+
+class Solution:
+    def check(self, nums: List[int]) -> bool:
+
+        """
+        Se encarga de verificar si una secuencia de enteros puede
+        obtenerse a partir de otra secuencia con los mismos enteros
+        en orden ascendente, aplicando un cierto número de rotaciones
+        en la secuencia.
+
+        params:
+            nums (List[int])
+        
+        returns:
+            bool
+        """
+
+        # Contador de discontinuidades en el orden no decreciente
+        count = 0
+        n = len(nums)
+        
+        for i in range(n):
+            if nums[i] > nums[(i + 1) % n]:  # Comparo con el siguiente, usando módulo para cerrar el ciclo
+                count += 1
+                
+                if count > 1:  # Si hay más de una discontinuidad, no es un array rotado correctamente
+                    return False
+        
+        return True
+
