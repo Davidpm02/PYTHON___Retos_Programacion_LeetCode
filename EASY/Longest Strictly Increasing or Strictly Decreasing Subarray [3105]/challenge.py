@@ -61,3 +61,56 @@ Constraints:
     1 <= nums[i] <= 50
 
 """
+
+from typing import List
+
+class Solution:
+    def longestMonotonicSubarray(self, nums: List[int]) -> int:
+        
+        """
+        Se encarga de verificar la longitud máxima de cualquier
+        subcadena de 'nums' cuyos elementos estén en orden 
+        ascendente o descendente.
+        
+        params:
+            nums (List[int])
+        
+        returns:
+            int
+        """
+
+        # Lógica para búsqueda de subarrays crecientes.
+        increasing_subarrays = []
+        last_subarray = []
+        for idx, num in enumerate(nums):
+            if (idx == 0):
+                last_subarray.append(num)
+            else:
+                if (num > nums[idx - 1]):
+                    last_subarray.append(num)
+                else:
+                    increasing_subarrays.append(last_subarray)
+                    last_subarray = [num]
+        increasing_subarrays.append(last_subarray)
+
+
+        # Lógica para búsqueda de subarrays decrecientes.
+        decreasing_subarrays = []
+        last_subarray = []
+        for idx, num in enumerate(nums):
+            if (idx == 0):
+                last_subarray.append(num)
+            else:
+                if (num < nums[idx - 1]):
+                    last_subarray.append(num)
+                else:
+                    decreasing_subarrays.append(last_subarray)
+                    last_subarray = [num]
+        decreasing_subarrays.append(last_subarray)
+
+        # Listas con las longitudes de cada subcadena.
+        lengths_increasing_subarrays = [len(subarray) for subarray in increasing_subarrays]
+        lengths_decreasing_subarrays = [len(subarray) for subarray in decreasing_subarrays]
+
+        # Retorno la máxima longitud de entre ambos tipos de subcadenas.
+        return max([max(lengths_increasing_subarrays), max(lengths_decreasing_subarrays)])
