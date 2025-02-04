@@ -35,3 +35,35 @@ Constraints:
     1 <= nums[i] <= 100
 
 """
+
+from typing import List
+
+class Solution:
+    def maxAscendingSum(self, nums: List[int]) -> int:
+        
+        """
+        Se encarga de hallar la suma máxima posible de los
+        elementos incluidos en todas las subsecuencias 
+        ascendentes del parámetro 'nums'.
+
+        params:
+            nums (List[int])
+        
+        returns:
+            int
+        """
+
+        sums_subarrays = []
+        last_subarray = []
+        for idx, num in enumerate(nums):
+            if (idx == 0):
+                last_subarray.append(num)
+            else:
+                if (num > nums[idx - 1]):
+                    last_subarray.append(num)
+                else:
+                    sums_subarrays.append(sum(last_subarray))
+                    last_subarray = [num]
+        sums_subarrays.append(sum(last_subarray))
+
+        return max(sums_subarrays)
