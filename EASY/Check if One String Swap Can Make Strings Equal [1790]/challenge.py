@@ -35,3 +35,33 @@ Constraints:
 
 """
 
+from collections import Counter
+class Solution:
+    def areAlmostEqual(self, s1: str, s2: str) -> bool:
+        
+        """
+        Se encarga de verificar si dos cadenas de texto pueden ser
+        idénticas si aplicamos un cambio entre los caracteres de 
+        dos índices (pueden ser el mismo índice) de una de las cadenas
+        recibidas como parámetro.
+
+        params:
+            s1 (str)
+            s2 (str)
+        
+        returns:
+            bool
+        """
+
+        try:
+            assert (Counter(s1) == Counter(s2))
+
+            diff_chars = 0
+            for idx, char in enumerate(s1):
+                if (char != s2[idx]):
+                    diff_chars += 1
+            assert (diff_chars in [0, 2]) # 0 --> cadenas iguales
+                                          # 2 --> dos caracteres distintos
+            return True
+        except AssertionError:
+            return False
