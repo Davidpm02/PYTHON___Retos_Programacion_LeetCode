@@ -32,3 +32,37 @@ Constraints:
     All elements in nums are distinct.
 
 """
+
+from typing import List
+from collections import defaultdict
+
+class Solution:
+    def tupleSameProduct(self, nums: List[int]) -> int:
+        """
+        Cuenta cuántas tuplas (a, b, c, d) cumplen con a * b = c * d.
+        Usa un diccionario para almacenar las combinaciones previamente calculadas.
+
+        params:
+            nums (List[int])
+
+        returns:
+            int
+        """
+        
+        product_count = defaultdict(int)
+        n = len(nums)
+        total_tuples = 0
+
+        # Genero todos los pares (a, b) de nums (sin repeticiones)
+        for i in range(n):
+            for j in range(i + 1, n):
+                product = nums[i] * nums[j]
+
+                # Si ya hemos encontrado este producto antes, sumamos las combinaciones posibles
+                if product in product_count:
+                    total_tuples += 8 * product_count[product]  # Cada combinación genera 8 tuplas válidas
+
+                # Aumento el conteo de este producto
+                product_count[product] += 1
+
+        return total_tuples
