@@ -49,3 +49,48 @@ Constraints:
     1 <= queries[i][1] <= 109
 
 """
+
+from typing import List
+
+class Solution:
+    def queryResults(self, limit: int, queries: List[List[int]]) -> List[int]:
+        
+        """
+        Retorna una lista cuyos elementos indican el número de bolas 
+        pintadas tras cada consulta del parámetro 'queries'.
+
+        params:
+            limit (int)
+            queries (List[List[int]])
+        
+        returns:
+            List[int]
+        """
+
+        # Diccionario para mapear cada bola a su color actual.
+        ball_to_color = {}
+        # Diccionario para llevar el conteo de bolas que tienen cada color.
+        color_count = {}
+        result = []
+        
+        for ball, new_color in queries:
+            # Si la bola ya tenía un color, decremento su frecuencia.
+            if ball in ball_to_color:
+                old_color = ball_to_color[ball]
+                color_count[old_color] -= 1
+                # Si ya no queda ninguna bola con ese color, lo elimino del diccionario.
+                if color_count[old_color] == 0:
+                    del color_count[old_color]
+            
+            # Actualizo el color de la bola.
+            ball_to_color[ball] = new_color
+            # Incremento la frecuencia del nuevo color.
+            if new_color in color_count:
+                color_count[new_color] += 1
+            else:
+                color_count[new_color] = 1
+            
+            # Agrego al resultado la cantidad actual de colores distintos.
+            result.append(len(color_count))
+        
+        return result
