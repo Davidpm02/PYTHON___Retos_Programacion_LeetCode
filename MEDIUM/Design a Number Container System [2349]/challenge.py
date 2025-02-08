@@ -41,3 +41,33 @@ Constraints:
     At most 105 calls will be made in total to change and find.
 
 """
+
+import heapq
+from collections import defaultdict
+
+class NumberContainers:
+    def __init__(self):
+        
+        self.index_to_number = {}
+        # Este diccionario mapea cada número a un heap (montículo) de índices.
+        self.num_to_heap = defaultdict(list)
+    
+    def change(self, index: int, number: int) -> None:
+        # Actualizo (o inserto) el número en el índice dado.
+        self.index_to_number[index] = number
+        
+        # Inserto el índice en el heap correspondiente al nuevo número.
+        heapq.heappush(self.num_to_heap[number], index)
+    
+    def find(self, number: int) -> int:
+        # Si el número no está presente en ningún contenedor, retorno -1.
+        if number not in self.num_to_heap:
+            return -1
+        
+        heap = self.num_to_heap[number]
+        
+        # Eliminación perezosa de los índices que ya no son válidos.
+        while heap and self.index_to_number.get(heap[0], None) != number:
+            heapq.heappop(heap)
+
+        return heap[0] if heap else -1
