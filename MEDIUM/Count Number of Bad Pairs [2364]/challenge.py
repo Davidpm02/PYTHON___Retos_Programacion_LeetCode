@@ -32,3 +32,42 @@ Constraints:
     1 <= nums[i] <= 109
 
 """
+
+from typing import List
+from collections import defaultdict
+class Solution:
+    def countBadPairs(self, nums: List[int]) -> int:
+        
+
+        """
+        Se encarga de hallar el número de 'Bad pairs' dentro
+        de un array recibido como parámetro.
+
+        Se define a una 'Bad Pair' como una pareja de índices
+        (i, j), tales que: j - i != nums[j] - nums[i].
+
+        params:
+            nums (List[int])
+
+        returns:
+            int 
+        """
+
+        # Podemos obtener el total de 'Bad Pairs' como 
+        # Total Pairs - Good Pairs = Bad Pairs
+
+        # Defino un contador para el número de parejas totales del array
+        n = len(nums)
+        total_pairs = int(n*(n - 1) / 2)
+
+        # Obtengo el total de 'Good pairs' en el array
+        # j−nums[j]=i−nums[i]
+        freq = defaultdict(int)  # Hashmap para contar valores de (i - nums[i])
+        good_pairs = 0
+
+        for i, num in enumerate(nums):
+            key = i - num
+            good_pairs += freq[key]  # Si ya hemos visto este key antes, suma a good_pairs
+            freq[key] += 1  # Aumentamos la frecuencia de este key
+        
+        return total_pairs - good_pairs
