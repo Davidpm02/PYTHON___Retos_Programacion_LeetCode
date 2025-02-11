@@ -41,3 +41,26 @@ Constraints:
     s​​​​​​ and part consists of lowercase English letters.
 
 """
+
+class Solution:
+    def removeOccurrences(self, s: str, part: str) -> str:
+        
+        """
+        Se encarga de eliminar todas las ocurrencias de la cadena
+        'part' en la cadena 's', ambos recibidos como parámetro.
+
+        La función lleva a cabo este proceso de eliminación de forma
+        repetida hasta que nos aseguramos de que la cadena 's' no
+        contenga ninguna subcadena de 'part'.
+
+        params:
+            s (str)
+            part (str)
+        
+        returns:
+            str
+        """
+
+        while (part in s):
+            s = s.replace(part, "", 1)
+        return s
