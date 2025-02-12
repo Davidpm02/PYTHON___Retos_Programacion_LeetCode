@@ -31,3 +31,37 @@ Constraints:
 
 """
 
+from typing import List
+class Solution:
+    def maximumSum(self, nums: List[int]) -> int:
+
+        """
+        Se encarga de hallar la suma máxima entre dos índices del
+        parámetro 'nums' cuya suma de dígitos del entero es la
+        misma en toda la pareja de índices.
+
+        params:
+            nums (List[int])
+        
+        returns:
+            int
+        """
+
+        digit_sum_map = {}
+
+        # Agrupamos los números por su suma de dígitos
+        for num in nums:
+            digit_sum = sum(int(d) for d in str(num))
+            if digit_sum not in digit_sum_map:
+                digit_sum_map[digit_sum] = []
+            digit_sum_map[digit_sum].append(num)
+
+        max_sum = -1
+
+        # Encontramos el máximo par para cada suma de dígitos
+        for values in digit_sum_map.values():
+            if len(values) > 1:
+                values.sort(reverse=True)  # Tomamos los dos mayores
+                max_sum = max(max_sum, values[0] + values[1])
+
+        return max_sum
