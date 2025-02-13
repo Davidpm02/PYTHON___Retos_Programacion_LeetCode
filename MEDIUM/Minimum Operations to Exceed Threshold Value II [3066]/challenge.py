@@ -45,3 +45,51 @@ Constraints:
     The input is generated such that an answer always exists. That is, there exists some sequence of operations after which all elements of the array are greater than or equal to k.
 
 """
+
+from typing import List
+import heapq
+
+class Solution:
+    def minOperations(self, nums: List[int], k: int) -> int:
+        
+        """
+        Se encarga de hallar el número mínimo de operaciones necesarias
+        para asegurar que todos los números contenidos en 'nums' son
+        iguales o mayores que 'k', tras aplicar un proceso de eliminación
+        e inserción de elementos de forma periódica.
+
+        params:
+            nums (List[int])
+            k (int)
+        
+        returns:
+            int
+        """
+
+        def isGreaterThanOrEqualToK(num:int, k:int) -> bool:
+            
+            """
+            Verifica si un número es mayor o igual a k.
+
+            params:
+                num (int)
+                k (int)
+            
+            returns:
+                bool
+            """
+
+            return True if (num >= k) else False
+        
+        # Defino un objeto PriorityQueue
+        queue = []
+        for num in nums:
+            heapq.heappush(queue, num)
+
+        # Contador de operaciones
+        performed_ops = 0
+        while not all(map(lambda x: isGreaterThanOrEqualToK(x, k), queue)):
+            small_int_1, small_int_2 = heapq.heappop(queue), heapq.heappop(queue) # Obtención y eliminación de los dos elementos más pequeños
+            heapq.heappush(queue, small_int_1 * 2 + small_int_2) 
+            performed_ops += 1
+        return performed_ops
