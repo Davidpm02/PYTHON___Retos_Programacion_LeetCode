@@ -46,3 +46,22 @@ Constraints:
 
 """
 
+class ProductOfNumbers:
+
+    def __init__(self):
+        self.products = [1]                 # Lista de productos acumulativos, inicializamos con 1 para facilitar cálculos.
+
+    def add(self, num: int) -> None:
+        if num == 0:
+            # Si agregamos un 0, reiniciamos la lista de productos acumulativos
+            self.products = [1]
+        else:
+            # Multiplicamos el último valor acumulado por el nuevo número
+            self.products.append(self.products[-1] * num)
+
+    def getProduct(self, k: int) -> int:
+        # Si k es mayor que la cantidad de elementos desde el último 0, retornamos 0
+        if k >= len(self.products):
+            return 0
+        # Devolvemos el cociente entre el último producto acumulado y el de k posiciones atrás
+        return self.products[-1] // self.products[-k-1]
