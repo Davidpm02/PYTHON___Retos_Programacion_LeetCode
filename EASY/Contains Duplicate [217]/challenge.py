@@ -37,7 +37,6 @@ Constraints:
 
 """
 
-from collections import Counter
 from typing import List
 class Solution:
     def containsDuplicate(self, nums: List[int]) -> bool:
@@ -52,12 +51,10 @@ class Solution:
             bool
         """
 
-        # Diccionario de mapeo de valores
-        counter = Counter(nums)
-        result = counter.most_common()
-        if result[0][-1] > 1:
+        # Defino un conjunto a partir del array nums
+        set_nums = set(nums)
+        if (len(set_nums) != len(nums)):
             return True
-        else:
-            return False
+        return False
 
         
