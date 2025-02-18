@@ -40,3 +40,40 @@ Constraints:
     pattern consists of only the letters 'I' and 'D'.
 
 """
+
+class Solution:
+    def smallestNumber(self, pattern: str) -> str:
+        
+        """
+        Se encarga de hallar la cadena de texto lexicográficamente más
+        pequeña posible que cumpla las condiciones:
+         - La cadena está compuesta por los dígitos comprendidos en el
+           rango [1, 9], donde cada dígito solo puede ser utilizado
+           una vez.
+         - Si pattern[i] == 'I' ===> num[i] < num[i + 1]
+         - Si pattern[i] == 'D' ===> num[i] > num[i + 1]
+
+        params:
+            pattern (str)
+        
+        returns:
+            str
+        """
+
+        result = []                     # Lista para almacenar el resultado final
+        stack = []                      # Lista que usaré como pila para manejar secuencias de 'D'
+        
+        # Recorro desde 0 hasta len(pattern) para cubrir el último dígito
+        for i in range(len(pattern) + 1):
+            # Agrego el dígito (i + 1) a la pila; lo hago en forma de string para facilitar la unión final
+            stack.append(str(i + 1))
+            
+            # Si llego al final del patrón o el carácter actual es 'I'
+            if i == len(pattern) or pattern[i] == 'I':
+                # Desapilo todos los elementos para formar la secuencia correcta
+                while stack:
+                    result.append(stack.pop())
+        
+        return ''.join(result)
+
+       
