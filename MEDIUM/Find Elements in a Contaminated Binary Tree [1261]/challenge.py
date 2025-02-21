@@ -67,3 +67,33 @@ Constraints:
     0 <= target <= 106
 
 """
+
+from typing import Optional
+
+# Definition for a binary tree node.
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+        
+class FindElements:
+
+    def __init__(self, root: Optional[TreeNode]):
+        self.values = set()  # Usamos un conjunto para almacenar los valores recuperados
+        self.recover_tree(root, 0)  # Iniciamos la recuperación con la raíz
+    
+    def recover_tree(self, node: Optional[TreeNode], value: int):
+        if node is None:
+            return
+        
+        # Asignamos el valor correcto al nodo y lo almacenamos en el conjunto
+        node.val = value
+        self.values.add(value)
+        
+        # Llamadas recursivas para recuperar los nodos izquierdo y derecho
+        self.recover_tree(node.left, 2 * value + 1)
+        self.recover_tree(node.right, 2 * value + 2)
+    
+    def find(self, target: int) -> bool:
+        return True if (target in self.values) else False
