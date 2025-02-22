@@ -5,12 +5,14 @@
 El ejercicio "Find Elements in a Contaminated Binary Tree" consiste en recuperar un árbol binario contaminado en el que todos los valores de los nodos han sido cambiados a `-1`. Se debe reconstruir el árbol siguiendo reglas específicas y luego implementar una función para determinar si un valor dado está presente en el árbol recuperado.
 
 Las reglas de recuperación del árbol son:
+
 - El nodo raíz (`root`) tiene el valor `0`.
 - Si un nodo tiene un valor `x`:
   - Su hijo izquierdo (`left`) tendrá el valor `2 * x + 1`.
   - Su hijo derecho (`right`) tendrá el valor `2 * x + 2`.
 
 Se debe implementar la clase `FindElements` que permite:
+
 1. Inicializar un árbol binario contaminado y recuperarlo.
 2. Verificar si un valor dado existe en el árbol recuperado.
 
