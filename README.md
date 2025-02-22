@@ -4,7 +4,7 @@
 
 Este repositorio contiene soluciones a ejercicios de programación de la página web [LeetCode](https://leetcode.com/), desarrolladas en Python.
 
-Cada carpeta dentro del repositorio corresponde a un reto específico, y dentro de ellas se encuentra el código Python que he escrito para resolver el problema. Además, cada carpeta contiene un archivo `test.py` que puedes ejecutar para someter la solución a pruebas.
+Cada carpeta dentro del repositorio corresponde a un reto específico, y dentro de ellas se encuentra el código Python que he escrito para resolver el problema. Además, cada carpeta contiene un archivo `tests.py` que puedes ejecutar para someter la solución a pruebas.
 
 ## Estructura
 
@@ -29,7 +29,7 @@ Una vez clonado, navega a la carpeta del reto que deseas ejecutar.
 Dentro de cada directorio de reto, encontrarás un archivo test.py que puedes ejecutar para probar la solución:
 
 ```bash
-python test.py
+python tests.py
 ```
 
 Asegúrate de tener instalada la versión adecuada de Python (cualquier versión superior a Python 3.6 servirá) en tu entorno de desarrollo.
