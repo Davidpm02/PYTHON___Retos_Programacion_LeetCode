@@ -1,4 +1,4 @@
-# Retos de programacion LeetCode en Python
+# Retos de programación LeetCode en Python
 
 <img src="https://i.imgur.com/shBSX54.png">
 
