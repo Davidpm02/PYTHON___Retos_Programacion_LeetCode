@@ -1,3 +1,3 @@
 # Retos de programacion LeetCode [HARD]
 
-<img src="https://i.imgur.com/mCv7IBa.png">
+<img src="https://i.imgur.com/NQu6ojt.png">
