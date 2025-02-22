@@ -34,3 +34,59 @@ Constraints:
     1 <= Node.val <= 109
 
 """
+
+from typing import Optional
+
+# Definition for a binary tree node.
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+        
+class Solution:
+    def recoverFromPreorder(self, traversal: str) -> Optional[TreeNode]:
+
+        """
+        Se encarga de recuperar un arbol binario a partir de una cadena
+        de texto cada, que representa la estructura en cuanto a valores
+        de los nodos y los diferentes niveles que este tiene.
+
+        params:
+            traversal (str)
+        
+        returns:
+            Optional[TreeNode]
+        """
+        
+        stack = []  # Pila para rastrear los nodos
+        i = 0  # Índice para recorrer la cadena
+        
+        while i < len(traversal):
+            depth = 0
+            while i < len(traversal) and traversal[i] == '-':
+                depth += 1
+                i += 1  # Contamos los guiones para la profundidad
+            
+            start = i  # Inicio del número
+            while i < len(traversal) and traversal[i].isdigit():
+                i += 1  # Extraemos el número completo
+            
+            value = int(traversal[start:i])  # Convertimos el valor a entero
+            node = TreeNode(value)
+            
+            # Si la pila tiene más elementos de la profundidad actual, retrocedemos en un elemento
+            while len(stack) > depth:
+                stack.pop()
+            
+            # Conectamos el nuevo nodo con su padre
+            if stack:
+                if not stack[-1].left:
+                    stack[-1].left = node
+                else:
+                    stack[-1].right = node
+            
+            # Añadimos el nodo actual a la pila
+            stack.append(node)
+        
+        return stack[0]  # La raíz del árbol es el primer nodo agregado
