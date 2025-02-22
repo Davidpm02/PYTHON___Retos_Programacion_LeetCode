@@ -1,6 +1,6 @@
 # Retos de programación LeetCode en Python
 
-<img src="https://i.imgur.com/shBSX54.png">
+<img src="https://i.imgur.com/Sdn9pdD.png">
 
 Este repositorio contiene soluciones a ejercicios de programación de la página web [LeetCode](https://leetcode.com/), desarrolladas en Python.
 
