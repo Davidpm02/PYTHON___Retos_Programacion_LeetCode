@@ -2,7 +2,7 @@
 
 <img src="https://i.imgur.com/shBSX54.png">
 
-Este repositorio contiene soluciones a ejercicios de programación de la página web LeetCode, desarrolladas en Python.
+Este repositorio contiene soluciones a ejercicios de programación de la página web [LeetCode](https://leetcode.com/), desarrolladas en Python.
 
 Cada carpeta dentro del repositorio corresponde a un reto específico, y dentro de ellas se encuentra el código Python que he escrito para resolver el problema. Además, cada carpeta contiene un archivo `test.py` que puedes ejecutar para someter la solución a pruebas.
 
@@ -19,7 +19,7 @@ Las soluciones dentro de este repositorio están categorizadas según el nivel d
 Para empezar a usar las soluciones de este repositorio, clona el repositorio en tu máquina local:
 
 ```bash
-git clone [https://github.com/tu_usuario/tu_repositorio.git](https://github.com/Davidpm02/PYTHON___Retos_Programacion_LeetCode)
+git clone https://github.com/Davidpm02/PYTHON___Retos_Programacion_LeetCode
 ```
 
 Una vez clonado, navega a la carpeta del reto que deseas ejecutar.
