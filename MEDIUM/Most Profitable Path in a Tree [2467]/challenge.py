@@ -61,3 +61,76 @@ Constraints:
     amount[i] is an even integer in the range [-104, 104].
 
 """
+
+from typing import List
+from collections import defaultdict
+import sys
+
+class Solution:
+    def mostProfitablePath(self, edges: List[List[int]], bob: int, amount: List[int]) -> int:
+        # Aumento el límite de recursión para asegurarme de poder recorrer árboles con hasta 10^5 nodos.
+        sys.setrecursionlimit(10**6)
+        n = len(amount)
+        
+        # Construyo el grafo (lista de adyacencia) a partir de los bordes
+        graph = defaultdict(list)
+        for u, v in edges:
+            graph[u].append(v)
+            graph[v].append(u)
+        
+        # Utilizo un DFS/BFS desde la raíz (nodo 0) para calcular el padre y la profundidad (tiempo de llegada de Alice) de cada nodo
+        parent = [-1] * n   # Almaceno el padre de cada nodo
+        depth = [0] * n     # Almaceno la profundidad (distancia desde la raíz) de cada nodo
+        
+        # Uso una pila para el DFS
+        stack = [0]
+        visited = {0}
+        while stack:
+            node = stack.pop()
+            for neigh in graph[node]:
+                if neigh not in visited:
+                    visited.add(neigh)
+                    parent[neigh] = node
+                    depth[neigh] = depth[node] + 1
+                    stack.append(neigh)
+        
+        # Calculo los tiempos de llegada de Bob a los nodos a lo largo de su camino desde 'bob' hasta la raíz
+        # Inicializo todos los tiempos de Bob como infinito (Bob no visita esos nodos)
+        bob_time = [float('inf')] * n
+        t = 0
+        node = bob
+        # Mientras no se llegue a la raíz (parent = -1), asigno el tiempo en el que Bob llega a cada nodo
+        while node != -1:
+            bob_time[node] = t
+            t += 1
+            node = parent[node]
+        
+        # Ahora realizo un DFS desde la raíz para explorar todas las rutas raíz-hoja y calcular la ganancia neta de Alice.
+        max_profit = -float('inf')
+        
+        def dfs(node: int, curr_time: int, curr_profit: int, parent_node: int):
+            nonlocal max_profit
+            
+            # Calculo la ganancia para el nodo actual según el tiempo de llegada de Alice (curr_time)
+            # y el tiempo en que Bob llega a este nodo (bob_time[node]).
+            if curr_time < bob_time[node]:
+                # Si Alice llega antes, obtengo el monto completo (positivo o negativo)
+                curr_profit += amount[node]
+            elif curr_time == bob_time[node]:
+                # Si llegan al mismo tiempo, comparto el monto (mitad para Alice)
+                curr_profit += amount[node] // 2
+            # Si curr_time > bob_time[node], Bob ya abrió la puerta y Alice no obtiene ni paga nada.
+            
+            # Si el nodo actual es hoja (exceptuando la raíz), actualizo la ganancia máxima.
+            if node != 0 and len(graph[node]) == 1:
+                max_profit = max(max_profit, curr_profit)
+                return
+            
+            # Recorro los nodos vecinos, evitando volver al nodo padre para no retroceder
+            for neigh in graph[node]:
+                if neigh != parent_node:
+                    dfs(neigh, curr_time + 1, curr_profit, node)
+        
+        # Inicio el DFS desde la raíz (nodo 0) con tiempo 0 y ganancia 0
+        dfs(0, 0, 0, -1)
+        return max_profit
