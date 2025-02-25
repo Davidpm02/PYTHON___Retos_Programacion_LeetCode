@@ -36,3 +36,40 @@ Constraints:
     1 <= arr[i] <= 100
 
 """
+
+from typing import List
+class Solution:
+    def numOfSubarrays(self, arr: List[int]) -> int:
+        
+        """
+        Se encarga de obtener el total de subarrays contiguas
+        entre sí con una suma de elementos impar, a partir del array
+        'arr'.
+
+        params:
+            arr (List[int])
+        
+        returns:
+            int
+        """
+
+        MOD = 10**9 + 7
+        
+        odd_count = 0  # Cantidad de sumas acumuladas impares encontradas
+        even_count = 1  # Inicializamos en 1 porque una suma de 0 es considerada par
+        prefix_sum = 0  # Suma acumulativa
+        result = 0  # Contador de subarrays con suma impar
+
+        for num in arr:
+            prefix_sum += num
+            
+            if prefix_sum % 2 == 0:  # Si la suma acumulada es par
+                result += odd_count  # Solo los prefijos impares previos generan suma impar
+                even_count += 1  # Incremento el número de prefijos pares
+            else:  # Si la suma acumulada es impar
+                result += even_count  # Solo los prefijos pares previos generan suma impar
+                odd_count += 1  # Incremento el número de prefijos impares
+            
+            result %= MOD  # Aplicamos módulo según el problema
+        
+        return result
