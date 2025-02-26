@@ -32,3 +32,35 @@ Constraints:
     -104 <= nums[i] <= 104
 
 """
+
+from typing import List
+class Solution:
+    def maxAbsoluteSum(self, nums: List[int]) -> int:
+        
+        """
+        Se encarga de hallar la máxima suma (en valor absoluto) 
+        de cualquier subarray que pueda obtenerse a partir del
+        array 'nums' recibido como parámetro.
+
+        params:
+            nums (List[int])
+        
+        returns:
+            int
+        """
+
+        # Variables de referencia inicializadas a 0
+        max_sum = 0
+        min_sum = 0
+        actual_max_sum = 0
+        actual_min_sum = 0
+
+        # Itero sobre la lista de números actualizando las referencias
+        for num in nums:
+            actual_max_sum = max(num, actual_max_sum + num)
+            max_sum = max(max_sum, actual_max_sum)
+
+            actual_min_sum = min(num, actual_min_sum + num)
+            min_sum = min(min_sum, actual_min_sum)
+
+        return max(max_sum, abs(min_sum))
