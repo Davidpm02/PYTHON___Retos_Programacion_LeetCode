@@ -43,3 +43,46 @@ Constraints:
     0 <= nums[i] <= 1000
 
 """
+
+from typing import List
+class Solution:
+    def applyOperations(self, nums: List[int]) -> List[int]:
+        
+        """
+        Se encarga de aplicar un conjunto de operaciones a un 
+        array recibido como parámetro, y retornar el resultado
+        de aplicar estas transformaciones.
+
+        params:
+            nums (List[int])
+        
+        returns:
+            List[int]
+        """
+
+        n = len(nums)
+        
+        # Primera operación 
+        for i in range(0, n - 1):
+            if (nums[i] == nums[i + 1]):
+                nums[i] *= 2
+                nums[i + 1] = 0
+        
+        # Total de números distintos de 0
+        distinct_zero = 0
+        for num in nums:
+            if (num != 0):
+                distinct_zero += 1
+
+        # Segunda operación (desplazamiento de ceros)
+        isShifted = False
+        while (not isShifted):
+            for i in range(0, n - 1):
+                if (nums[i] == 0):
+                    del nums[i]
+                    nums.append(0)
+                    break
+            if (0 not in nums[: distinct_zero]):  # Me aseguro de haber desplazado todos los ceros
+                isShifted = True
+                break
+        return nums
