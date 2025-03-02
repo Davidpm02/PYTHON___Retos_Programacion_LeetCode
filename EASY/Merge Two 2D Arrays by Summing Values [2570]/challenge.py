@@ -41,3 +41,40 @@ Both arrays are in strictly ascending order by id.
 
 """
 
+from typing import List
+class Solution:
+    def mergeArrays(self, nums1: List[List[int]], nums2: List[List[int]]) -> List[List[int]]:
+        
+        """
+        Se encarga de unificar los elementos de comunes y no comunes
+        de dos arrays recibidos como parámetro, en un nuevo array
+        que contenga todos los índices que se encuentran en ambos arrays
+        y cuyos valores se sumen entre sí.
+
+        params:
+            nums1 (List[List[int]])
+            nums2 (List[List[int]])
+        
+        returns:
+            List[List[int]]
+        """
+
+        # Inicilizo un diccionario de mapeo de los elementos en ambos
+        # arrays.
+        elements_hashmap = dict()
+        for element in nums1:
+            if (element[0] not in elements_hashmap):
+                elements_hashmap[element[0]] = element[1]
+            else:
+                elements_hashmap[element[0]] += element[1]
+            
+        for element in nums2:
+            if (element[0] not in elements_hashmap):
+                elements_hashmap[element[0]] = element[1]
+            else:
+                elements_hashmap[element[0]] += element[1]
+        
+        # Ordeno el diccionario y convierto agrego los pares en una lista.
+        elements_hashmap = dict(sorted(elements_hashmap.items()))
+        result_array = [[index, value] for index, value in elements_hashmap.items()]
+        return result_array
