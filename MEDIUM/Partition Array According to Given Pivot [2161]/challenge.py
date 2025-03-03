@@ -37,3 +37,41 @@ pivot equals to an element of nums.
 
 """
 
+from typing import List
+class Solution:
+    def pivotArray(self, nums: List[int], pivot: int) -> List[int]:
+        
+        """
+        Se encarga de construir y retornar un array cuyos elementos
+        se encuentran dentro del parámetro 'nums', pero ordenados
+        en función de su valor con respecto al parámetro 'pivot'.
+
+        params:
+            nums (List[int])
+            pivot (int)
+
+        returns:
+            List[int]
+        """
+
+        # Diccionario de mapeo de dígitos
+        numsPivotDict = {
+            "lower_pivot": [],
+            "pivot": [],
+            "higher_pivot": []
+        }
+        
+        # Relleno el diccionario de mapeo
+        for num in nums:
+            if (num == pivot):
+                numsPivotDict["pivot"].append(num)
+            elif (num < pivot):
+                numsPivotDict["lower_pivot"].append(num)
+            elif (num > pivot):
+                numsPivotDict["higher_pivot"].append(num)
+        
+        # Lista de resultado
+        result_array = []
+        for key, value in numsPivotDict.items():
+            result_array.extend(value)
+        return result_array
