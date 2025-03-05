@@ -29,3 +29,36 @@ Constraints:
 1 <= n <= 105
 
 """
+
+class Solution:
+    def coloredCells(self, n: int) -> int:
+
+        """
+        Se encarga de contar el número de celdas coloreadas de una
+        matriz tras 'n' minutos, en un espacio bidimensional de
+        tamaño infinito.
+
+        La función tiene en cuenta que:
+         - Al primer minuto se colorea una única celda, situada
+           en cualquier punto del espacio infinito.
+         - Tras cada minuto, se colorea cualquier celda sin color
+           que esté en contacto con alguna celda coloreada.
+
+        params:
+            n (int)
+        
+        returns:
+            int
+        """
+        
+        # Inicializo una variable contadora de las celdas coloreadas
+        colored_cells = 1
+
+        if (n == 2):
+            colored_cells = 5
+        elif (n == 3):
+            colored_cells = 13
+        elif (n > 3):
+            colored_cells = n**2 + (n-1)**2
+
+        return colored_cells
