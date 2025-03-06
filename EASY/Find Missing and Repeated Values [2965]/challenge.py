@@ -31,3 +31,31 @@ Constraints:
 
 """
 
+from typing import List
+class Solution:
+    def findMissingAndRepeatedValues(self, grid: List[List[int]]) -> List[int]:
+        
+        # Defino un diccionario que mapea las apariciones de cada entero 
+        # en el rango [1, n**2]
+        reps_nums_dict = {num:0 for num in range(1, (len(grid)** 2) + 1)}
+
+        # Defino una lista con todos los números en la matriz
+        nums_in_grid = []
+        for row in grid:
+            nums_in_grid.extend(row)
+        
+        # Recorro la lista de números y actualizo sus repeticiones en el 
+        # diccionario
+        for num in nums_in_grid:
+            reps_nums_dict[num] +=1
+        
+        # Retorno una lista con el número repetido y aquel que no se ha
+        # incluido en la matriz
+        twice_number = None
+        missing_number = None
+        for num, reps in reps_nums_dict.items():
+            if (reps == 2):
+                twice_number = num
+            elif (reps == 0):
+                missing_number = num
+        return [twice_number, missing_number]
