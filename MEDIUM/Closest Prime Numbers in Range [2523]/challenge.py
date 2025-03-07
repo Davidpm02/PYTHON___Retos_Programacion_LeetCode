@@ -34,3 +34,48 @@ Constraints:
     1 <= left <= right <= 106
 
 """
+
+from typing import List
+import math
+
+class Solution:
+    def closestPrimes(self, left: int, right: int) -> List[int]:
+        """
+        Encuentra el par de números primos en el rango [left, right]
+        con la menor diferencia.
+
+        params:
+            left (int): Límite inferior del rango.
+            right (int): Límite superior del rango.
+
+        returns:
+            List[int]
+        """
+
+        # 1. Genero números primos hasta `right` usando la Criba de Eratóstenes
+        LIMIT = right + 1
+        is_prime = [True] * LIMIT
+        is_prime[0] = is_prime[1] = False  # 0 y 1 no son primos
+
+        for num in range(2, int(math.sqrt(LIMIT)) + 1):
+            if is_prime[num]:  
+                for multiple in range(num * num, LIMIT, num):
+                    is_prime[multiple] = False
+
+        # 2. Extraigo los primos en el rango [left, right]
+        primes = [num for num in range(left, right + 1) if is_prime[num]]
+
+        if len(primes) < 2:
+            return [-1, -1]
+
+        # 3. Encuentro el par de primos más cercano
+        min_gap = float('inf')
+        best_pair = [-1, -1]
+
+        for i in range(len(primes) - 1):
+            gap = primes[i + 1] - primes[i]
+            if gap < min_gap:
+                min_gap = gap
+                best_pair = [primes[i], primes[i + 1]]
+
+        return best_pair
