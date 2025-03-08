@@ -39,3 +39,38 @@ Constraints:
     1 <= k <= n
 
 """
+
+class Solution:
+    def minimumRecolors(self, blocks: str, k: int) -> int:
+        
+        """
+        Se encarga de hallar el mínimo número de bloques a pintar
+        dentro de la cadena 'blocks' para que existan un total de 
+        'k' bloques negros consecutivos.
+
+        params:
+            blocks (str)
+            k (int)
+        
+        returns:
+            int
+        """
+
+        init_idx = 0
+        min_colors_to_consecutive_black = []
+        while ((init_idx + k) <= len(blocks)):
+            substring = blocks[init_idx : k + init_idx]
+            black_blocks_in_substring = substring.count('B')
+            if (black_blocks_in_substring >= k):
+                return 0
+            
+            # Número de bloques blancos
+            white_blocks_in_substring = substring.count('W')
+            
+            # Si blancos + negros suple el número 'k' necesario, se añade
+            # el mínimo necesario a la lista.
+            if (white_blocks_in_substring + black_blocks_in_substring >= k):
+                min_colors_to_consecutive_black.append(k - black_blocks_in_substring)
+            init_idx += 1
+        
+        return min(min_colors_to_consecutive_black)
