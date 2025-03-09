@@ -51,3 +51,44 @@ Constraints:
     3 <= k <= colors.length
 
 """
+
+from typing import List
+class Solution:
+    def numberOfAlternatingGroups(self, colors: List[int], k: int) -> int:
+        
+        """
+        Se encarga de hallar el total de grupos alternantes donde el
+        número de fragmentos alternados sea igual a 'k'.
+
+        params:
+            colors (List[int])
+            k (int)
+        
+        returns:
+            int
+        """
+
+        n = len(colors)
+
+        # Si el grupo completo es de longitud k=1, en teoría siempre sería alternante.
+        diff = [1 if colors[i] != colors[(i+1) % n] else 0 for i in range(n)]
+        
+        # Extiendo el arreglo diff con los primeros (k-2) elementos.
+        ext_diff = diff + diff[:k-2]
+        
+        # Calculo la suma de la primera ventana de tamaño (k-1), ya que un grupo alternante
+        # debe tener (k-1) diferencias verdaderas.
+        window_sum = sum(ext_diff[:k-1])
+        count = 0
+        # Si la suma es igual a k-1 --> todos los pares en la ventana son alternantes.
+        if window_sum == k-1:
+            count += 1
+
+        # Recorro las ventanas deslizantes a partir de la posición 1 hasta n-1
+        for i in range(1, n):
+            # Resto el valor que sale de la ventana y sumo el nuevo valor que entra
+            window_sum = window_sum - ext_diff[i-1] + ext_diff[i + k - 2]
+            if window_sum == k-1:
+                count += 1
+        
+        return count
