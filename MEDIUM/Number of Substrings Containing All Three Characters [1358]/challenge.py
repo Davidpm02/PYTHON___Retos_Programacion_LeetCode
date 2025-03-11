@@ -33,3 +33,35 @@ Constraints:
 
 """
 
+from itertools import permutations
+class Solution:
+    def numberOfSubstrings(self, s: str) -> int:
+        
+        """
+        Se encarga de hallar el número de subcadenas que pueden
+        formarse a partir de los caracteres de 's'.
+        Para que una subcadena sea considerada válida, debe contener,
+        al menos, una repetición de cada uno de los caracteres que 
+        conforman 's'.
+
+        params:
+            s (str)
+        
+        returns:
+            int
+        """
+
+        count = {'a': 0, 'b': 0, 'c': 0}  # Contador de caracteres
+        left = 0  # Puntero izquierdo
+        result = 0  # Contador de substrings válidas
+
+        for right in range(len(s)):
+            count[s[right]] += 1  # Agrego el nuevo carácter a la ventana
+
+            # Verifico si la ventana es válida (tiene al menos un a, b y c)
+            while all(count[char] > 0 for char in "abc"):
+                result += len(s) - right  # Todas las substrings desde left hasta el final son válidas
+                count[s[left]] -= 1  # Reduzco el conteo del carácter en left
+                left += 1  # Muevo el puntero izquierdo
+
+        return result
