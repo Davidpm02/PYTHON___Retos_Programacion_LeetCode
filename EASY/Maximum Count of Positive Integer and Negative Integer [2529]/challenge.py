@@ -37,3 +37,33 @@ Constraints:
 
 """
 
+from typing import List
+
+class Solution:
+    def maximumCount(self, nums: List[int]) -> int:
+        
+        """
+        Se encarga de retornar el máximo valor, en función
+        del número de enteros positivos y enteros negativos
+        que existan dentro del array 'nums'.
+
+        params:
+            nums (List[int])
+        
+        returns:
+            int
+        """
+
+
+        # Solución 0(N).
+        # Inicializo dos contadores vacíos y los actualizo según los
+        # números.
+        positive_integers = 0
+        negative_integers = 0
+        for num in nums:
+            if (num > 0):
+                positive_integers += 1
+            elif (num < 0):
+                negative_integers += 1
+        
+        return max([positive_integers, negative_integers])
