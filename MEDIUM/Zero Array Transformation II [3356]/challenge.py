@@ -56,3 +56,66 @@ Constraints:
     1 <= vali <= 5
 
 """
+
+from typing import List
+class Solution:
+    def minZeroArray(self, nums: List[int], queries: List[List[int]]) -> int:
+        
+        """
+        Se encarga de hallar el número mínimo de consultas necesarias
+        para convertir nums en una 'matriz cero'. 
+        
+        Una 'matriz cero' es una matriz con todos los elementos iguales a 0.
+        Cada consulta permite disminuir elementos en un rango especificado 
+        como máximo en un valor dado.
+
+        params:
+            nums (List[int])
+            queries (List[List[int]])
+        
+        returns:
+            int
+        """
+
+        # Verificamos si nums ya es un Zero Array
+        if all(num == 0 for num in nums):
+            return 0
+        
+        n = len(nums)
+        m = len(queries)
+        
+        # Función para verificar si podemos obtener un Zero Array con k consultas
+        def can_make_zero_array(k):
+            # Usamos un difference array para eficientemente aplicar las operaciones de rango
+            diff = [0] * (n + 1)
+            
+            # Aplicamos las primeras k consultas
+            for i in range(k):
+                l, r, val = queries[i]
+                diff[l] += val  # Añadimos val en la posición l
+                diff[r + 1] -= val  # Restamos val en la posición r+1
+            
+            # Reconstruimos el array después de aplicar las consultas
+            # y verificamos si podemos reducir todo a 0
+            decrement = 0
+            for i in range(n):
+                decrement += diff[i]  # Acumulamos la diferencia
+                if decrement < nums[i]:  # Si no podemos reducir este elemento a 0
+                    return False
+            
+            return True
+        
+        # Búsqueda binaria para encontrar el mínimo k
+        left, right = 0, m
+        while left < right:
+            mid = (left + right) // 2
+            if can_make_zero_array(mid):
+                right = mid
+            else:
+                left = mid + 1
+        
+        # Si no podemos obtener un Zero Array incluso después de todas las consultas
+        if left == m and not can_make_zero_array(m):
+            return -1
+        
+        return left
