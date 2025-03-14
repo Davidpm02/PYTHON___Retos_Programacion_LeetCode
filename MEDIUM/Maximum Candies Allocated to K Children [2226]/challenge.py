@@ -31,3 +31,38 @@ Constraints:
 
 """
 
+from typing import List
+class Solution:
+    def maximumCandies(self, candies: List[int], k: int) -> int:
+        
+        """
+        Se encarga de hallar el máximo número de caramelos que
+        pueden recibir un número 'k' de niños, tomando como
+        partida los montones 'i' de caramelos en 'candies'
+        (candies[i, ..., n]).
+
+        params:
+            candies (List[int])
+            k (int)
+        
+        returns:
+            int
+        """
+
+        if sum(candies) < k:  
+            return 0  # No hay suficientes caramelos para cada niño
+
+        left, right = 1, max(candies)
+        best = 0  # Almacenamos la mejor cantidad de caramelos encontrada
+
+        while left <= right:
+            mid = (left + right) // 2
+            count = sum(c // mid for c in candies)  # Calculamos cuántos montones de tamaño 'mid' podemos formar
+
+            if count >= k:
+                best = mid  # Es posible asignar al menos 'k' montones de tamaño 'mid', intentamos mayor tamaño
+                left = mid + 1
+            else:
+                right = mid - 1  # 'mid' es muy grande, probamos con valores más pequeños
+
+        return best
