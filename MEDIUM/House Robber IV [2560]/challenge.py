@@ -39,3 +39,52 @@ Constraints:
     1 <= k <= (nums.length + 1)/2
 
 """
+
+from typing import List
+class Solution:
+    def minCapability(self, nums: List[int], k: int) -> int:
+        
+        """
+        Se encargan de hallar la capacidad mínima del ladrón
+        de entre todas las formas posibles de robar al menos 'k' casas.
+
+        params:
+            nums (List[int])
+            k (int)
+
+        returns:
+            int 
+        """
+
+        # Función para verificar si con una capacidad dada podemos robar al menos k casas
+        def can_steal(capability):
+            # Contador de casas robadas
+            count = 0
+            i = 0
+            
+            while i < len(nums):
+                # Si podemos robar esta casa (el dinero es <= que nuestra capacidad)
+                if nums[i] <= capability:
+                    count += 1
+                    i += 2  # Saltamos a la siguiente casa no adyacente
+                else:
+                    i += 1  # No robamos esta casa, revisamos la siguiente
+            
+            # Retornamos True si podemos robar k o más casas
+            return count >= k
+        
+        # Búsqueda binaria para encontrar la capacidad mínima
+        left = min(nums)  # La capacidad mínima posible es el mínimo valor en nums
+        right = max(nums)  # La capacidad máxima posible es el máximo valor en nums
+        
+        while left < right:
+            mid = left + (right - left) // 2
+            
+            if can_steal(mid):
+                # Si podemos robar k casas con esta capacidad, intentamos con una menor
+                right = mid
+            else:
+                # Si no podemos, necesitamos aumentar la capacidad
+                left = mid + 1
+        
+        return left
