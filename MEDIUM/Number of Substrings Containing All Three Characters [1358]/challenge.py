@@ -33,7 +33,6 @@ Constraints:
 
 """
 
-from itertools import permutations
 class Solution:
     def numberOfSubstrings(self, s: str) -> int:
         
