@@ -37,3 +37,42 @@ Constraints:
 
 """
 
+from typing import List
+from collections import Counter
+
+class Solution:
+    def divideArray(self, nums: List[int]) -> bool:
+        
+
+        """
+        Se encarga de verificar si es posible dividir el array 'nums'
+        en un conjunto de n parejas, donde:
+         - Cada elemento pertenece únicamente a una pareja.
+         - Los elementos presentes en una pareja deben ser iguales.
+
+        params:
+            nums (List[int])
+        
+        returns:
+            bool
+        """
+
+        # Me aseguro primero de que 'nums' contiene un número par
+        # de elementos
+        n = len(nums)
+        if (n % 2 != 0):
+            return False
+
+        # Contador de apariciones de cada entero en 'nums'
+        reps_per_num = Counter(nums)
+
+        # Inicializo una variable booleana que refleje la posibilidad
+        # de crear un conjunto de n parejas con los mismos elementos
+        isValid = True
+        for num, reps in reps_per_num.items():
+            if (isValid == False):
+                break
+            
+            if (reps % 2 != 0):
+                isValid = False
+        return isValid
