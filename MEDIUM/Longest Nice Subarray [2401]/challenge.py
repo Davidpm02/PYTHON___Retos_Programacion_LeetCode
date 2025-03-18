@@ -37,3 +37,36 @@ Constraints:
     1 <= nums[i] <= 109
 
 """
+
+from typing import List
+class Solution:
+    def longestNiceSubarray(self, nums: List[int]) -> int:
+        
+        """
+        Se encarga de hallar el subarray de mayor longitud dentro del
+        array 'nums', cumpliendo las condiciones del enunciado.
+
+        params:
+            nums (List[int])
+        
+        returns:
+            int
+        """
+
+        bit_mask = 0  # Máscara de bits para verificar el AND bit a bit
+        left = 0  # Puntero izquierdo de la ventana
+        max_length = 0  # Longitud máxima del subarray nice
+        
+        for right in range(len(nums)):
+            # Mientras el número actual no cumpla la condición AND == 0
+            while (bit_mask & nums[right]) != 0:
+                bit_mask ^= nums[left]  # Eliminar el efecto de nums[left] de la máscara
+                left += 1  # Mover el puntero izquierdo para reducir la ventana
+            
+            # Incluir nums[right] en la ventana actual
+            bit_mask |= nums[right]
+            
+            # Calcular la longitud de la ventana actual
+            max_length = max(max_length, right - left + 1)
+        
+        return max_length
