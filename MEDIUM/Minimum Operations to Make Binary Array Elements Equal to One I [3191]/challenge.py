@@ -46,3 +46,41 @@ Constraints:
 
 """
 
+from typing import List
+class Solution:
+    def minOperations(self, nums: List[int]) -> int:
+
+        """
+        Se encarga de hallar el número mínimo de operaciones
+        a llevar a cabo dentro del array 'nums' para convertir todos
+        los elementos a 1.
+
+        Los movimientos se aplican en tripletes de números consecutivos.
+
+        params:
+            nums (List[int])
+        
+        returns:
+            int
+        """    
+
+        n = len(nums)
+        flips = 0  # Contador de operaciones
+        flip_effect = [0] * (n + 1)  # Array auxiliar para rastrear los flips
+        curr_flips = 0  # Contador de flips en la ventana
+        
+        for i in range(n - 2): 
+            curr_flips += flip_effect[i]  # Aplicamos los flips previos
+            
+            if (nums[i] + curr_flips) % 2 == 0:  # Si el bit sigue siendo 0 después de los flips previos
+                flips += 1
+                curr_flips += 1  # Aplicamos un flip
+                flip_effect[i + 3] -= 1  # Revertimos el flip después de la ventana
+        
+        # Verificamos si los últimos dos elementos quedaron en 1
+        for i in range(n - 2, n):
+            curr_flips += flip_effect[i]
+            if (nums[i] + curr_flips) % 2 == 0:
+                return -1
+        
+        return flips
