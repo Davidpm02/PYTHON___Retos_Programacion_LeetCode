@@ -54,3 +54,84 @@ Constraints:
 
 """
 
+from typing import List
+
+class DSU:
+    def __init__(self, n: int):
+        # Inicializo cada vértice como su propio representante.
+        self.parent = list(range(n))
+        self.rank = [0] * n
+
+    def find(self, x: int) -> int:
+        # Uso compresión de caminos para optimizar las búsquedas.
+        if self.parent[x] != x:
+            self.parent[x] = self.find(self.parent[x])
+        return self.parent[x]
+
+    def union(self, x: int, y: int) -> bool:
+        # Encuentro los representantes de x e y.
+        rx = self.find(x)
+        ry = self.find(y)
+        if rx == ry:
+            # Ya están en el mismo componente.
+            return False
+        # Hago union por rango para mantener el árbol equilibrado.
+        if self.rank[rx] < self.rank[ry]:
+            rx, ry = ry, rx
+        self.parent[ry] = rx
+        if self.rank[rx] == self.rank[ry]:
+            self.rank[rx] += 1
+        return True
+
+
+class Solution:
+    def minimumCost(self, n: int, edges: List[List[int]], query: List[List[int]]) -> List[int]:
+
+        """
+        Calcula el costo mínimo de un camino entre pares de vértices en
+        un grafo no dirigido y ponderado, donde el costo se define como
+        el AND bit a bit de los pesos de las aristas del camino.
+        Se utiliza la estructura Disjoint Set Union (DSU) para determinar
+        si dos vértices pertenecen al mismo componente conexo.
+
+        params:
+            n (int)
+            edges (List[List[int]])
+            query (List[List[int]])
+
+        returns:
+            List[int]
+        """
+        
+        # Inicializo el DSU con n vértices.
+        dsu = DSU(n)
+        
+        # Uno los vértices de acuerdo a cada arista.
+        for u, v, w in edges:
+            dsu.union(u, v)
+        
+        # Para cada componente, calcularé el AND de todos sus pesos.
+        # Uso un diccionario donde la llave es el representante del componente.
+        comp_and = {}
+        for u, v, w in edges:
+            # Encuentro el representante (líder) para el componente.
+            root = dsu.find(u)
+            if root in comp_and:
+                # Actualizo el valor AND acumulado.
+                comp_and[root] &= w
+            else:
+                # Primera arista encontrada para este componente.
+                comp_and[root] = w
+
+        # Resuelvo cada consulta.
+        res = []
+        for s, t in query:
+            # Verifico si s y t están en el mismo componente.
+            if dsu.find(s) != dsu.find(t):
+                res.append(-1)
+            else:
+                # Si la componente no tiene aristas (vértice aislado), no hay camino.
+                # Aunque s y t sean el mismo, según el enunciado s != t.
+                root = dsu.find(s)
+                res.append(comp_and.get(root, -1))
+        return res
