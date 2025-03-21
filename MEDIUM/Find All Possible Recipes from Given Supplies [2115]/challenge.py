@@ -48,3 +48,56 @@ Constraints:
     Each ingredients[i] does not contain any duplicate values.
 
 """
+
+from typing import List
+from collections import deque
+
+class Solution:
+    def findAllRecipes(self, recipes: List[str], ingredients: List[List[str]], supplies: List[str]) -> List[str]:
+        
+        """
+        Se encarga de verificar la viabilidad de cocinar un conjunto
+        de recetas dadas, en base a una serie de listados de
+        ingredientes necesarios y aquellos de los que disponemos para
+        cocinar.
+
+        params:
+            recipes (List[str])
+            ingredients (List[List[str]])
+            supplies (List[str])
+        
+        returns:
+            List[str]
+        """
+
+        # 1. Inicialización de estructuras de datos
+        graph = {}  # Relación ingrediente -> lista de recetas que dependen de él
+        in_degree = {}  # Contador de ingredientes necesarios para cada receta
+
+        # Inicializar in_degree con cada receta teniendo el conteo de ingredientes necesario
+        for recipe, ingredient_list in zip(recipes, ingredients):
+            in_degree[recipe] = len(ingredient_list)  # Número de ingredientes que necesita
+            for ingredient in ingredient_list:
+                if ingredient not in graph:
+                    graph[ingredient] = []
+                graph[ingredient].append(recipe)  # El ingrediente es necesario para esta receta
+
+        # 2. Cola con elementos que ya pueden producirse
+        queue = deque(supplies)  # Partimos con los ingredientes iniciales como "producibles"
+        producible = set(supplies)  # Conjunto para rápido acceso
+
+        # 3. Procesamiento de la cola (BFS)
+        result = []
+        while queue:
+            ingredient = queue.popleft()
+
+            # Si este ingrediente desbloquea recetas, procesarlas
+            if ingredient in graph:
+                for recipe in graph[ingredient]:
+                    in_degree[recipe] -= 1  # Reducimos la cantidad de ingredientes pendientes
+                    if in_degree[recipe] == 0:  # Si ya no requiere más ingredientes, es creable
+                        queue.append(recipe)
+                        producible.add(recipe)
+                        result.append(recipe)
+
+        return result
