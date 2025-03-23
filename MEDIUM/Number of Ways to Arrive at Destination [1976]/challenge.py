@@ -40,3 +40,60 @@ Constraints:
     You can reach any intersection from any other intersection.
 
 """
+
+from typing import List
+from heapq import heappop, heappush
+from collections import defaultdict
+
+class Solution:
+    def countPaths(self, n: int, roads: List[List[int]]) -> int:
+
+        """
+        Se encarga de hallar el total de rutas posibles para llegar
+        a nuestro destino, dado una estructura de grafos de una ciudad.
+
+        params:
+            n (int)
+            roads (List[List[int]])
+        
+        returns:
+            int
+        """
+        
+        MOD = 10**9 + 7
+
+        # Paso 1: Construcción del grafo usando una lista de adyacencia
+        graph = defaultdict(list)
+        for u, v, time in roads:
+            graph[u].append((v, time))
+            graph[v].append((u, time))  # Grafo no dirigido
+        
+        # Paso 2: Inicialización para Dijkstra
+        min_time = [float('inf')] * n  # Tiempo mínimo para llegar a cada nodo
+        min_time[0] = 0  # El nodo inicial tiene un tiempo de llegada de 0
+        ways = [0] * n  # Número de formas de llegar a cada nodo en el tiempo óptimo
+        ways[0] = 1  # Solo hay una forma de estar en el nodo inicial
+        
+        # Cola de prioridad con (tiempo_acumulado, nodo_actual)
+        heap = [(0, 0)]
+        
+        while heap:
+            curr_time, node = heappop(heap)
+            
+            # Si encontramos un tiempo mayor al registrado, no continuamos
+            if curr_time > min_time[node]:
+                continue
+            
+            # Explorar vecinos
+            for neighbor, travel_time in graph[node]:
+                new_time = curr_time + travel_time
+                
+                if new_time < min_time[neighbor]:  # Encontramos un camino más corto
+                    min_time[neighbor] = new_time
+                    ways[neighbor] = ways[node]  # Se heredan las formas de llegar
+                    heappush(heap, (new_time, neighbor))
+                
+                elif new_time == min_time[neighbor]:  # Otro camino con igual tiempo mínimo
+                    ways[neighbor] = (ways[neighbor] + ways[node]) % MOD
+        
+        return ways[n - 1]
