@@ -50,3 +50,50 @@ Constraints:
 
 """
 
+from typing import List
+
+class Solution:
+    def countDays(self, days: int, meetings: List[List[int]]) -> int:
+        
+        """
+        Se encarga de hallar el total de días en los que un empleado
+        está disponible y no tiene ninguna reunión programada.
+
+        params:
+            days (int)
+            meetings (List[List[int]])
+
+        returns:
+            int
+        """
+
+        # Lista para almacenar los eventos
+        events = []
+        
+        # Registrar eventos de inicio y fin de reuniones
+        for start, end in meetings:
+            events.append((start, 1))      # Inicio de reunión
+            events.append((end + 1, -1))   # Fin de reunión (al siguiente día)
+
+        # Ordenar eventos primero por día, luego por tipo (para procesar cierres antes)
+        events.sort()
+
+        available_days = 0  # Contador de días libres
+        active_meetings = 0  # Contador de reuniones activas
+        prev_day = 1  # Día previo en el barrido
+
+        # Procesamos los eventos en orden
+        for day, event_type in events:
+            # Si hay un intervalo sin reuniones, lo sumamos
+            if active_meetings == 0:
+                available_days += (day - prev_day)
+
+            # Actualizamos el estado de reuniones activas
+            active_meetings += event_type
+            prev_day = day  # Avanzamos el marcador de días
+        
+        # Contar días restantes si no hubo reuniones al final
+        if prev_day <= days:
+            available_days += (days - prev_day + 1)
+
+        return available_days
