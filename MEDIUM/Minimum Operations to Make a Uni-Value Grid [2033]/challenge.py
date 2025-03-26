@@ -43,3 +43,35 @@ Constraints:
 
 """
 
+from typing import List
+
+class Solution:
+    def minOperations(self, grid: List[List[int]], x: int) -> int:
+        
+        """
+        Se encarga de hallar el número mínimo de operaciones necesarias
+        para igualar todos los valores de una rejilla.
+
+        params:
+            grid (List[List[int]])
+            x (int)
+        returns:
+            int
+        """
+
+        # Convertimos la matriz en una lista unidimensional
+        values = [num for row in grid for num in row]
+        
+        # Verificamos si es posible hacer todos los valores iguales
+        remainder = [v % x for v in values]
+        if len(set(remainder)) > 1:
+            return -1  # No es posible transformar todos los elementos
+        
+        # Ordenamos los valores para encontrar la mediana
+        values.sort()
+        median = values[len(values) // 2]
+        
+        # Calculamos el número mínimo de operaciones necesarias
+        operations = sum(abs(v - median) // x for v in values)
+        
+        return operations
