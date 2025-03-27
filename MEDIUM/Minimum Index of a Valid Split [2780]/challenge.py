@@ -52,3 +52,42 @@ Constraints:
 
 """
 
+from typing import List
+from collections import Counter
+
+class Solution:
+    def minimumIndex(self, nums: List[int]) -> int:
+
+        """
+        Se encarga de hallar el mínimo índice desde el que es posible
+        dividir un array de enteros, manteniendo el mismo entero
+        mayoritario entre ambas partes tras la división.
+
+        params:
+            nums (List[int])
+
+        returns:
+            int
+        """
+        
+         # Paso 1: Encontrar el elemento dominante en todo el array
+        count = Counter(nums)
+        dominant = max(count, key=count.get)  # Elemento con mayor frecuencia
+        total_count = count[dominant]  # Frecuencia total del elemento dominante
+        
+        # Paso 2: Recorrer el array manteniendo cuenta de la frecuencia acumulada
+        left_count = 0  # Frecuencia acumulada del dominante en la primera parte
+        for i in range(len(nums) - 1):  # No incluir el último índice
+            if nums[i] == dominant:
+                left_count += 1
+            
+            # Calcular tamaño de las subarrays
+            left_size = i + 1
+            right_size = len(nums) - left_size
+            right_count = total_count - left_count  # Frecuencia en la segunda parte
+            
+            # Verificar si ambas partes tienen al mismo dominante
+            if left_count * 2 > left_size and right_count * 2 > right_size:
+                return i
+        
+        return -1
