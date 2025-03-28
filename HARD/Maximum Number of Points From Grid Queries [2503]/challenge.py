@@ -40,3 +40,44 @@ Constraints:
 
 """
 
+from typing import List
+from heapq import heappush, heappop
+
+class Solution:
+    def maxPoints(self, grid: List[List[int]], queries: List[int]) -> List[int]:
+        
+
+        m, n = len(grid), len(grid[0])
+        directions = [(-1, 0), (1, 0), (0, -1), (0, 1)]  # Arriba, abajo, izquierda, derecha
+        
+        # Ordenamos las queries con su índice original
+        queries_sorted = sorted(enumerate(queries), key=lambda x: x[1])
+        answer = [0] * len(queries)
+        
+        # Min-Heap para procesar las celdas en orden creciente
+        heap = [(grid[0][0], 0, 0)]  # (valor de la celda, fila, columna)
+        visited = set()
+        visited.add((0, 0))
+        
+        # Contador de puntos
+        points = 0
+        processed_value = 0  # Último valor de celda procesado
+
+        for index, q in queries_sorted:
+            # Expandimos el heap hasta que la celda mínima sea >= query actual
+            while heap and heap[0][0] < q:
+                val, r, c = heappop(heap)  # Sacamos la celda con el menor valor
+                processed_value = val  # Actualizamos el valor procesado
+                points += 1  # Ganamos un punto
+                
+                # Exploramos celdas vecinas
+                for dr, dc in directions:
+                    nr, nc = r + dr, c + dc
+                    if 0 <= nr < m and 0 <= nc < n and (nr, nc) not in visited:
+                        heappush(heap, (grid[nr][nc], nr, nc))
+                        visited.add((nr, nc))
+
+            # Guardamos la cantidad de puntos obtenidos para la query actual
+            answer[index] = points
+        
+        return answer
