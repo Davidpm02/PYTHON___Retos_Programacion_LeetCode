@@ -30,3 +30,38 @@ s consists of lowercase English letters.
 
 """
 
+from typing import List
+class Solution:
+    def partitionLabels(self, s: str) -> List[int]:
+
+        """
+        Se encarga de dividir una cadena de texto en tantas subcadenas
+        como sea posible, de forma que cada letra aparezca, como máximo,
+        en una única subcadena.
+
+        El método retorna un array de enteros, donde cada entero
+        representa la longitud de las subcadenas obtenidas.
+
+        params:
+            s (str)
+        returns:
+            List[int]
+        """
+       
+        # Paso 1: Obtener la última posición de cada carácter en el string
+        last_occurrence = {char: idx for idx, char in enumerate(s)}
+        
+        # Paso 2: Iterar sobre la cadena y definir los cortes de las particiones
+        partitions = []
+        start, end = 0, 0
+        
+        for idx, char in enumerate(s):
+            # Expandimos el final del segmento al máximo índice donde aparece este carácter
+            end = max(end, last_occurrence[char])
+            
+            # Si alcanzamos el final del segmento actual, hacemos un corte
+            if idx == end:
+                partitions.append(end - start + 1)
+                start = idx + 1  # Actualizamos el inicio del próximo segmento
+        
+        return partitions
