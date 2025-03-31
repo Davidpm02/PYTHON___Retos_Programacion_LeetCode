@@ -36,3 +36,40 @@ Constraints:
 1 <= weights[i] <= 109
 
 """
+
+from typing import List
+class Solution:
+    def putMarbles(self, weights: List[int], k: int) -> int:
+
+        """
+        Se encarga de distribuir un conjunto de mármoles en un número
+        'k' de mochilas, asegurando una distribución uniforme y
+        acorde a las reglas de la descripción.
+
+        params:
+            weights (List[int])
+            k (int)
+        
+        returns:
+            int
+        """
+        
+        # Si solo hay una forma de distribuir (k = 1 o k = len(weights))
+        if k == 1 or k == len(weights):
+            return 0
+        
+        # Calculamos los costos de los posibles cortes
+        # Si dividimos entre las posiciones i e i+1, sumamos weights[i] + weights[i+1]
+        pair_sums = [weights[i] + weights[i + 1] for i in range(len(weights) - 1)]
+        
+        # Ordenamos los costos de los cortes
+        pair_sums.sort()
+        
+        # Para la distribución de puntaje mínimo, elegimos los k-1 cortes más baratos
+        min_score = sum(pair_sums[:k-1])
+        
+        # Para la distribución de puntaje máximo, elegimos los k-1 cortes más caros
+        max_score = sum(pair_sums[-(k-1):])
+        
+        # Retornamos la diferencia
+        return max_score - min_score
