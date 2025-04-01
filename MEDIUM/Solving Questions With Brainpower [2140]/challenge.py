@@ -41,3 +41,46 @@ questions[i].length == 2
 
 """
 
+from typing import List
+class Solution:
+    def mostPoints(self, questions: List[List[int]]) -> int:
+        
+        """
+        Se encarga de hallar la máxima puntuación que se puede
+        obtener en un examen. Las preguntas de este examen se
+        incluyen en el array 'questions', donde:
+        
+         - questions[i][0]: total de puntos que proporciona 
+                            una pregunta.
+         - questions[i][1]: total de preguntas siguientes a 
+                            saltar.
+
+        params:
+            questions (List[List[int]])
+
+        returns:
+            int
+        """
+
+        n = len(questions)
+        
+        # dp[i] representa la máxima puntuación que se puede obtener
+        # empezando desde la pregunta i hasta el final
+        dp = [0] * (n + 1)
+        
+        # Trabajamos desde atrás hacia adelante
+        for i in range(n - 1, -1, -1):
+            points, brainpower = questions[i]
+            
+            # Opción 1: Resolver la pregunta actual
+            next_question = min(i + brainpower + 1, n)
+            solve_points = points + dp[next_question]
+            
+            # Opción 2: Saltar la pregunta actual
+            skip_points = dp[i + 1]
+            
+            # Elegimos la mejor opción
+            dp[i] = max(solve_points, skip_points)
+        
+        # La respuesta es la máxima puntuación empezando desde la pregunta 0
+        return dp[0]
