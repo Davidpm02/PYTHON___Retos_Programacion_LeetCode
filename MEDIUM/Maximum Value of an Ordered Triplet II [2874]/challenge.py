@@ -34,3 +34,47 @@ Constraints:
 1 <= nums[i] <= 106
 
 """
+
+from typing import List
+class Solution:
+    def maximumTripletValue(self, nums: List[int]) -> int:
+        """
+        Se encarga de hallar el valor máximo que es posible obtener
+        operando con cualquiera de los tripletes obtenibles con
+        los enteros dentro de 'nums'.
+
+        El valor de un triplete de indices (i, j, k) se define como
+        (num[i] - nums[j]) * nums[k]
+        
+        params:
+            nums (List[int])
+        
+        returns:
+            int
+        """
+        n = len(nums)
+        if n < 3:
+            return 0
+        
+        # Máximo hasta el momento
+        max_num = nums[0]
+        
+        # Máximo valor de (nums[i] - nums[j])
+        max_diff = 0
+        
+        # Resultado máximo (nums[i] - nums[j]) * nums[k]
+        result = 0
+        
+        for i in range(1, n):
+            # Calculamos el resultado con el max_diff actual
+            # y el valor actual como nums[k]
+            result = max(result, max_diff * nums[i])
+            
+            # Actualizamos max_diff usando max_num como nums[i]
+            # y el valor actual como nums[j]
+            max_diff = max(max_diff, max_num - nums[i])
+            
+            # Actualizamos el máximo número visto hasta ahora
+            max_num = max(max_num, nums[i])
+        
+        return result
