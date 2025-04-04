@@ -38,3 +38,41 @@ The values of the nodes in the tree are unique.
  
 """
 
+from typing import Optional
+
+# Definition for a binary tree node.
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+        
+class Solution:
+    def lcaDeepestLeaves(self, root: Optional[TreeNode]) -> Optional[TreeNode]:
+        # Si el árbol está vacío, retornamos None
+        if not root:
+            return None
+        
+        # Función auxiliar que encuentra el LCA y la profundidad máxima
+        def find_lca_and_depth(node):
+            # Caso base: si el nodo es None
+            if not node:
+                return None, 0
+            
+            # Llamadas recursivas para los subárboles izquierdo y derecho
+            left_lca, left_depth = find_lca_and_depth(node.left)
+            right_lca, right_depth = find_lca_and_depth(node.right)
+            
+            # Si ambos subárboles tienen la misma profundidad
+            if left_depth == right_depth:
+                return node, left_depth + 1
+            # Si el subárbol izquierdo es más profundo
+            elif left_depth > right_depth:
+                return left_lca, left_depth + 1
+            # Si el subárbol derecho es más profundo
+            else:
+                return right_lca, right_depth + 1
+        
+        # Llamamos a la función auxiliar y retornamos el LCA
+        lca, _ = find_lca_and_depth(root)
+        return lca
