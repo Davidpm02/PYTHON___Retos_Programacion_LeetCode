@@ -50,3 +50,37 @@ Constraints:
 
 """
 
+from typing import List
+class Solution:
+    def subsetXORSum(self, nums: List[int]) -> int:
+        
+        """
+        Calcula la suma de los XOR totales de todos los subconjuntos de un array.
+        
+        El XOR total de un array se define como el XOR bit a bit de todos sus elementos,
+        o 0 si el array está vacío.
+        
+        params:
+            nums: Lista de enteros positivos
+            
+        returns:
+            La suma de los XOR totales de todos los subconjuntos posibles
+        """
+        
+        n = len(nums)
+        total_sum = 0
+        
+        # Para cada subconjunto posible (hay 2^n subconjuntos)
+        for mask in range(1 << n):
+            xor_total = 0
+            
+            # Para cada elemento del array
+            for i in range(n):
+                # Si el bit i-ésimo de mask está activado, incluimos nums[i] en este subconjunto
+                if mask & (1 << i):
+                    xor_total ^= nums[i]
+            
+            # Agregamos el XOR total de este subconjunto a la suma total
+            total_sum += xor_total
+        
+        return total_sum
