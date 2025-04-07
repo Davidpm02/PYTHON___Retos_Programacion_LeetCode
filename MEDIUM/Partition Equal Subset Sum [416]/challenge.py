@@ -23,3 +23,30 @@ Constraints:
 1 <= nums[i] <= 100
 
 """
+
+from typing import List
+class Solution:
+    def canPartition(self, nums: List[int]) -> bool:
+        
+        total_sum = sum(nums)
+        
+        # Si la suma total es impar, no es posible dividir en dos subconjuntos iguales
+        if total_sum % 2 != 0:
+            return False
+        
+        # El objetivo es encontrar un subconjunto cuya suma sea la mitad del total
+        target = total_sum // 2
+        
+        # Inicializo una lista DP donde dp[i] indica si se puede formar la suma i
+        dp = [False] * (target + 1)
+        dp[0] = True  # Siempre puedo formar suma 0 sin usar ningún elemento
+        
+        # Itero sobre cada número en el array
+        for num in nums:
+            # Recorro el array dp de atrás hacia adelante
+            for i in range(target, num - 1, -1):
+                # Para cada posición i, verifico si i se puede formar incluyendo num
+                dp[i] = dp[i] or dp[i - num]
+        
+        # Devuelvo si es posible formar la suma objetivo
+        return dp[target]
