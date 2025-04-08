@@ -50,3 +50,38 @@ Constraints:
 1 <= nums[i] <= 100
 
 """
+
+from typing import List
+class Solution:
+    def minimumOperations(self, nums: List[int]) -> int:
+
+        """
+        Se encarga de hallar el número mínimo de operaciones que se
+        deben de llevar a cabo para hacer que todos los elementos 
+        contenidos dentro del array 'nums' sean diferentes.
+
+        La operación que se pueden llevar a cabo consiste en la
+        eliminación de los 3 primeros elementos del array (en caso
+        de que este contenga menos de 3 elementos, se eliminarán
+        todos los elementos restantes).
+
+        params:
+            nums (List[int])
+
+        returns:
+            int 
+        """
+        
+        operations = 0  # Inicializo el contador de operaciones
+        
+        while len(nums) > 0:
+            # Si todos los elementos son únicos, devuelvo el número de operaciones realizadas
+            if len(nums) == len(set(nums)):
+                return operations
+            
+            # Si hay duplicados, elimino los primeros 3 elementos (o los que queden si hay menos)
+            nums = nums[3:]  # Esta operación reduce el array desde el cuarto elemento en adelante
+            operations += 1  # Aumento el contador de operaciones
+            
+        # Si salgo del bucle, es porque el array quedó vacío -> devuelvo operaciones realizadas
+        return operations
