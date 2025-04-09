@@ -55,3 +55,52 @@ Constraints:
 
 """
 
+from typing import List
+class Solution:
+    def minOperations(self, nums: List[int], k: int) -> int:
+
+        """
+        Calcula el número mínimo de operaciones necesarias para convertir todos los 
+        elementos del array `nums` en el valor `k`, utilizando operaciones válidas.
+
+        Una operación válida consiste en seleccionar un entero `h` tal que todos los 
+        elementos mayores que `h` sean iguales, y luego reemplazar esos elementos por `h`.
+
+        params:
+            nums (List[int])
+            k (int)
+        
+        returns:
+            int
+        """
+        
+        # Si ya todos los elementos son iguales a k, no necesito hacer ninguna operación
+        if all(num == k for num in nums):
+            return 0
+
+        # Si existe algún valor menor que k, no podré alcanzar k reduciendo valores mayores,
+        # así que devuelvo -1 directamente
+        if any(num < k for num in nums):
+            return -1
+
+        # Creo un conjunto con los valores únicos mayores a k
+        # porque cada uno de ellos necesitará una operación para ser reducido
+        unique_above_k = {num for num in nums if num > k}
+
+        # Si no hay ninguno por encima de k, significa que solo tengo k y menores,
+        # y ya verifiqué que no todos son k, así que no puedo llegar a k
+        if not unique_above_k:
+            return -1
+
+        # Ahora ordeno esos valores únicos de mayor a menor para simular las operaciones
+        sorted_above_k = sorted(unique_above_k, reverse=True)
+
+        # Inicializo el contador de operaciones
+        operations = 0
+
+        # En cada operación selecciono el siguiente valor menor que el anterior
+        # como nuevo "h", asegurándome de que todos los valores superiores a h sean iguales
+        for h in sorted_above_k:
+            operations += 1
+
+        return operations
