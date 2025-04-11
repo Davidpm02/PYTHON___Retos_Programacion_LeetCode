@@ -26,3 +26,43 @@ Constraints:
 1 <= low <= high <= 104
 
 """
+
+class Solution:
+    def countSymmetricIntegers(self, low: int, high: int) -> int:
+
+        """
+        Se encarga de hallar el número de enteros comprendidos entre
+        'low' y 'high' que se consideran enteros simétricos.
+
+        ** Ningún entero con una cantidad impar de cifras es simétrico **
+
+        params:
+            low (int)
+            high (int)
+        
+        returns:
+            int
+        """
+        
+        symmetric_nums = 0
+        for num in range(low, high + 1):
+            if (len(str(num)) % 2 != 0):
+                continue
+            else:
+                # Creamos dos listas, con la misma cantidad de cifras
+                length_num = len(str(num))
+                cut_idx = length_num // 2
+                first_part_of_num = []
+                last_part_of_num = []
+
+                for idx, n in enumerate(str(num)):
+                    if (idx < cut_idx):
+                        first_part_of_num.append(int(n))
+                    else:
+                        last_part_of_num.append(int(n))
+
+                # Verificamos si el entero es simétrico
+                if (sum(first_part_of_num) == sum(last_part_of_num)):
+                    symmetric_nums += 1
+
+        return symmetric_nums
