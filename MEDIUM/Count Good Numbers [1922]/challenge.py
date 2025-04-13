@@ -30,3 +30,38 @@ Constraints:
 1 <= n <= 1015
 
 """
+
+class Solution:
+    def countGoodNumbers(self, n: int) -> int:
+
+        """
+        Se encarga de hallar el total de 'números buenos' positivos
+        que existen, con una longitud de 'n' dígitos.
+
+        params:
+            n (int)
+
+        returns:
+            int
+        """
+        
+        MOD = 10**9 + 7
+        
+        # Calculamos cuántas posiciones pares e impares hay
+        even_positions = (n + 1) // 2  # Posiciones pares
+        odd_positions = n // 2         # Posiciones impares
+  
+        def power_mod(a, b, mod):
+            if b == 0:
+                return 1
+            half = power_mod(a, b // 2, mod)
+            result = (half * half) % mod
+            if b % 2 == 1:
+                result = (result * a) % mod
+            return result
+        
+        even_count = power_mod(5, even_positions, MOD)
+        odd_count = power_mod(4, odd_positions, MOD)
+        
+        # El resultado total es la multiplicación de ambos
+        return (even_count * odd_count) % MOD
