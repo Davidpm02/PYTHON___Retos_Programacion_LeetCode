@@ -32,3 +32,67 @@ nums1 and nums2 are permutations of [0, 1, ..., n - 1].
 
 """
 
+from typing import List
+
+class Solution:
+    def goodTriplets(self, nums1: List[int], nums2: List[int]) -> int:
+
+        """
+        Se encarga de contar el total de tripletes que pueden formase con
+        los enteros de los arrays 'nums1' y 'nums2'.
+
+        params:
+            nums1 (List[int])
+            nums2 (List[int])
+        
+        returns:
+            int
+        """
+
+        n = len(nums1)
+        
+        # Mapeo de valores a posiciones en nums2
+        pos2 = {}
+        for i in range(n):
+            pos2[nums2[i]] = i
+        
+        # Reordenar nums1 según las posiciones en nums2
+        positions = [pos2[nums1[i]] for i in range(n)]
+        
+        # Implementación de BIT
+        bit = [0] * (n + 1)
+        
+        def update(idx, val):
+            idx += 1  # BIT es 1-indexado
+            while idx <= n:
+                bit[idx] += val
+                idx += idx & -idx
+        
+        def query(idx):
+            idx += 1  # BIT es 1-indexado
+            res = 0
+            while idx > 0:
+                res += bit[idx]
+                idx -= idx & -idx
+            return res
+        
+        result = 0
+        
+        # Para cada valor en positions
+        left = [0] * n
+        for i in range(n):
+            left[i] = query(positions[i])
+            update(positions[i], 1)
+        
+        # Reiniciar BIT
+        bit = [0] * (n + 1)
+        
+        # Recorrer posiciones en orden inverso para calcular 'right'
+        for i in range(n-1, -1, -1):
+            # Cantidad de elementos a la derecha que son mayores que positions[i]
+            right = query(n - 1) - query(positions[i])
+            result += left[i] * right
+            update(positions[i], 1)
+        
+        return result
+        
