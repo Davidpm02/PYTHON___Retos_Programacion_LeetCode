@@ -27,3 +27,33 @@ Constraints:
 1 <= nums[i], k <= 100
 
 """
+
+from typing import List
+
+class Solution:
+    def countPairs(self, nums: List[int], k: int) -> int:
+        
+        """
+        Se encarga de hallar el número de parejas de índices
+        (i, j) dónde 0 <= i < j < n, tales que nums[i] == nums[j]
+        y (i * j) sea divisible entre 'k'.
+
+        params:
+            nums (List[int])
+            k (int)
+        
+        returns:
+            int
+        """
+
+        # Inicializo un contador para las parejas válidas
+        valid_pairs = 0
+
+        # Recorro todos los pares posibles (i, j) con i < j
+        for i in range(len(nums)):
+            for j in range(i + 1, len(nums)):
+                # Verifico las dos condiciones necesarias
+                if nums[i] == nums[j] and (i * j) % k == 0:
+                    valid_pairs += 1
+
+        return valid_pairs
