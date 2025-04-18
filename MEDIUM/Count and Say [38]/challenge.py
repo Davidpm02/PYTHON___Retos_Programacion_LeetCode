@@ -39,3 +39,44 @@ Constraints:
 
 """
 
+class Solution:
+    def countAndSay(self, n: int) -> str:
+
+        """
+        Se encarga de retornar una cadena de texto generada a partir
+        del algoritmo RLE, tomando como partida el entero 'n'.
+
+        params:
+            n (int)
+
+        returns:
+            str
+        """
+        
+        if n == 1:
+            return "1"
+        
+        # Inicializamos la secuencia con el primer elemento
+        result = "1"
+        
+        # Generamos los siguientes elementos hasta llegar a n
+        for _ in range(2, n + 1):
+            current = ""
+            count = 1  # Contador de caracteres consecutivos
+            
+            # Itero por la cadena actual desde el segundo carácter
+            for j in range(1, len(result)):
+                # Si el carácter actual es igual al anterior, incremento el contador
+                if result[j] == result[j - 1]:
+                    count += 1
+                else:
+                    # Si cambia el carácter, añado al resultado el número de repeticiones
+                    # seguido del carácter anterior
+                    current += str(count) + result[j - 1]
+                    count = 1  # Reinicio el contador
+            
+            # Después del bucle, agrego el último grupo de caracteres
+            current += str(count) + result[-1]
+            result = current  # Actualizo el resultado para la siguiente iteración
+        
+        return result
