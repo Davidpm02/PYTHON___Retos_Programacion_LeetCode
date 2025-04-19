@@ -30,3 +30,39 @@ nums.length == n
 
 """
 
+from typing import List
+from bisect import bisect_left, bisect_right
+
+class Solution:
+    def countFairPairs(self, nums: List[int], lower: int, upper: int) -> int:
+        """
+        Esta función devuelve el número de pares válidos (i, j)
+        tales que 0 <= i < j < n y lower <= nums[i] + nums[j] <= upper.
+        
+        params:
+            nums (List[int])
+            lower (int)
+            upper (int)
+        
+        returns:
+            int
+        """
+        # Ordeno los números para poder usar búsqueda binaria
+        nums.sort()
+        n = len(nums)
+        count = 0
+
+        # Itero cada índice i y busco los j > i válidos usando bisect
+        for i in range(n):
+            # Calculo los límites de búsqueda para nums[j]
+            left = lower - nums[i]
+            right = upper - nums[i]
+
+            # Encuentro los índices de los posibles j usando bisect
+            left_idx = bisect_left(nums, left, i + 1)
+            right_idx = bisect_right(nums, right, i + 1)
+
+            # Acumulo la cantidad de pares válidos con nums[i]
+            count += right_idx - left_idx
+
+        return count
