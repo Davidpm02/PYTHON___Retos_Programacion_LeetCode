@@ -30,3 +30,29 @@ Constraints:
 
 """
 
+from typing import List
+from collections import Counter
+
+class Solution:
+    def numRabbits(self, answers: List[int]) -> int:
+        """
+        Calcula el número mínimo posible de conejos que podría haber en el bosque
+        a partir de las respuestas dadas por algunos de ellos. 
+
+        params:
+            answers (List[int])
+
+        returns:
+            (int)
+        """
+        
+        count = Counter(answers)
+        total = 0
+
+        # Recorro cada respuesta única y su frecuencia
+        for answer, freq in count.items():
+            group_size = answer + 1  # Cada grupo necesita al menos answer + 1 conejos
+            num_groups = (freq + group_size - 1) // group_size  # Redondeo hacia arriba
+            total += num_groups * group_size  # Sumo el total de conejos estimados para ese grupo
+
+        return total
