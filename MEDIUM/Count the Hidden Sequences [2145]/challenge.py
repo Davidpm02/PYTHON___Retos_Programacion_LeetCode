@@ -46,3 +46,49 @@ n == differences.length
 -105 <= lower <= upper <= 105
 
 """
+
+from typing import List
+class Solution:
+    def numberOfArrays(self, differences: List[int], lower: int, upper: int) -> int:
+        
+        """
+        Se encarga de hallar el número de posibles secuencias que pueden
+        formarse. El método trata de validar las posibles opciones para
+        el comienzo de cada array, hidden[0], a fin de poder hacer uso
+        de los enteros contenidos en el array 'differences' para formar
+        el array final.
+
+        params:
+            differences (List[int])
+            lower (int)
+            upper (int)
+        
+        returns:
+            int
+        """
+
+        # Inicializo una variable para llevar el acumulado de diferencias
+        prefix_sum = 0
+        
+        # Inicializo los valores mínimo y máximo del acumulado
+        min_prefix = 0
+        max_prefix = 0
+        
+        # Recorro la lista de diferencias para construir los extremos del rango de acumulados
+        for diff in differences:
+            prefix_sum += diff
+            # Mantengo el mínimo y máximo acumulado para definir el rango de variación
+            min_prefix = min(min_prefix, prefix_sum)
+            max_prefix = max(max_prefix, prefix_sum)
+        
+        # El valor inicial `x` debe ser tal que `x + min_prefix >= lower` y `x + max_prefix <= upper`
+        # Despejo las inequaciones para obtener el rango válido para x:
+        min_x = lower - min_prefix
+        max_x = upper - max_prefix
+        
+        # Si no hay valores posibles para `x`, retorno 0
+        if min_x > max_x:
+            return 0
+        
+        # El número de valores enteros posibles para x es (max_x - min_x + 1)
+        return max_x - min_x + 1
