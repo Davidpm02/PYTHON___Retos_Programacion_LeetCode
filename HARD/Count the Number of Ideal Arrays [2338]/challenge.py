@@ -42,3 +42,60 @@ Constraints:
 1 <= maxValue <= 104
 
 """
+
+import math
+
+class Solution:
+    def idealArrays(self, n: int, maxValue: int) -> int:
+        
+        """
+        Devuelve el número de arrays ideales distintos de longitud n con
+        valores de 1 a maxValue.
+        Un array es ideal si cada elemento es divisible por el anterior.
+        
+        params: 
+            n (int)
+            maxValue (int)
+        
+        returns:
+            Número de arrays ideales distintos módulo 10^9 + 7
+        """
+        
+        MOD = 10**9 + 7
+        MAX_N = n + 1
+        MAX_L = 15  # Como 2^14 > 10^4, no hay secuencias de más de 14 elementos únicos
+
+        # Precalcular combinaciones C(n-1, k) hasta k = MAX_L
+        fact = [1] * (MAX_N + MAX_L)
+        inv_fact = [1] * (MAX_N + MAX_L)
+        for i in range(1, len(fact)):
+            fact[i] = (fact[i - 1] * i) % MOD
+        inv_fact[-1] = pow(fact[-1], MOD - 2, MOD)
+        for i in reversed(range(len(inv_fact) - 1)):
+            inv_fact[i] = (inv_fact[i + 1] * (i + 1)) % MOD
+
+        def comb(a, b):
+            if a < b or b < 0:
+                return 0
+            return fact[a] * inv_fact[b] % MOD * inv_fact[a - b] % MOD
+
+        # dp[i][l] = cuántas secuencias multiplicativas de longitud l terminan en i
+        dp = [[0] * MAX_L for _ in range(maxValue + 1)]
+        for i in range(1, maxValue + 1):
+            dp[i][0] = 1  # longitud 1 (una sola elección)
+
+        for l in range(1, MAX_L):
+            for i in range(1, maxValue + 1):
+                for j in range(2 * i, maxValue + 1, i):
+                    dp[j][l] = (dp[j][l] + dp[i][l - 1]) % MOD
+
+        # Combinar cada secuencia multiplicativa válida con las combinaciones posibles
+        res = 0
+        for i in range(1, maxValue + 1):
+            for l in range(MAX_L):
+                if dp[i][l] == 0:
+                    continue
+                # Número de formas de colocar l "aumentos" en n posiciones (estrellas y barras)
+                res = (res + dp[i][l] * comb(n - 1, l)) % MOD
+
+        return res
