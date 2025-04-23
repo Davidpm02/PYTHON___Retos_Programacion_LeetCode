@@ -29,3 +29,34 @@ Constraints:
 
 """
 
+from collections import Counter
+
+class Solution:
+    def countLargestGroup(self, n: int) -> int:
+        
+        """
+        Se encarga de obtener el número de grupos de mayor
+        longitud que existen cuando agrupamos todos los números
+        en el rango [1, n] en base a la suma total de sus dígitos.
+
+        params:
+            n (int)
+
+        returns:
+            int
+        """
+
+        # Defino un objeto Counter que registre el número de grupos de
+        # cada tamaño
+        length_groups = Counter()
+
+        # Reviso todos los números en el rango [1, n] e incremento
+        # el contador del grupo asociado
+        for num in range(1, n + 1):
+            # Obtengo la suma total de los dígitos del número iterado
+            total_sum = sum(int(n) for n in str(num))
+            length_groups[total_sum] += 1
+
+        # Retorno el número de grupos con el mayor tamaño
+        greatest_group = max(length_groups.values())
+        return sum(1 for v in length_groups.values() if v == greatest_group)
