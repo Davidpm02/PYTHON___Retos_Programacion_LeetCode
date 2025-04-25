@@ -52,3 +52,49 @@ Constraints:
 
 """
 
+from typing import List
+from collections import defaultdict
+
+class Solution:
+    def countInterestingSubarrays(self, nums: List[int], modulo: int, k: int) -> int:
+        
+        """
+        Cuenta el número de subarrays 'interesantes' dentro del array nums.
+
+        Un subarray es considerado interesante si cumple la siguiente condición:
+        - Sea cnt la cantidad de elementos dentro del subarray tales que nums[i] % modulo == k.
+        - Entonces, cnt % modulo también debe ser igual a k.
+        
+        params:
+            nums (List[int])
+            modulo (int)
+            k (int)
+
+        returns:
+            int
+        """
+        
+        # Inicializo un diccionario para contar cuántas veces he visto cada valor de prefix_cnt % modulo
+        count_map = defaultdict(int)
+        count_map[0] = 1  # Me aseguro de contar correctamente subarrays que comienzan desde el índice 0
+
+        prefix_cnt = 0  # Este es el contador de elementos que cumplen nums[i] % modulo == k
+        result = 0  # Este será el total de subarrays interesantes
+
+        for num in nums:
+            # Si el elemento actual cumple la condición, incremento el contador
+            if num % modulo == k:
+                prefix_cnt += 1
+
+            # Calculo el valor que debería haber aparecido antes para que el subarray sea interesante
+            needed = (prefix_cnt - k + modulo) % modulo
+
+            # Sumo al resultado la cantidad de veces que vi ese valor previamente
+            result += count_map[needed]
+
+            # Ahora registro el valor actual del prefijo (modulo) para futuras iteraciones
+            count_map[prefix_cnt % modulo] += 1
+
+        return result
+
+
