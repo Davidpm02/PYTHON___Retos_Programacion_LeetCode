@@ -34,3 +34,36 @@ Constraints:
 
 """
 
+from typing import List
+
+class Solution:
+    def countSubarrays(self, nums: List[int]) -> int:
+        
+        """
+        Se encarga de verificar el número de tripletes "validos"
+        de enteros dentro de un array recibido como parámetro.
+
+        Un triplete se considera válido siempre y cuando:
+         - La suma del primer y último entero sea igual a la mitad
+           del entero situado en la posición central del triplete.
+
+        params:
+            nums (List[int])
+
+        returns:
+            int
+        """
+
+        # Longitud del array
+        n = len(nums)
+
+        # Contador de tripletes válidos
+        valid_subarrays = 0
+
+        # Recorremos el array en busca de tripletes válidos
+        for i in range(1, n - 1):
+            # Validamos si el triplete es válido
+            if ((nums[i - 1] + nums[i + 1]) == (nums[i] / 2)):
+                valid_subarrays += 1
+        
+        return valid_subarrays
