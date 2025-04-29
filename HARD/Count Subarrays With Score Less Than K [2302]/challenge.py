@@ -41,3 +41,44 @@ Constraints:
 
 """
 
+from typing import List
+
+class Solution:
+    def countSubarrays(self, nums: List[int], k: int) -> int:
+        
+        """
+        Cuenta el número de subarrays no vacíos en 'nums' cuyo score es estrictamente menor que 'k'.
+
+        params:
+            nums (List[int])
+            k (int)
+
+        returns:
+            int
+        """
+
+        # Inicializo el resultado que va a acumular el número de subarrays válidos
+        result = 0
+        
+        # Inicializo dos punteros para la ventana: el inicio (left) y el final (right)
+        left = 0
+        
+        # Inicializo la suma de los elementos de la ventana actual
+        window_sum = 0
+
+        # Recorro el array usando 'right' como extremo derecho de la ventana
+        for right in range(len(nums)):
+            # Añado el elemento actual a la suma de la ventana
+            window_sum += nums[right]
+            
+            # Mientras el score de la ventana actual no cumpla la condición (score >= k)
+            while window_sum * (right - left + 1) >= k:
+                # Voy desplazando el inicio de la ventana hacia la derecha
+                window_sum -= nums[left]
+                left += 1
+            
+            # Todos los subarrays que terminan en 'right' y empiezan entre 'left' y 'right' son válidos
+            result += (right - left + 1)
+        
+        # Devuelvo el total de subarrays encontrados
+        return result
