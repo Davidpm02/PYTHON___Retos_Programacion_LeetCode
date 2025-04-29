@@ -29,3 +29,41 @@ Constraints:
 
 """
 
+from typing import List
+
+class Solution:
+    def countSubarrays(self, nums: List[int], k: int) -> int:
+        
+        """
+        Cuenta el número de subarrays contiguos en los que el valor máximo del array 'nums'
+        aparece al menos 'k' veces.
+
+        params:
+          nums (List[int])
+          k (int)
+
+        returns:
+          int
+        """
+
+        max_val = max(nums)  # Identifico el valor máximo en el array
+        count = 0            # Contador de ocurrencias del valor máximo
+        res = 0              # Resultado final
+        left = 0             # Límite izquierdo de la ventana
+
+        # Recorro el array con una ventana deslizante
+        for right in range(len(nums)):
+            # Si el elemento actual es el máximo, incremento el contador
+            if nums[right] == max_val:
+                count += 1
+
+            # Si ya tengo al menos 'k' apariciones del valor máximo en la ventana,
+            # puedo contar todos los subarrays posibles desde 'left' hasta el final actual
+            while count >= k:
+                # Sumo todos los subarrays que terminan en 'right' y comienzan entre 'left' y 'right'
+                res += len(nums) - right
+                if nums[left] == max_val:
+                    count -= 1
+                left += 1
+
+        return res
