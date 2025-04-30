@@ -30,3 +30,29 @@ Constraints:
 1 <= nums[i] <= 105
 
 """
+
+from typing import List
+
+class Solution:
+    def findNumbers(self, nums: List[int]) -> int:
+        
+        """
+        Se encarga de hallar la cantidad de enteros dentro del array 
+        'nums' compuesto por un número par de números.
+
+        params:
+            nums (List[int])
+        
+        returns:
+            int
+        """
+
+        # Inicializo una variable contadora
+        even_number_counter = 0
+
+        # Itero el array validando cada entero
+        for num in nums:
+            if (len(str(num)) % 2 == 0):
+                even_number_counter += 1
+        
+        return even_number_counter
