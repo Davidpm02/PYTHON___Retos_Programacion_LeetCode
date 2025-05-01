@@ -49,3 +49,102 @@ m == workers.length
 
 """
 
+from typing import List
+import bisect
+from collections import deque
+
+class Solution:
+    def maxTaskAssign(self, tasks: List[int], workers: List[int], pills: int, strength: int) -> int:
+        
+        """
+        Determina el número máximo de tareas que pueden completarse dadas
+        las fuerzas de los trabajadores y píldoras mágicas.
+           
+        params:
+            tasks (List[int])
+            workers (List[int])
+            pills (int)
+            strength (int)
+            
+        returns:
+            El número máximo de tareas que pueden completarse.
+        """
+
+        # Ordenar tareas en orden ascendente según la fuerza requerida
+        tasks.sort()
+        # Ordenar trabajadores en orden ascendente según su fuerza
+        workers.sort()
+        
+        def canAssignTasks(k: int) -> bool:
+            """
+            Verifica si k tareas pueden completarse con los trabajadores y píldoras dados.
+            
+            Args:
+                k: El número de tareas a asignar.
+                
+            Returns:
+                True si es posible asignar k tareas, False en caso contrario.
+            """
+            if k == 0:
+                return True
+                
+            # Si no tenemos suficientes trabajadores, es imposible
+            if k > len(workers):
+                return False
+            
+            # Considerar solo las k tareas más fáciles (con menor requerimiento de fuerza)
+            selected_tasks = tasks[:k]
+            # Considerar los k trabajadores más fuertes
+            selected_workers = workers[-k:]
+            
+            # Usar una estructura multiset para trabajadores disponibles
+            available_workers = deque(sorted(selected_workers))
+            pills_remaining = pills
+            
+            # Procesar tareas de la más difícil a la más fácil
+            for i in range(k-1, -1, -1):
+                task = selected_tasks[i]
+                
+                # Si el trabajador más fuerte puede realizar la tarea sin píldora
+                if available_workers and available_workers[-1] >= task:
+                    available_workers.pop()
+                    continue
+                
+                # Si no hay píldoras restantes, la asignación es imposible
+                if pills_remaining == 0:
+                    return False
+                
+                # Buscar el trabajador más débil que puede realizar la tarea con una píldora
+                # Usar búsqueda binaria para encontrarlo eficientemente
+                target = task - strength
+                left, right = 0, len(available_workers) - 1
+                found = False
+                
+                while left <= right:
+                    mid = (left + right) // 2
+                    if available_workers[mid] >= target:
+                        found = True
+                        right = mid - 1
+                    else:
+                        left = mid + 1
+                
+                # Si no hay ningún trabajador que pueda realizar la tarea con píldora
+                if not found or left >= len(available_workers):
+                    return False
+                
+                # Eliminar el trabajador usado
+                del available_workers[left]
+                pills_remaining -= 1
+            
+            return True
+        
+        # Búsqueda binaria para encontrar el máximo valor posible de k
+        left, right = 0, min(len(tasks), len(workers))
+        while left < right:
+            mid = (left + right + 1) // 2
+            if canAssignTasks(mid):
+                left = mid
+            else:
+                right = mid - 1
+                
+        return left
