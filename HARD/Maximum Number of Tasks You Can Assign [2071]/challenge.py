@@ -50,7 +50,6 @@ m == workers.length
 """
 
 from typing import List
-import bisect
 from collections import deque
 
 class Solution:
