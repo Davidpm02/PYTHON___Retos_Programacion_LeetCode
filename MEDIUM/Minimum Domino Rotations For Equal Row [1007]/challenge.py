@@ -35,3 +35,71 @@ bottoms.length == tops.length
 
 """
 
+from typing import List
+
+class Solution:
+    def minDominoRotations(self, tops: List[int], bottoms: List[int]) -> int:
+        
+        """
+        Encuentra el número mínimo de rotaciones necesarias para que
+        todos los valores en tops sean iguales o todos los valores
+        en bottoms sean iguales.
+        
+        params:
+            tops (List[int])
+            bottoms (List[int])
+            
+        returns:
+            int
+
+        """
+
+        n = len(tops)
+        
+        # Comprobamos los dos valores posibles: 
+        # 1. todos los tops iguales al primer top
+        # 2. todos los tops iguales al primer bottom
+        
+        def check_rotations(target):
+            # Intentamos hacer que todos los tops sean igual a target
+            top_rotations = 0
+            bottom_rotations = 0
+            
+            for i in range(n):
+                # Si ninguno de los valores del dominó es igual al objetivo, no es posible
+                if tops[i] != target and bottoms[i] != target:
+                    return -1
+                
+                # Si el top no es igual al objetivo pero el bottom sí, rotamos
+                if tops[i] != target:
+                    top_rotations += 1
+                
+                # Si el bottom no es igual al objetivo pero el top sí, rotamos
+                if bottoms[i] != target:
+                    bottom_rotations += 1
+            
+            # Devolvemos el mínimo entre hacer todas las tops igual a target
+            # o hacer todas las bottoms igual a target
+            return min(top_rotations, bottom_rotations)
+        
+        # Probamos con el valor del primer top
+        result1 = check_rotations(tops[0])
+        
+        # Probamos con el valor del primer bottom si es diferente
+        if tops[0] == bottoms[0]:
+            return result1
+        
+        result2 = check_rotations(bottoms[0])
+        
+        # Si ambos son -1, no hay solución
+        if result1 == -1 and result2 == -1:
+            return -1
+        
+        # Si uno es -1, devolvemos el otro
+        if result1 == -1:
+            return result2
+        if result2 == -1:
+            return result1
+        
+        # De lo contrario, devolvemos el mínimo
+        return min(result1, result2)
