@@ -25,3 +25,42 @@ dominoes[i].length == 2
 
 """
 
+from typing import List
+from collections import defaultdict
+
+class Solution:
+    def numEquivDominoPairs(self, dominoes: List[List[int]]) -> int:
+        
+        """
+        Se encarga de hallar el número de parejas de domino
+        equivalentes dentro de un array de fichas.
+
+        Se tiene en cuenta que una ficha puede ser igual a otra
+        si y solo si (a == c y b == d) o (a == d y b == c), en
+        fichas dominoes[i] = [a, b], dominoes[j] = [c, d]
+
+        params:
+            dominoes (List[List[int]])
+        
+        returns:
+            int
+        """
+
+        # Creo un diccionario para contar el número de apariciones de 
+        # cada ficha normalizada
+        count = defaultdict(int)
+
+        # Inicializo una variable resultado
+        result = 0
+
+        # Itero sobre las fichas del array 'dominoes'
+        for a, b in dominoes:
+            # Genero una tupla con los elementos de la ficha ordenados
+            key = tuple(sorted((a, b)))
+            result += count[key]
+
+            # Incremento el contador de apariciones para la ficha iterada
+            count[key] += 1
+        
+        # Devolvemos el mayor número de parejas en 'dominoes'
+        return result
