@@ -32,3 +32,32 @@ Constraints:
 The elements in nums are distinct.
  
 """
+
+from typing import List
+
+class Solution:
+    def buildArray(self, nums: List[int]) -> List[int]:
+        
+        """
+        Se encarga de construir y devolver un array a partir de una 
+        permutación de la misma longitud.
+
+        params:
+            nums (List[int])
+
+        returns:
+            List[int]
+        """
+
+        # Inicializo una lista vacía para almacenar el resultado
+        result = []
+
+        # Itero sobre el array nums y actualizo el array 'result'
+        for i, num in enumerate(nums):
+            result.append(nums[nums[i]])
+        
+        return result
+
+        # list comprehension
+        # result = [nums[nums[i]] for i, num in enumerate(nums)]
+        # result
