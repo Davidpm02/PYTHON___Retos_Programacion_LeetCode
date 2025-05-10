@@ -30,3 +30,40 @@ Constraints:
 0 <= nums1[i], nums2[i] <= 106
 
 """
+
+from typing import List
+class Solution:
+    def minSum(self, nums1: List[int], nums2: List[int]) -> int:
+        """
+        Dadas dos listas de enteros positivos y ceros, reemplazo todos los ceros por enteros estrictamente positivos
+        de modo que la suma de ambas listas sea igual y mínima.
+
+        params:
+            nums1 (List[int])
+            nums2 (List[int])
+        
+        returns:
+            int
+
+        """
+        
+        # Sumas y conteo de ceros
+        s1, z1 = sum(nums1), nums1.count(0)
+        s2, z2 = sum(nums2), nums2.count(0)
+
+        # Caso: ninguna lista tiene ceros -> solo válido si ya empatan
+        if z1 == 0 and z2 == 0:
+            return s1 if s1 == s2 else -1
+
+        # Caso: nums1 sin ceros, nums2 con ceros
+        if z1 == 0:
+            # El objetivo debe ser s1, y nums2 debe alcanzar al menos s2 + z2
+            return s1 if s1 >= s2 + z2 else -1
+
+        # Caso: nums2 sin ceros, nums1 con ceros
+        if z2 == 0:
+            return s2 if s2 >= s1 + z1 else -1
+
+        # Ambas listas tienen ceros: el mínimo S que permite reemplazar cada cero al menos con 1
+        target = max(s1 + z1, s2 + z2)
+        return target
