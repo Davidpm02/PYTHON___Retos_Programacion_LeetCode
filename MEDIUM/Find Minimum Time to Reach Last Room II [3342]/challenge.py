@@ -87,8 +87,8 @@ class Solution:
         dist[0][0][0] = 0
 
         # Cola de prioridad que almacena tuplas (tiempo, x, y, paridad)
-        
         pq = [(0, 0, 0, 0)]
+        
         # Direcciones de movimiento: abajo, arriba, derecha, izquierda
         directions = [(1,0), (-1,0), (0,1), (0,-1)]
 
