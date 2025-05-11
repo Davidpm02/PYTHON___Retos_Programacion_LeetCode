@@ -23,3 +23,43 @@ Constraints:
 
 """
 
+from typing import List
+
+class Solution:
+    def threeConsecutiveOdds(self, arr: List[int]) -> bool:
+        
+        """
+        Determina si una lista de enteros contiene, al menos, tres
+        números impares consecutivos.
+
+        params:
+            arr  (List[int])
+            
+        returns
+            bool
+        """
+
+        # Inicializo una variable contadora
+        consecutive_odds = 0
+
+        # Variable para conservar el último índice con dígito impar
+        last_odd_index = 0
+
+        # Itero entre todos los números y actualizo el contador
+        for idx, num in enumerate(arr):
+            if (num % 2 != 0):
+                # Reviso si el último dígito era impar
+                if ((consecutive_odds != 0) and (abs(idx - last_odd_index) == 1)):
+                    last_odd_index = idx
+                    consecutive_odds += 1
+                else:
+                    last_odd_index = idx
+                    consecutive_odds += 1
+
+                if (consecutive_odds == 3):
+                    return True
+            else:
+                # Reinicio el contador
+                consecutive_odds = 0
+
+        return False
