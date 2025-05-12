@@ -39,3 +39,43 @@ Constraints:
 0 <= digits[i] <= 9
 
 """
+
+from typing import List
+
+class Solution:
+    def findEvenNumbers(self, digits: List[int]) -> List[int]:
+        
+        """
+        Se encarga de conformar una lista con todos los enteros pares de
+        3 dígitos que pueden crearse a partir de los dígitos almacenados
+        dentro del array 'digits'.
+
+        params:
+            digits (List[int])
+
+        returns:
+            List[int]
+        """
+
+        # Array con enteros pares de tres dígitos
+        even_nums_three_digits = [num for num in range(100, 1000) if (num % 2 == 0)]
+
+        # Inicializo un array vacío para contener los resultados
+        output_array = []
+
+        # Busco números de 3 dígitos que cumplan las condiciones
+        for num in even_nums_three_digits:
+            # Analizo el entero iterado
+            num_str = str(num)
+            digits_copy = digits[::]
+            matched_digits = 0
+            for n in num_str:
+                if (int(n) in digits_copy):
+                    matched_digits += 1
+                    digits_copy.remove(int(n))
+            if (matched_digits == 3):
+                # Incluyo el entero dentro del resultado
+                output_array.append(num)
+        
+        # Devuelvo el array ordenado
+        return sorted(output_array)
