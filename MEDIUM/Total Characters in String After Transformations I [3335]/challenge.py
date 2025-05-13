@@ -59,3 +59,49 @@ s consists only of lowercase English letters.
 
 """
 
+class Solution:
+    def lengthAfterTransformations(self, s: str, t: int) -> int:
+        """
+        Calcula la longitud de una cadena después de aplicar t transformaciones.
+        
+        En cada transformación:
+        - Si el carácter es 'z', se reemplaza por "ab"
+        - De lo contrario, se reemplaza por la siguiente letra del alfabeto
+        
+        La implementación mantiene las frecuencias de cada carácter y las actualiza
+        en cada transformación, lo que permite calcular eficientemente la longitud
+        final incluso para valores grandes de t.
+        
+        Args:
+            s: Una cadena de caracteres en minúscula
+            t: Número de transformaciones a aplicar
+            
+        Returns:
+            La longitud de la cadena resultante después de t transformaciones,
+            módulo 10^9 + 7
+        """
+        MOD = 10**9 + 7
+        
+        # Inicializamos el recuento de frecuencias para cada carácter
+        freq = [0] * 26
+        for char in s:
+            freq[ord(char) - ord('a')] += 1
+        
+        # Aplicamos las t transformaciones
+        for _ in range(t):
+            new_freq = [0] * 26
+            
+            # Procesamos cada carácter excepto 'z'
+            for i in range(25):  # a hasta y
+                new_freq[i + 1] += freq[i]  # Cada carácter se convierte en el siguiente
+            
+            # Procesamos 'z' por separado (se convierte en "ab")
+            new_freq[0] += freq[25]  # 'z' -> 'a'
+            new_freq[1] += freq[25]  # 'z' -> 'b'
+            
+            freq = new_freq
+        
+        # Calculamos la longitud total sumando todas las frecuencias
+        total_length = sum(freq) % MOD
+        
+        return total_length
