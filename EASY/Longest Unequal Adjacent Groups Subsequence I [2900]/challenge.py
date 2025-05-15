@@ -41,3 +41,37 @@ words[i] consists of lowercase English letters.
 
 """
 
+from typing import List
+
+class Solution:
+    def getLongestSubsequence(self, words: List[str], groups: List[int]) -> List[str]:
+        
+        """
+        Se encarga de devolver la subsecuencia más larga de `words` tal
+        que los grupos correspondientes a las palabras alternan entre
+        0 y 1 (es decir, no hay dos consecutivos con el mismo valor en
+        `groups`).
+
+        params:
+            words (List[str])
+            groups (List[int])
+        
+        returns:
+            List[str]
+
+        """
+
+        n = len(words)
+
+        # dp[i] almacena (longitud de subsecuencia, último grupo, camino de palabras) terminando en posición i
+        dp = [(1, groups[i], [words[i]]) for i in range(n)]
+
+        for i in range(n):
+            for j in range(i):
+                if groups[i] != dp[j][1]:  # Verifico alternancia de grupo
+                    if dp[j][0] + 1 > dp[i][0]:  # Solo actualizo si mejora la longitud
+                        dp[i] = (dp[j][0] + 1, groups[i], dp[j][2] + [words[i]])
+
+        # Elijo la subsecuencia con mayor longitud
+        longest_subsequence = max(dp, key=lambda x: x[0])[2]
+        return longest_subsequence
