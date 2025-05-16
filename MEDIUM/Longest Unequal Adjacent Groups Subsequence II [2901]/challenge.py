@@ -63,3 +63,50 @@ words[i] consists of lowercase English letters.
 
 """
 
+from typing import List
+from collections import defaultdict, deque
+
+class Solution:
+    def getWordsInLongestSubsequence(self, words: List[str], groups: List[int]) -> List[str]:
+        
+        """
+        Devuelve una subsecuencia más larga de palabras en la que:
+        - Cada par consecutivo tiene longitud igual.
+        - La distancia de Hamming entre ellas es exactamente 1.
+        - Pertenecen a grupos distintos.
+        
+        params:
+            words (List[str])
+            groups (List[int])
+        
+        returns:
+            List[str]
+        """
+
+        def hamming_distance(w1: str, w2: str) -> int:
+            # Calculo la distancia de Hamming entre dos palabras del mismo tamaño
+            return sum(a != b for a, b in zip(w1, w2))
+
+        n = len(words)
+        dp = [1] * n  # Longitud de la mejor subsecuencia que termina en i
+        prev = [-1] * n  # Índice anterior en la mejor subsecuencia que termina en i
+
+        for i in range(n):
+            for j in range(i):
+                if groups[i] != groups[j] and len(words[i]) == len(words[j]) and hamming_distance(words[i], words[j]) == 1:
+                    if dp[j] + 1 > dp[i]:
+                        dp[i] = dp[j] + 1
+                        prev[i] = j
+
+        # Encuentro el índice donde termina la mejor subsecuencia
+        max_len = max(dp)
+        end_index = dp.index(max_len)
+
+        # Reconstruyo la subsecuencia hacia atrás
+        result = []
+        while end_index != -1:
+            result.append(words[end_index])
+            end_index = prev[end_index]
+
+        # Como hemos ido hacia atrás, invierto la subsecuencia para devolverla en orden correcto
+        return result[::-1]
