@@ -27,3 +27,30 @@ nums[i] is either 0, 1, or 2.
  
 """
 
+from typing import List
+
+class Solution:
+    def sortColors(self, nums: List[int]) -> None:
+        """
+        El método implementa un algoritmo básico Bubble Sort para 
+        ordenar los elementos de una array numérico.
+
+        El método no retorna nada; actualiza el array recibido como
+        argumento en tiempo de ejecución.
+
+        params:
+            nums (List[int])
+        
+        returns:
+            None
+        """
+        
+        n = len(nums)
+
+        # Itero sobre todos los elementos para asegurar que se ordenen todos.
+        for i in range(n):
+            # La última i posiciones ya están ordenadas, así que voy reduciendo el rango.
+            for j in range(0, n - i - 1):
+                # Comparo elemento actual con el siguiente para intercambiarlos si están fuera de orden.
+                if nums[j] > nums[j + 1]:
+                    nums[j], nums[j + 1] = nums[j + 1], nums[j]  # Hago el swap de posiciones.
