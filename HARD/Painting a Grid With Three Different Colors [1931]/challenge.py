@@ -32,3 +32,64 @@ Constraints:
 
 """
 
+class Solution:
+    def colorTheGrid(self, m: int, n: int) -> int:
+        """
+        Calcula el número de formas de pintar una cuadrícula m x n usando
+        3 colores (rojo, verde, azul), de forma que no haya dos celdas
+        adyacentes (ni en filas ni en columnas) con el mismo color.
+
+        params:
+            m (int)
+            n (int)
+
+        returns:
+            int
+
+        """
+        from functools import lru_cache
+        MOD = 10**9 + 7
+        COLORS = [0, 1, 2]  # 0: rojo, 1: verde, 2: azul
+
+        # Genero todos los patrones válidos para una columna de altura m
+        def generate_valid_columns():
+            valid = []
+
+            def backtrack(path):
+                if len(path) == m:
+                    valid.append(tuple(path))
+                    return
+                for color in COLORS:
+                    if not path or path[-1] != color:
+                        backtrack(path + [color])
+
+            backtrack([])
+            return valid
+
+        valid_columns = generate_valid_columns()
+
+        # Para cada patrón de columna, precomputo los patrones compatibles siguientes
+        adjacency = {}
+        for c1 in valid_columns:
+            adjacency[c1] = []
+            for c2 in valid_columns:
+                if all(a != b for a, b in zip(c1, c2)):
+                    adjacency[c1].append(c2)
+
+        @lru_cache(None)
+        def dp(col: int, prev_col_pattern: tuple) -> int:
+            # Si hemos completado todas las columnas, hay una forma válida
+            if col == n:
+                return 1
+
+            total = 0
+            for next_col_pattern in adjacency[prev_col_pattern]:
+                total = (total + dp(col + 1, next_col_pattern)) % MOD
+            return total
+
+        # Casos base: en la primera columna puedo colocar cualquier patrón válido
+        result = 0
+        for first_col in valid_columns:
+            result = (result + dp(1, first_col)) % MOD
+
+        return result
