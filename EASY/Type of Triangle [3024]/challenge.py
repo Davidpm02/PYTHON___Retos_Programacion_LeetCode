@@ -34,3 +34,45 @@ nums.length == 3
 
 """
 
+from typing import List
+
+class Solution:
+    def triangleType(self, nums: List[int]) -> str:
+        
+        """
+        Se encarga de comprobar qué tipo de triángulo se puede formar
+        a partir de un array de enteros.
+
+        Cada entero en el array representa la longitud de uno de sus
+        lados.
+
+        params:
+            nums (List[int])
+        
+        returns:
+            str
+        """
+
+        # Aplico la desigualdad triangular para validar la posibilidad
+        # de crear un triángulo con las longitudes dadas
+        ordered_nums = sorted(nums)
+        if ((ordered_nums[0] + ordered_nums[1]) <= ordered_nums[2]):
+            return "none"
+
+        # Inicializo un contador igualado a 0
+        diff_sides = 0
+
+        # Defino un diccionario que mapee el número de lados diferentes
+        # con el tipo de triángulo
+        types_triangles = {
+            "1" : "equilateral", # Todos los lados iguales
+            "2" : "isosceles",   # 2 lados iguales
+            "3" : "scalene"      # Tidos los lados diferentes
+        }
+
+        # Defino un conjunto a partir del array de longitudes
+        set_nums = set(nums)
+        
+        # Retorno el tipo de triángulo que se puede formar
+        return types_triangles[str(len(set_nums))]
+
