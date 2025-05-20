@@ -50,3 +50,41 @@ queries[i].length == 2
 
 """
 
+from typing import List
+
+class Solution:
+    def isZeroArray(self, nums: List[int], queries: List[List[int]]) -> bool:
+        
+        """
+        Se encarga de procesar un array numérico, y verificar si el
+        array procesado está formado únicamente por ceros.
+
+        Para el procesamiento, el método se encarga de reducir en 1
+        el valor de cada entero en 'nums' según los índices que 
+        se indican en 'queries'.
+
+        params:
+            nums (List[int])
+            queries (List[List[int]])
+        
+        returns:
+            bool
+        """
+
+        n = len(nums)
+        diff = [0] * (n + 1)
+
+        # Aplico las operaciones como difference array
+        for l, r in queries:
+            diff[l] += 1
+            if r + 1 < n:
+                diff[r + 1] -= 1
+
+        # Acumulo operaciones con prefix sum y comparo con nums[i]
+        ops = 0
+        for i in range(n):
+            ops += diff[i]
+            if nums[i] > ops:
+                return False
+
+        return True
