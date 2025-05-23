@@ -56,3 +56,76 @@ queries[i].length == 2
 0 <= li <= ri < nums.length
 
 """
+
+from typing import List
+
+import heapq
+
+class Solution:
+    def maxRemoval(self, nums: List[int], queries: List[List[int]]) -> int:
+        
+        """
+        Se encarga de eliminar el mayor número posible de consultas
+        (queries) tal que aún se pueda convertir el array `nums` 
+        en un array de ceros.
+
+        params:
+          nums (List[int])
+          queries (List[List[int]])
+
+        returns:
+          int
+        """
+
+        n = len(nums)
+        
+        # Agrupar queries por posición de inicio
+        start_at = [[] for _ in range(n)]
+        for i, (l, r) in enumerate(queries):
+            start_at[l].append((r, i))
+        
+        # Heap de queries disponibles (max-heap por end position)
+        available = []  # (-end_pos, query_index)
+        used = set()
+        
+        # Array de diferencias para tracking de decrementos aplicados
+        diff = [0] * (n + 1)
+        current_decrement = 0
+        
+        for i in range(n):
+            # Actualizar decremento actual usando diferencia
+            current_decrement += diff[i]
+            
+            # Agregar queries que empiezan en posición i
+            for end_pos, query_idx in start_at[i]:
+                heapq.heappush(available, (-end_pos, query_idx))
+            
+            # Remover queries que ya no son válidas
+            while available and -available[0][0] < i:
+                heapq.heappop(available)
+            
+            # Determinar cuántos decrementos más necesitamos
+            needed = nums[i] - current_decrement
+            
+            # Usar queries disponibles si es necesario
+            while needed > 0 and available:
+                end_pos_neg, query_idx = heapq.heappop(available)
+                end_pos = -end_pos_neg
+                
+                # Verificar si la query realmente cubre la posición actual
+                if end_pos >= i:
+                    # Marcar query como usada
+                    used.add(query_idx)
+                    
+                    # Aplicar decremento usando diferencia de arrays
+                    current_decrement += 1
+                    diff[end_pos + 1] -= 1
+                    
+                    needed -= 1
+                # Si no cubre la posición actual, la descartamos (no la devolvemos al heap)
+            
+            # Si aún necesitamos más decrementos, es imposible
+            if needed > 0:
+                return -1
+        
+        return len(queries) - len(used)
