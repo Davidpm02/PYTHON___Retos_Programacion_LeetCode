@@ -50,3 +50,74 @@ The input is generated such that edges represent a valid tree.
 
 """
 
+from typing import List
+from collections import defaultdict
+
+class Solution:
+    def maximumValueSum(self, nums: List[int], k: int, edges: List[List[int]]) -> int:
+        """
+        Encuentra la suma máxima posible de valores en un árbol después
+        de aplicar operaciones XOR en las aristas.
+        
+        params:
+            nums (List[int])
+            k (int)
+            edges (List[List[int]])
+            
+        returns:
+            La suma máxima posible de valores
+                
+        """
+
+        n = len(nums)
+        
+        # Construir el grafo de adyacencia
+        graph = defaultdict(list)
+        for u, v in edges:
+            graph[u].append(v)
+            graph[v].append(u)
+        
+        # Calcular el beneficio de aplicar XOR a cada nodo
+        # Si benefit[i] > 0, es beneficioso aplicar XOR al nodo i
+        benefit = [nums[i] ^ k for i in range(n)]
+        
+        # DP en el árbol
+        # dp[node][parity] = máxima suma en el subárbol de 'node' donde
+        # parity = 0: número par de nodos con XOR en el subárbol
+        # parity = 1: número impar de nodos con XOR en el subárbol
+        def dfs(node, parent):
+            # Caso base: nodo hoja o sin hijos no visitados
+            children_results = []
+            
+            for neighbor in graph[node]:
+                if neighbor != parent:
+                    children_results.append(dfs(neighbor, node))
+            
+            if not children_results:
+                # Nodo hoja
+                return [nums[node], benefit[node]]
+            
+            # Combinar resultados de los hijos
+            # Empezar con el nodo actual sin XOR
+            dp = [nums[node], benefit[node]]
+            
+            for child_dp in children_results:
+                new_dp = [float('-inf')] * 2
+                
+                # Para cada paridad actual, considerar ambas paridades del hijo
+                for curr_parity in range(2):
+                    for child_parity in range(2):
+                        new_parity = curr_parity ^ child_parity
+                        new_dp[new_parity] = max(new_dp[new_parity], 
+                                               dp[curr_parity] + child_dp[child_parity])
+                
+                dp = new_dp
+            
+            return dp
+        
+        # Ejecutar DFS desde el nodo 0
+        result = dfs(0, -1)
+        
+        # Retornar el máximo, pero solo paridad par es válida globalmente
+        return result[0]
+        
