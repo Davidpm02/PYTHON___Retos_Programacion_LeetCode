@@ -57,4 +57,4 @@ class TestSolution:
             expected_output (List[List[int]]): Matriz esperada tras aplicar setZeroes.
         """
         self.solution.setZeroes(matrix)
-        
+        assert matrix == expected_output
