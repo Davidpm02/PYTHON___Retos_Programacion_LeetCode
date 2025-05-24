@@ -34,3 +34,32 @@ x is a lowercase English letter.
 words[i] consists only of lowercase English letters.
 
 """
+
+from typing import List
+
+class Solution:
+    def findWordsContaining(self, words: List[str], x: str) -> List[int]:
+        
+        """
+        Se encarga de validar el número de palabras dentro de un array 
+        que contienen, al menos, una aparición de un caracter específico.
+
+        params:
+            words (List[str])
+            x (str)
+        
+        returns:
+            List[int]
+        """
+
+        # Inicializo una lista vacía
+        index_occurences = []
+
+        # Itero sobre el listado de palabras y reviso que contengan
+        # el carácter buscado
+        for idx, word in enumerate(words):
+            if (x in word):
+                # Incluyo el índice dentro del array de ocurrencias
+                index_occurences.append(idx)
+        
+        return index_occurences
