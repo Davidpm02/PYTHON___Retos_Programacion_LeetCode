@@ -38,3 +38,56 @@ colors consists of lowercase English letters.
 
 """
 
+from collections import deque
+from typing import List
+
+class Solution:
+    def largestPathValue(self, colors: str, edges: List[List[int]]) -> int:
+        """
+        Se encarga de calcular el valor máximo de color en cualquier 
+        camino válido dentro de un grafo dirigido.
+        
+        Si el grafo contiene un ciclo, el método devuelve -1.
+
+        params:
+            colors (str)
+            edges (List[List[int]])
+        
+        returns:
+            int
+        """
+        
+        n = len(colors)
+        adj = [[] for _ in range(n)]
+        indegree = [0] * n
+        for u, v in edges:
+            adj[u].append(v)
+            indegree[v] += 1
+
+        dp = [[0] * 26 for _ in range(n)]
+
+        queue = deque()
+        for i in range(n):
+            if indegree[i] == 0:
+                queue.append(i)
+                dp[i][ord(colors[i]) - ord('a')] = 1
+
+        processed = 0
+        result = 0
+
+        while queue:
+            u = queue.popleft()
+            processed += 1
+            result = max(result, max(dp[u]))
+
+            for v in adj[u]:
+                for c in range(26):
+                    dp[v][c] = max(dp[v][c], dp[u][c] + (1 if c == ord(colors[v]) - ord('a') else 0))
+                indegree[v] -= 1
+                if indegree[v] == 0:
+                    queue.append(v)
+
+        if processed < n:
+            return -1
+
+        return result
