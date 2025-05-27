@@ -43,3 +43,33 @@ Constraints:
 
 """
 
+class Solution:
+    def differenceOfSums(self, n: int, m: int) -> int:
+        
+        """
+        Se encarga de calcular la diferente entre sumas.
+
+        La diferencia representa 'num1 - num2', siendo:
+         - num1 (suma de todos los numeros en el rango [1, n] no
+                 divisibles entre m).
+         - num2 (suma de todos los números en el rango [1, n]
+                 divisibles entre m).
+        
+        params:
+            n (int)
+            m (int)
+        
+        returns:
+            int
+        """
+
+        num1 = 0
+        num2 = 0
+
+        for num in range(1, n + 1):
+            if (num % m == 0):
+                num2 += num
+            else:
+                num1 += num
+            
+        return num1 - num2
