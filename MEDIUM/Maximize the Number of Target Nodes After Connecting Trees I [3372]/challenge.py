@@ -55,3 +55,78 @@ The input is generated such that edges1 and edges2 represent valid trees.
 
 """
 
+from collections import deque
+from typing import List
+
+class Solution:
+    def maxTargetNodes(self, edges1: List[List[int]], edges2: List[List[int]], k: int) -> List[int]:
+        """
+        El método calcula, para cada nodo i en el primer árbol, el número
+        máximo de nodos alcanzables dentro de distancia k tras conectar
+        i con un nodo óptimamente elegido en el segundo árbol.
+        
+        params:
+            edges1 (List[List[int]])
+            edges2 (List[List[int]])
+            k (int)
+
+        returns:
+            List[int]
+        """
+
+        # Construyo las listas de adyacencia para ambos árboles.
+        n = len(edges1) + 1
+        m = len(edges2) + 1
+        adj1 = [[] for _ in range(n)]
+        adj2 = [[] for _ in range(m)]
+        for u, v in edges1:
+            adj1[u].append(v)
+            adj1[v].append(u)
+        for u, v in edges2:
+            adj2[u].append(v)
+            adj2[v].append(u)
+
+        # Función auxiliar para calcular cuántos nodos hay dentro de un
+        # límite de distancia para cada nodo en un árbol.
+        def compute_within_radius(adj: List[List[int]], limit: int) -> List[int]:
+            counts = []
+            # Si el límite es negativo, no hay nodos alcanzables.
+            if limit < 0:
+                return [0] * len(adj)
+            for start in range(len(adj)):
+                visited = [False] * len(adj)
+                dist = [0] * len(adj)
+                queue = deque([start])
+                visited[start] = True
+                reachable = 1  # incluyo el nodo inicial.
+
+                # Realizo BFS hasta el límite dado.
+                while queue:
+                    node = queue.popleft()
+                    if dist[node] == limit:
+                        continue
+                    for nei in adj[node]:
+                        if not visited[nei]:
+                            visited[nei] = True
+                            dist[nei] = dist[node] + 1
+                            if dist[nei] <= limit:
+                                reachable += 1
+                                queue.append(nei)
+                counts.append(reachable)
+            return counts
+
+        # Calculo los recuentos de nodos alcanzables en el primer árbol
+        # dentro de k.
+        counts1 = compute_within_radius(adj1, k)
+        # Calculo los recuentos de nodos alcanzables en el segundo árbol
+        # dentro de k-1 (uno de esos bordes lo uso para la conexión).
+        counts2 = compute_within_radius(adj2, k - 1)
+
+        # La mejor opción en el árbol2 es conectar al nodo con más nodos
+        # alcanzables.
+        max2 = max(counts2) if counts2 else 0
+
+        # Para cada nodo del árbol1, sumo su propio recuento con el mejor
+        # recuento del árbol2.
+        result = [c1 + max2 for c1 in counts1]
+        return result
