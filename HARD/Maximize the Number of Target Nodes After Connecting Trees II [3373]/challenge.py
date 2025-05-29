@@ -54,3 +54,76 @@ The input is generated such that edges1 and edges2 represent valid trees.
 
 """
 
+from typing import List, Tuple
+from collections import deque
+
+class Solution:
+    def maxTargetNodes(self, edges1: List[List[int]], edges2: List[List[int]]) -> List[int]:
+        """
+        Calcula, para cada nodo i en el primer árbol, el número máximo
+        de nodos 'target' (distancia par) si se conecta i con el mejor
+        nodo del segundo árbol.
+        
+        params:
+            edges1 (List[List[int]])
+            edges2 (List[List[int]]) 
+
+        returns:
+            List[int]
+
+        """
+        
+        # Construyo listas de adyacencia
+        n = len(edges1) + 1
+        m = len(edges2) + 1
+        adj1 = [[] for _ in range(n)]
+        adj2 = [[] for _ in range(m)]
+        for u, v in edges1:
+            adj1[u].append(v)
+            adj1[v].append(u)
+        for u, v in edges2:
+            adj2[u].append(v)
+            adj2[v].append(u)
+
+        # Función para colorear por paridad de profundidad (0 o 1) y contar tamaño de cada color
+        def bipartite_counts(adj: List[List[int]]) -> Tuple[List[int], int, int]:
+            n = len(adj)
+            color = [-1] * n
+            count0 = count1 = 0
+            queue = deque([0])
+            color[0] = 0
+            count0 += 1
+            # BFS para colorear
+            while queue:
+                u = queue.popleft()
+                for v in adj[u]:
+                    if color[v] == -1:
+                        # asigno color opuesto al padre
+                        color[v] = 1 - color[u]
+                        if color[v] == 0:
+                            count0 += 1
+                        else:
+                            count1 += 1
+                        queue.append(v)
+            return color, count0, count1
+
+        # Coloreo árbol1 y cuento colores
+        color1, c10, c11 = bipartite_counts(adj1)
+        # Coloreo árbol2 y cuento colores
+        color2, c20, c21 = bipartite_counts(adj2)
+
+        # Elijo en el segundo árbol el color de conexión que maximiza nodos 'target'
+        # (nodos de color distinto al punto de conexión)
+        # Si conecto a un nodo color 0, obtengo c21 nodos a distancia par (distancia=1+odd)
+        # Si conecto a un nodo color 1, obtengo c20 nodos.
+        best2 = max(c20, c21)
+
+        # Para cada i, los nodos target en árbol1 son los de su mismo color
+        result = []
+        for i in range(n):
+            if color1[i] == 0:
+                # cuento todos los de color 0 en árbol1 y sumo best2
+                result.append(c10 + best2)
+            else:
+                result.append(c11 + best2)
+        return result
