@@ -39,3 +39,56 @@ edges[i] != i
 
 """
 
+from typing import List
+
+class Solution:
+    def closestMeetingNode(self, edges: List[int], node1: int, node2: int) -> int:
+        
+        """
+        Dado un grafo dirigido donde cada nodo tiene a lo sumo una arista saliente,
+        este método encuentra el índice del nodo alcanzable tanto desde node1 como
+        node2, de modo que el máximo entre las distancias desde node1 y node2 a ese
+        nodo sea mínimo. Si hay múltiples nodos que cumplen, se devuelve el de índice
+        más pequeño. Si no existe ningún nodo común alcanzable, se devuelve -1.
+
+        params:
+            edges (List[int])
+            node1 (int)
+            node2 (int)
+        returns:
+            int
+        """
+
+        n = len(edges)
+        
+        def obtener_distancias(inicio: int) -> List[int]:
+            # Inicializo todas las distancias con infinito para marcar nodos no visitados
+            dist = [float('inf')] * n
+            actual = inicio
+            pasos = 0
+            # Recorro la trayectoria hasta encontrar -1 o un nodo ya visitado
+            while actual != -1 and dist[actual] == float('inf'):
+                dist[actual] = pasos
+                actual = edges[actual]
+                pasos += 1
+            return dist
+
+        # Calculo distancias desde ambos nodos de inicio
+        dist1 = obtener_distancias(node1)
+        dist2 = obtener_distancias(node2)
+
+        # Busco el nodo que minimiza el máximo entre ambas distancias
+        respuesta = -1
+        mejor_max_dist = float('inf')
+        for i in range(n):
+            d1 = dist1[i]
+            d2 = dist2[i]
+            # Considero solo nodos alcanzables desde node1 y node2
+            if d1 < float('inf') and d2 < float('inf'):
+                max_dist = max(d1, d2)
+                # Actualizo si encuentro un máximo menor o un empate con índice más pequeño
+                if max_dist < mejor_max_dist or (max_dist == mejor_max_dist and (respuesta == -1 or i < respuesta)):
+                    mejor_max_dist = max_dist
+                    respuesta = i
+
+        return respuesta
