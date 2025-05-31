@@ -45,3 +45,75 @@ The squares labeled 1 and n2 are not the starting points of any snake or ladder.
 
 """
 
+from typing import List, Tuple
+from collections import deque
+
+class Solution:
+    def _label_to_coords(self, label: int, n: int) -> Tuple[int, int]:
+        """
+        Dado un label (1-indexed) de casilla y el tamaño n del tablero,
+        calculo las coordenadas (fila, columna) en la matriz.
+
+        params:
+            label (int)
+            n (int)
+
+        returns:
+            Tuple[int, int]
+
+        """
+
+        lbl0 = label - 1
+        row_from_bottom = lbl0 // n
+        r = n - 1 - row_from_bottom
+        col_in_row = lbl0 % n
+
+        if row_from_bottom % 2 == 0:
+            c = col_in_row
+        else:
+            c = n - 1 - col_in_row
+
+        return (r, c)
+
+    def snakesAndLadders(self, board: List[List[int]]) -> int:
+        """
+        Calcula el número mínimo de lanzamientos de dado para llegar
+        desde la casilla 1 hasta la casilla n^2 en un tablero de
+        serpientes y escaleras dado en formato Boustrophedon.
+
+        params:
+            board (List[List[int]])
+        
+        returns:
+            int
+
+        """
+        
+        n = len(board)
+        n2 = n * n
+
+        queue = deque()
+        queue.append((1, 0))  # Empiezo en casilla 1 con 0 movimientos
+        visited = set([1])    # Marco la casilla 1 como visitada
+
+        while queue:
+            curr_label, moves = queue.popleft()
+            if curr_label == n2:
+                return moves
+
+            for dice in range(1, 7):
+                next_label = curr_label + dice
+                if next_label > n2:
+                    break
+
+                r, c = self._label_to_coords(next_label, n)
+                if board[r][c] != -1:
+                    destination = board[r][c]
+                else:
+                    destination = next_label
+
+                if destination not in visited:
+                    visited.add(destination)
+                    queue.append((destination, moves + 1))
+
+        return -1
