@@ -26,3 +26,33 @@ Constraints:
 
 """
 
+from math import comb
+
+class Solution:
+    def distributeCandies(self, n: int, limit: int) -> int:
+
+        """
+        Se encarga de calcular el número de combinaciones posibles
+        en el reparto de caramelos a 3 niños, teniendo en cuenta el
+        valor de los parámetros del método.
+
+        params:
+            n (int)
+            limit (int)
+        
+        returns:
+            int
+        """
+
+        # Total de soluciones sin límite
+        total = comb(n + 2, 2)
+
+        # Inclusión-exclusión para restar las soluciones inválidas
+        for mask in range(1, 1 << 3):  # subconjuntos de {a, b, c}
+            bits = bin(mask).count('1')
+            reduce_n = n - (limit + 1) * bits
+            sign = -1 if bits % 2 == 1 else 1
+            if reduce_n >= 0:
+                total += sign * comb(reduce_n + 2, 2)
+
+        return total
