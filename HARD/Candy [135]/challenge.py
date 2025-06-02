@@ -32,3 +32,39 @@ n == ratings.length
 
 """
 
+from typing import List
+
+class Solution:
+    def candy(self, ratings: List[int]) -> int:
+        """
+        Método que calcula el número mínimo de caramelos necesarios.
+
+        params:
+            ratings (List[int])
+        
+        returns:
+            int
+        """
+        # Verifico si la lista de valoraciones está vacía (aunque según
+        # restricciones, n >= 1).
+        if not ratings:
+            return 0
+
+        n = len(ratings)
+        # Inicializo una lista de caramelos con 1 para cada niño, porque
+        # cada uno debe recibir al menos uno.
+        candies = [1] * n
+
+        # Paso 1: recorrido de izquierda a derecha
+        for i in range(1, n):
+            if ratings[i] > ratings[i - 1]:
+                candies[i] = candies[i - 1] + 1
+
+        # Paso 2: recorrido de derecha a izquierda
+        for i in range(n - 2, -1, -1):
+            if ratings[i] > ratings[i + 1]:
+                candies[i] = max(candies[i], candies[i + 1] + 1)
+
+        # Sumo todos los valores de caramelos para obtener el total mínimo necesario
+        total_candies = sum(candies)
+        return total_candies
