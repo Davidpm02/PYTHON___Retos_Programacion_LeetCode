@@ -45,3 +45,44 @@ s1, s2, and baseStr consist of lowercase English letters.
 
 """
 
+class Solution:
+    def smallestEquivalentString(self, s1: str, s2: str, baseStr: str) -> str:
+        """
+        Dado s1, s2 con la misma longitud y baseStr, construye la cadena equivalente
+        lexicográficamente más pequeña usando la información de equivalencia entre caracteres.
+        """
+        # Inicializo el arreglo parent para cada letra 'a' a 'z'.
+        parent = [i for i in range(26)]
+
+        def find(x: int) -> int:
+            # Encuentro el representante (raíz) de x con path compression.
+            if parent[x] != x:
+                parent[x] = find(parent[x])
+            return parent[x]
+
+        def union(x: int, y: int):
+            # Uno los conjuntos de x e y. Mantengo como raíz el carácter menor.
+            rx = find(x)
+            ry = find(y)
+            if rx == ry:
+                return
+            if rx < ry:
+                parent[ry] = rx
+            else:
+                parent[rx] = ry
+
+        # Recorro todas las parejas de s1 y s2 para unir sus equivalencias.
+        for c1, c2 in zip(s1, s2):
+            idx1 = ord(c1) - ord('a')
+            idx2 = ord(c2) - ord('a')
+            union(idx1, idx2)
+
+        # Construyo el resultado reemplazando cada carácter por su representante mínimo.
+        resultado = []
+        for c in baseStr:
+            idx = ord(c) - ord('a')
+            rep = find(idx)
+            # Convierto el índice de vuelta a carácter.
+            resultado.append(chr(rep + ord('a')))
+
+        return "".join(resultado)
