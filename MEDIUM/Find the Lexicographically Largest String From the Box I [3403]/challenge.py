@@ -44,3 +44,31 @@ word consists only of lowercase English letters.
 
 """
 
+class Solution:
+    def answerString(self, word: str, numFriends: int) -> str:
+        """
+        Dado un string 'word' y un entero 'numFriends', encuentra la cadena
+        lexicográficamente mayor que pueda aparecer como una de las partes
+        al dividir 'word' en 'numFriends' subcadenas no vacías en cualquier
+        ronda posible.
+        """
+        n = len(word)
+        
+        # Si solo hay un amigo, la única división es el string completo.
+        if numFriends == 1:
+            return word
+        
+        # Yo calculo la longitud máxima de cualquier subcadena válida.
+        max_len = n - numFriends + 1
+        
+        mejor = ""  # Yo mantengo la mejor cadena lexicográfica encontrada.
+        # Recorro cada índice de inicio posible.
+        for i in range(n):
+            # Yo determino cuánto puedo extraer desde i sin exceder max_len
+            longitud_actual = min(max_len, n - i)
+            candidato = word[i : i + longitud_actual]
+            # Yo comparo y actualizo si encuentro algo mayor lexicográficamente.
+            if candidato > mejor:
+                mejor = candidato
+        
+        return mejor
