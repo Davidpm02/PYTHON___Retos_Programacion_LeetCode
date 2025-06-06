@@ -43,3 +43,47 @@ s consists of only English lowercase letters.
 
 """
 
+class Solution:
+    def robotWithString(self, s: str) -> str:
+        """
+        Se encarga de construir la cadena lexicográficamente más pequeña
+        posible en una salida `p`.
+
+        Para ello, el método simula dos operaciones:
+        1. Mover el primer carácter de `s` a un string temporal `t`
+           (como si fuera una pila).
+        2. Mover el último carácter de `t` a una salida `p` si ese
+           carácter es el menor posible considerando los caracteres 
+           restantes en `s`.
+
+        params:
+            s (str)
+        
+        returns:
+            str
+        """
+        
+        # Inicializo un arreglo que almacenará el menor carácter en s[i:]
+        min_suffix = [''] * len(s)
+        min_char = 'z'
+        
+        # Relleno el array con el menor carácter desde la posición i hasta el final
+        for i in reversed(range(len(s))):
+            min_char = min(min_char, s[i])
+            min_suffix[i] = min_char
+
+        t = []      # pila temporal
+        res = []    # resultado final (lo escrito en el papel)
+        i = 0       # índice para recorrer `s`
+
+        while i < len(s) or t:
+            # Mientras queden caracteres en `s`, empujo a `t`
+            if i < len(s):
+                t.append(s[i])  # paso el carácter actual a `t`
+                i += 1
+
+            # Mientras pueda escribir caracteres en orden correcto desde `t`
+            while t and (i == len(s) or t[-1] <= min_suffix[i]):
+                res.append(t.pop())  # escribo el último carácter de `t` en `res`
+
+        return ''.join(res)
