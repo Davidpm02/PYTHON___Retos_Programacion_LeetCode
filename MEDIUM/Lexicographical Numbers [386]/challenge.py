@@ -23,3 +23,29 @@ Constraints:
 
 """
 
+from typing import List
+
+class Solution:
+    def lexicalOrder(self, n: int) -> List[int]:
+        
+        result = []
+
+        # Uso una función auxiliar para recorrer los números de forma lexicográfica
+        def dfs(current: int):
+            # Si el número actual excede el límite n, detengo la recursión
+            if current > n:
+                return
+            # Añado el número actual al resultado
+            result.append(current)
+            # Recorro los hijos posibles (añadiendo dígitos del 0 al 9 al final)
+            for i in range(10):
+                next_num = current * 10 + i
+                if next_num > n:
+                    break  # Si me paso de n, dejo de explorar esta rama
+                dfs(next_num)
+
+        # Inicio el recorrido desde los números del 1 al 9 (no empiezo en 0)
+        for i in range(1, 10):
+            dfs(i)
+
+        return result
