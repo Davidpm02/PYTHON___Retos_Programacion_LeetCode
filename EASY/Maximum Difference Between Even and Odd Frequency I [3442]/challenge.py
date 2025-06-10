@@ -41,3 +41,18 @@ s contains at least one character with an odd frequency and one with an even fre
 
 """
 
+from collections import Counter
+
+class Solution:
+    def maxDifference(self, s: str) -> int:
+        
+        # Mapeo de las repeticiones de cada caracter
+        rep_chars = Counter(s)
+        sorted_by_values = dict(sorted(rep_chars.items(), key=lambda item: item[1]))
+
+        # Hallo la máxima diferencia ------------
+        # Encuentro el caracter par de menor número (se podría optimizar con un solo bucle)
+        lowest_even_rep = sorted([reps for char, reps in sorted_by_values.items() if (reps % 2 == 0)])[0]
+        highest_odd_rep = sorted([reps for char, reps in sorted_by_values.items() if (reps % 2 != 0)])[-1]
+
+        return (highest_odd_rep - lowest_even_rep)
