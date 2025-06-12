@@ -36,3 +36,31 @@ Constraints:
 
 """
 
+from typing import List
+
+class Solution:
+    def maxAdjacentDistance(self, nums: List[int]) -> int:
+        
+        """
+        Se encarga de hallar la máxima diferencia absoluta entre los
+        elementos adyacentes de un array circular.
+
+        params:
+            nums (List[int])
+        
+        returns:
+            int
+        """
+
+        # Defino una lista con los resultados
+        result_array = []
+
+        # Evaluo primero los extremos
+        result_array.append(abs(nums[0] - nums[-1]))
+
+        # Recorro 'nums' y evaluo los elementos adyacentes
+        n = len(nums) - 1
+        for i in range(0, n):
+            result_array.append(abs(nums[i] - nums[i + 1]))
+        
+        return max(result_array)
