@@ -30,4 +30,39 @@ Constraints:
 
 """
 
+from typing import List
 
+class Solution:
+    def minimizeMax(self, nums: List[int], p: int) -> int:
+        
+        # Primero ordeno el array para facilitar emparejar valores cercanos
+        nums.sort()
+
+        # Esta función auxiliar me dice si puedo formar al menos 'p' pares
+        # con diferencia máxima menor o igual a 'max_diff'
+        def can_form_pairs(max_diff: int) -> bool:
+            count = 0
+            i = 1
+            while i < len(nums):
+                # Si la diferencia del par actual es válida, lo tomo y salto 2
+                if nums[i] - nums[i - 1] <= max_diff:
+                    count += 1
+                    i += 2
+                else:
+                    # Si no, solo avanzo uno
+                    i += 1
+                if count >= p:
+                    return True
+            return count >= p
+
+        # Búsqueda binaria sobre la diferencia máxima
+        left, right = 0, nums[-1] - nums[0]
+
+        while left < right:
+            mid = (left + right) // 2
+            if can_form_pairs(mid):
+                right = mid  # Intento minimizar más
+            else:
+                left = mid + 1  # Necesito permitir mayor diferencia
+
+        return left
