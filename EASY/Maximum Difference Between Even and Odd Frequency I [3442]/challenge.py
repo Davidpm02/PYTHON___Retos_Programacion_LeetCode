@@ -55,4 +55,8 @@ class Solution:
         lowest_even_rep = sorted([reps for char, reps in sorted_by_values.items() if (reps % 2 == 0)])[0]
         highest_odd_rep = sorted([reps for char, reps in sorted_by_values.items() if (reps % 2 != 0)])[-1]
 
+        # Si no hay pares, o no hay impares, no se puede calcular la diferencia
+        if lowest_even_rep is None or highest_odd_rep is None:
+            return -1
+        
         return (highest_odd_rep - lowest_even_rep)
