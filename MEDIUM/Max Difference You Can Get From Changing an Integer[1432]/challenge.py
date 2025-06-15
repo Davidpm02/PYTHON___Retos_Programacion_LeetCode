@@ -36,3 +36,29 @@ Constraints:
 
 """
 
+class Solution:
+    def maxDiff(self, num: int) -> int:
+        
+        s = str(num)
+
+        # Genero el número máximo reemplazando el primer dígito que no sea 9 por 9
+        for ch in s:
+            if ch != '9':
+                max_num = int(s.replace(ch, '9'))
+                break
+        else:
+            max_num = num  # todos los dígitos son 9, no hay cambio
+
+        # Genero el número mínimo
+        if s[0] != '1':
+            min_num = int(s.replace(s[0], '1'))  # cambio el primer dígito por 1
+        else:
+            # Si el primer dígito ya es 1, busco otro dígito != 0 y != 1 para cambiarlo por 0
+            for ch in s[1:]:
+                if ch != '0' and ch != '1':
+                    min_num = int(s.replace(ch, '0'))
+                    break
+            else:
+                min_num = num  # todos los dígitos son 0 o 1, no hay cambio
+
+        return max_num - min_num
