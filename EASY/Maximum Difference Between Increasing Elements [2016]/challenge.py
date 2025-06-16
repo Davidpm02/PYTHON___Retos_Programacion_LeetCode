@@ -36,3 +36,23 @@ n == nums.length
 
 """
 
+from typing import List
+
+class Solution:
+    def maximumDifference(self, nums: List[int]) -> int:
+        
+        # Inicializo el mínimo con el primer elemento del array.
+        min_value = nums[0]
+        # Inicializo el resultado con -1 por si no se encuentra ninguna pareja válida.
+        max_diff = -1
+        
+        # Recorro el array desde el segundo elemento en adelante.
+        for j in range(1, len(nums)):
+            if nums[j] > min_value:
+                # Si el valor actual es mayor que el mínimo visto, actualizo la diferencia máxima.
+                max_diff = max(max_diff, nums[j] - min_value)
+            else:
+                # Si el valor actual es menor o igual, actualizo el mínimo.
+                min_value = nums[j]
+        
+        return max_diff
