@@ -56,3 +56,33 @@ n is a multiple of 3
 
 """
 
+from typing import List
+
+class Solution:
+    def divideArray(self, nums: List[int], k: int) -> List[List[int]]:
+        # Primero ordeno los números
+        nums.sort()
+        
+        # Lista donde iré almacenando los grupos válidos
+        res = []
+        
+        # Índice para recorrer los números
+        i = 0
+        n = len(nums)
+        
+        while i < n:
+            # Si no quedan suficientes elementos, no es posible formar grupos de 3
+            if i + 2 >= n:
+                return []
+            
+            group = [nums[i], nums[i+1], nums[i+2]]
+            
+            # Compruebo si este grupo cumple la condición del problema
+            if group[2] - group[0] <= k:
+                res.append(group)
+                i += 3  # Paso al siguiente grupo
+            else:
+                # Si no cumple, significa que no se puede formar una partición válida
+                return []
+        
+        return res
