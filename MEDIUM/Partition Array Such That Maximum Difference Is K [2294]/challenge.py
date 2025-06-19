@@ -47,3 +47,25 @@ Constraints:
 
 """
 
+from typing import List
+
+class Solution:
+    def partitionArray(self, nums: List[int], k: int) -> int:
+        
+        # Paso 1: Ordeno los elementos para facilitar la agrupación basada en la diferencia.
+        nums.sort()
+        
+        count = 0  # Este contador lleva la cuenta del número mínimo de subsecuencias
+        start = 0  # Índice del inicio de la subsecuencia actual
+
+        # Paso 2: Recorro el array agrupando elementos según la diferencia <= k
+        for i in range(len(nums)):
+            if nums[i] - nums[start] > k:
+                # Si la diferencia es mayor que k, cierro la subsecuencia anterior
+                count += 1
+                start = i  # Comienzo una nueva subsecuencia desde el elemento actual
+
+        # Paso 3: Contamos la última subsecuencia que quedó pendiente
+        count += 1
+
+        return count
