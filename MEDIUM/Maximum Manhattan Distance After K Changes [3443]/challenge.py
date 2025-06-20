@@ -53,3 +53,54 @@ s consists of only 'N', 'S', 'E', and 'W'.
 
 """
 
+import heapq
+
+class Solution:
+    def maxDistance(self, s: str, k: int) -> int:
+        # I start by mapping each move to its delta (dx, dy).
+        moves = {'N': (0, 1), 'S': (0, -1), 'E': (1, 0), 'W': (-1, 0)}
+        n = len(s)
+        max_dist = 0
+        # I consider the four Manhattan objectives by projecting onto (dx, dy).
+        directions = [(1, 1), (1, -1), (-1, 1), (-1, -1)]
+
+        for obj_dx, obj_dy in directions:
+            # I build the list of contributions and benefits per move.
+            contribs = []      # original projection v_i
+            benefits = []      # benefit of changing to best move (1 instead of v_i)
+            for move in s:
+                dx, dy = moves[move]
+                v = obj_dx * dx + obj_dy * dy
+                contribs.append(v)
+                # best replacement always contributes +1 in this projection.
+                benefits.append(1 - v)
+
+            # I use two heaps to maintain the top-k benefits dynamically.
+            selected = []      # min-heap of chosen benefits (size <= k)
+            available = []     # max-heap (as negative) of remaining benefits
+            sum_sel = 0        # sum of chosen benefits
+            prefix_sum = 0     # cumulative sum of original contribs
+
+            for i in range(n):
+                prefix_sum += contribs[i]
+                b = benefits[i]
+                if b > 0:
+                    # push into available
+                    heapq.heappush(available, -b)
+                # if I can take more, move best beneficial
+                if len(selected) < k and available:
+                    best = -heapq.heappop(available)
+                    heapq.heappush(selected, best)
+                    sum_sel += best
+                # or swap if a better benefit is available
+                elif available and selected and -available[0] > selected[0]:
+                    # I replace the smallest in selected with the largest in available
+                    old = heapq.heappop(selected)
+                    new = -heapq.heappop(available)
+                    sum_sel += new - old
+                    heapq.heappush(selected, new)
+                # compute best for this prefix
+                curr = prefix_sum + sum_sel
+                max_dist = max(max_dist, curr)
+
+        return max_dist
