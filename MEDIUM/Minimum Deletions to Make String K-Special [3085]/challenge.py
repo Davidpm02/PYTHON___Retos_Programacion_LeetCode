@@ -45,3 +45,34 @@ word consists only of lowercase English letters.
 
 """
 
+from collections import Counter
+
+class Solution:
+    def minimumDeletions(self, word: str, k: int) -> int:
+        # Paso 1: Calculo la frecuencia de cada carácter
+        freq = Counter(word)
+        freq_values = sorted(freq.values())
+        
+        # Inicializo el mínimo de eliminaciones como infinito
+        min_deletions = float('inf')
+
+        # Exploro todos los posibles valores de frecuencia objetivo
+        for i in range(len(freq_values)):
+            # Defino el valor mínimo de frecuencia objetivo
+            target_freq = freq_values[i]
+            deletions = 0
+            
+            # Para cada frecuencia en el conjunto original
+            for f in freq_values:
+                if f < target_freq:
+                    # Elimino todos los caracteres cuya frecuencia es menor que el target
+                    deletions += f
+                elif f > target_freq + k:
+                    # Reduzco la frecuencia a target_freq + k
+                    deletions += f - (target_freq + k)
+                # Si está en el rango [target_freq, target_freq + k], no elimino nada
+            
+            # Actualizo el mínimo de eliminaciones si es necesario
+            min_deletions = min(min_deletions, deletions)
+        
+        return min_deletions\
