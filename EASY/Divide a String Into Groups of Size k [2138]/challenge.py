@@ -40,3 +40,22 @@ fill is a lowercase English letter.
 
 """
 
+from typing import List
+
+class Solution:
+    def divideString(self, s: str, k: int, fill: str) -> List[str]:
+        
+        result = []
+
+        # Recorro el string en pasos de tamaño k
+        for i in range(0, len(s), k):
+            group = s[i:i + k]
+
+            # Si el grupo es más corto que k, lo relleno con el carácter fill
+            if len(group) < k:
+                group += fill * (k - len(group))
+
+            # Añado el grupo (completo o rellenado) al resultado
+            result.append(group)
+
+        return result
