@@ -75,4 +75,4 @@ class Solution:
             # Actualizo el mínimo de eliminaciones si es necesario
             min_deletions = min(min_deletions, deletions)
         
-        return min_deletions\
+        return min_deletions
