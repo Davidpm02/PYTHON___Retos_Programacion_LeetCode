@@ -52,3 +52,57 @@ Constraints:
 
 """
 
+from typing import List
+
+class Solution:
+    def kMirror(self, k: int, n: int) -> int:
+        """
+        Devuelve la suma de los n primeros números que son palíndromos
+        en base-10 y en base-k.
+        """
+        def to_base_k(num: int) -> str:
+            # Convierto el número entero `num` a su representación en base `k`
+            if num == 0:
+                return "0"
+            digits = []
+            temp = num
+            while temp > 0:
+                digits.append(str(temp % k))
+                temp //= k
+            return ''.join(reversed(digits))
+
+        def is_palindrome(s: str) -> bool:
+            # Compruebo si la cadena `s` es igual a su reverso
+            return s == s[::-1]
+
+        def generate_palindromes(length: int) -> List[int]:
+            """
+            Genera todos los palíndromos de longitud exacta `length` en base-10.
+            """
+            pals: List[int] = []
+            half_len = (length + 1) // 2
+            start = 10 ** (half_len - 1)
+            end = 10 ** half_len
+            for half in range(start, end):
+                half_str = str(half)
+                if length % 2 == 0:
+                    pal_str = half_str + half_str[::-1]
+                else:
+                    pal_str = half_str + half_str[-2::-1]
+                pals.append(int(pal_str))
+            return pals
+
+        found = []  # Almaceno los k-mirror encontrados
+        length = 1
+        # Genero palíndromos de longitud creciente hasta tener n
+        while len(found) < n:
+            for pal in generate_palindromes(length):
+                base_k_repr = to_base_k(pal)
+                if is_palindrome(base_k_repr):
+                    found.append(pal)
+                    if len(found) == n:
+                        break
+            length += 1
+
+        # Retorno la suma de los n primeros k-mirror
+        return sum(found)
