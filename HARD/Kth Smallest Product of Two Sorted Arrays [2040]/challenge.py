@@ -44,3 +44,46 @@ nums1 and nums2 are sorted.
 
 """
 
+from bisect import bisect_right, bisect_left
+from typing import List
+
+class Solution:
+    def kthSmallestProduct(self, nums1: List[int], nums2: List[int], k: int) -> int:
+        
+        # Divido hacia arriba (ceil division) de forma segura con enteros
+        def ceil_div(a: int, b: int) -> int:
+            # Si b > 0, ceil(a/b) = (a + b - 1) // b
+            # Si b < 0, ceil(a/b) = (a + b + 1) // b
+            if b == 0:
+                raise ZeroDivisionError()
+            return a // b if a % b == 0 else (a + (b - 1 if b > 0 else b + 1)) // b
+
+        def count_less_equal(x: int) -> int:
+            count = 0
+            for a in nums1:
+                if a > 0:
+                    # Busco cuántos b cumplen b <= x // a
+                    count += bisect_right(nums2, x // a)
+                elif a < 0:
+                    # Busco cuántos b cumplen b >= ceil(x / a)
+                    bound = ceil_div(x, a)
+                    count += len(nums2) - bisect_left(nums2, bound)
+                else:  # a == 0
+                    if x >= 0:
+                        count += len(nums2)  # 0 * cualquier cosa <= x solo si x >= 0
+            return count
+
+        # Rango de búsqueda amplio por posibles productos extremos
+        left = -10**10
+        right = 10**10
+
+        while left < right:
+            mid = (left + right) // 2
+            if count_less_equal(mid) < k:
+                left = mid + 1
+            else:
+                right = mid
+        return left
+
+
+        
