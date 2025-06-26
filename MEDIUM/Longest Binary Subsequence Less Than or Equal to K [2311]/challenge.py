@@ -35,3 +35,42 @@ s[i] is either '0' or '1'.
 
 """
 
+class Solution:
+    def longestSubsequence(self, s: str, k: int) -> int:
+        
+        # Construyo la subsecuencia en forma de lista de caracteres
+        subseq = []
+        # Valor decimal actual de la subsecuencia
+        value = 0
+        
+        for c in s:
+            # 1) Añado el dígito (equivale a no borrarlo)
+            subseq.append(c)
+            # 2) Actualizo el valor: shift left + int(c)
+            value = (value << 1) + (c == '1')
+            
+            # 3) Si ya me paso de k, tengo que "borrar" un dígito:
+            #    siempre quito el primer '1' de subseq (mayor peso)
+            if value > k:
+                # Busco el índice del primer '1'
+                idx = next((i for i, ch in enumerate(subseq) if ch == '1'), None)
+                if idx is None:
+                    # Si no hay '1', significa que solo llevo ceros y aun así
+                    # value > k (imposible si k>=0), pero por seguridad:
+                    subseq.pop(0)  
+                    # recalcúlo entero value desde cero (aunque en práctica
+                    # esto no debería ocurrir cuando k>=0)
+                    value = 0
+                else:
+                    # Quito ese '1'
+                    subseq.pop(idx)
+                    # Resto su peso: como subseq ya fue shift-ado N bits,
+                    # cada posición i vale 2^(len(subseq_after) - i)
+                    bits_after = len(subseq)
+                    # El peso en el momento de añadirlo era 2^(bits_after)
+                    # pero como ya shift-e todo, ajusto:
+                    weight = 1 << (bits_after - idx)
+                    value -= weight
+
+        # Al final, subseq es la subsecuencia más larga con valor <= k
+        return len(subseq)
