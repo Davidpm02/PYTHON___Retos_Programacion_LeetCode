@@ -40,3 +40,44 @@ s consists of lowercase English letters.
 
 """
 
+from collections import Counter, deque
+
+class Solution:
+    def longestSubsequenceRepeatedK(self, s: str, k: int) -> str:
+        
+        def is_subsequence(x: str, s: str) -> bool:
+            # Verifico si x es subsecuencia de s
+            it = iter(s)
+            return all(c in it for c in x)
+        
+        def is_valid(x: str) -> bool:
+            # Verifico si x*k es subsecuencia de s
+            return is_subsequence(x * k, s)
+        
+        # Cuento frecuencia de caracteres en s
+        freq = Counter(s)
+        
+        # Solo me interesan los caracteres que aparecen al menos k veces
+        valid_chars = [c for c in freq if freq[c] >= k]
+        
+        # Ordenamos en orden descendente para maximizar lexicográficamente
+        valid_chars.sort(reverse=True)
+        
+        max_len = len(s) // k  # longitud máxima que puede tener la subsecuencia
+        queue = deque([""])
+        best = ""
+        
+        while queue:
+            curr = queue.popleft()
+            
+            for c in valid_chars:
+                candidate = curr + c
+                if is_valid(candidate):
+                    # Si es válida, actualizo best si es más larga o lex mayor
+                    if len(candidate) > len(best) or (len(candidate) == len(best) and candidate > best):
+                        best = candidate
+                    # Si aún no hemos llegado al límite de longitud, lo agrego a la cola
+                    if len(candidate) < max_len:
+                        queue.append(candidate)
+        
+        return best
