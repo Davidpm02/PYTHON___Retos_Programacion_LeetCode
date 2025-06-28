@@ -38,3 +38,20 @@ Constraints:
 
 """
 
+from typing import List
+
+class Solution:
+    def maxSubsequence(self, nums: List[int], k: int) -> List[int]:
+        # Paso 1: Asocio cada número con su índice original
+        indexed_nums = list(enumerate(nums))
+        
+        # Paso 2: Selecciono los k elementos con mayor valor
+        # Lo hago ordenando por valor, de mayor a menor, y tomando los primeros k
+        k_largest = sorted(indexed_nums, key=lambda x: x[1], reverse=True)[:k]
+        
+        # Paso 3: Reordeno los elementos seleccionados según su índice original
+        k_largest.sort(key=lambda x: x[0])
+        
+        # Paso 4: Extraigo los valores, en el orden original
+        return [num for idx, num in k_largest]
+        
