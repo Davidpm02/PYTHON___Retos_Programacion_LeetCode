@@ -46,3 +46,25 @@ Constraints:
 
 """
 
+from typing import List
+from collections import Counter
+
+class Solution:
+    def findLHS(self, nums: List[int]) -> int:
+        # Paso 1: Contamos la frecuencia de cada número
+        count = Counter(nums)
+        
+        # Paso 2: Inicializamos la variable para almacenar la longitud máxima
+        max_len = 0
+
+        # Paso 3: Recorremos cada número en el diccionario de frecuencias
+        for num in count:
+            # Si el número adyacente (num + 1) existe, evaluamos esta posible subsecuencia armoniosa
+            if num + 1 in count:
+                # La longitud de la subsecuencia sería la suma de las frecuencias de ambos
+                current_len = count[num] + count[num + 1]
+                # Actualizamos el valor máximo si esta subsecuencia es más larga
+                max_len = max(max_len, current_len)
+        
+        # Paso 4: Devolvemos la longitud de la subsecuencia más larga encontrada
+        return max_len
